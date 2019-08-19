@@ -38,8 +38,8 @@ async def reboot()
     await lvbx.system.reboot()
 
     # Properly close the session.
-	await lvbx.close()
-
+    await lvbx.close()
+```
 Have a look at the [example.py](https://github.com/cyr-ius/aiosysbus/blob/master/example.py) for a more complete overview.
 
 Notes on HTTPS
