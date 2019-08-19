@@ -29,7 +29,7 @@ from aiosysbus import Sysbus
 
 async def reboot()
     # Instantiate the Sysbus class using default options.
-    fbx = Sysbus()
+    lvbx = Sysbus()
 
     # Connect to the livebox with default options. 
     # Be ready to authorize the application on the Livebox.
