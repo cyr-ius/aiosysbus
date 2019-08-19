@@ -1,7 +1,6 @@
 import json
 import logging
 
-from pprint import pprint
 from urllib.parse import urljoin,urlsplit
 from aiosysbus.exceptions import *
 
@@ -93,8 +92,8 @@ class Access:
             "timeout": self.timeout
         }
         
-        logger.debug('APPEL - '+str(url))
-        logger.debug('PAYLOAD - '+str(request_params))
+        logger.debug('request url: '+str(url))
+        logger.debug('payload for request: '+str(request_params))
         
         # call request
         r = verb(url, **request_params)
@@ -103,9 +102,8 @@ class Access:
         if  not r.status_code == 200:
             raise HttpRequestError('Error HttpRequest (APIResponse: {0})'
                                      .format(str(r.status_code )))
-        pprint(r.text)
         resp = r.json()
-        logger.debug('RESULT - '+str(resp))
+        logger.debug('result: '+str(resp))
 
         if resp.get('error_code') in ['auth_required', "invalid_session"]:
             await self._refresh_session_token()
