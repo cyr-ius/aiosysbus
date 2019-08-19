@@ -5,7 +5,7 @@ from urllib.parse import urljoin,urlsplit
 from aiosysbus.exceptions import *
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
+#~ logger.setLevel(logging.DEBUG)
 
 class Access:
     def __init__(self, session, base_url, password, username, http_timeout):
@@ -92,8 +92,8 @@ class Access:
             "timeout": self.timeout
         }
         
-        logger.debug('request url: '+str(url))
-        logger.debug('payload for request: '+str(request_params))
+        logger.debug('Request url: '+str(url))
+        logger.debug('Payload for request: '+str(request_params))
         
         # call request
         r = verb(url, **request_params)
@@ -103,7 +103,7 @@ class Access:
             raise HttpRequestError('Error HttpRequest (APIResponse: {0})'
                                      .format(str(r.status_code )))
         resp = r.json()
-        logger.debug('result: '+str(resp))
+        logger.debug('Result: '+str(resp))
 
         if resp.get('error_code') in ['auth_required', "invalid_session"]:
             await self._refresh_session_token()
