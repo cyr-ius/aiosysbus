@@ -32,10 +32,9 @@ async def reboot()
     lvbx = Sysbus()
 
     # Connect to the livebox with default options. 
-    # Be ready to authorize the application on the Livebox.
-    await lvbx.open('192.168.1.1')
+    await lvbx.open('192.168.1.1','80','xxxxxx')
 
-    # Do something useful, rebooting your livebx for example.
+    # Do something useful, rebooting your livebox for example.
     await lvbx.system.reboot()
 
     # Properly close the session.
