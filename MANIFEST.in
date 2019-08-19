@@ -1,4 +1,3 @@
 graft aiosysbus
-include *.py
-include *.md
-include LICENSE.txt
+exclude example_home.py
+include LICENSE

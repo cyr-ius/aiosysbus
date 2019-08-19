@@ -31,7 +31,7 @@ async def demo():
     #~ await lvbx.nat.get_firewall_PortForwardingWebUI()
 
     # Reboot
-     #~ lvbx.system.reboot()
+    #~ await lvbx.system.reboot()
     
     # Close the livebox session
     await lvbx.close()

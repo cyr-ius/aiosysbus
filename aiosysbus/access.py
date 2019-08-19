@@ -1,21 +1,12 @@
 import json
 import logging
 
+from pprint import pprint
 from urllib.parse import urljoin,urlsplit
 from aiosysbus.exceptions import *
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
-# create console handler and set level to debug
-ch = logging.StreamHandler()
-ch.setLevel(logging.DEBUG)
-# create formatter
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-# add formatter to ch
-ch.setFormatter(formatter)
-# add ch to logger
-logger.addHandler(ch)
-
 
 class Access:
     def __init__(self, session, base_url, password, username, http_timeout):
@@ -31,13 +22,16 @@ class Access:
         '''
         Return challenge from livebox API
         '''
-        url = urlsplit(base_url)
-        uri = url.scheme+'://'+url.netloc
-        logger.debug(uri)
-        r = self.session.get(url.scheme+'://'+url.netloc, timeout=timeout)
-        if r.status_code == 200:
-            return True
-        return False
+        url_tbl = urlsplit(base_url)
+        url = url_tbl.scheme+'://'+url_tbl.netloc
+        
+        logger.debug(url)
+        try:
+            r = self.session.get(url, timeout=timeout)
+        except Exception as e:
+            raise NotOpenError('Open session failed (APIResponse: {0})'
+                                         .format(str(e)))            
+        return True
 
     async def _get_session_token(self, base_url, password, username, timeout=10):
         """
@@ -93,8 +87,6 @@ class Access:
 
         url = self.base_url+end_url
         
-        
-        
         request_params = {
             **kwargs,
             "headers": self._get_headers(),
@@ -103,9 +95,15 @@ class Access:
         
         logger.debug('APPEL - '+str(url))
         logger.debug('PAYLOAD - '+str(request_params))
-
         
+        # call request
         r = verb(url, **request_params)
+        
+        # raise exception if r is empty
+        if  not r.status_code == 200:
+            raise HttpRequestError('Error HttpRequest (APIResponse: {0})'
+                                     .format(str(r.status_code )))
+        pprint(r.text)
         resp = r.json()
         logger.debug('RESULT - '+str(resp))
 

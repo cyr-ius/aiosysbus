@@ -33,13 +33,13 @@ class System:
         '''
         Reboot livebox
         '''
-        await self._access.post('NMC:reboot')
+        return await self._access.post('NMC:reboot')
     
     async def reset(self):
         '''
         Reset livebox
         '''
-        await self._access.post('NMC:reset')
+        return await self._access.post('NMC:reset')
 
     async def get_guest_config(self):
         '''

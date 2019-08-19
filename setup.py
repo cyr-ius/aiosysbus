@@ -40,6 +40,7 @@ setup(
     long_description=long_description,
     long_description_content_type='text/markdown',
     install_requires=['requests>=2'],
+    license='GNU GPLv3',
     include_package_data=True,
     url='https://github.com/cyr-ius/aiosysbus/tree/aiosysbus',
     keywords='livebox async',
