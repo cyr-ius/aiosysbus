@@ -4,49 +4,32 @@ class Connection:
         self._access = access
 
     async def get_lan_luckyAddrAddress(self):
-        '''
-        Get system configuration:
-        '''
+        ''' LAN IP Address '''
         return await self._access.post('NeMo/Intf/lan:luckyAddrAddress')
 
     async def get_data_luckyAddrAddress(self):
-        '''
-        Get system configuration:
-        '''
+        ''' WAN IP Address '''
         return await self._access.post('NeMo/Intf/data:luckyAddrAddress')
 
-    async def get_WANStatus(self):
-        '''
-        Get system configuration:
-        '''
-        return await self._access.post('NMC:getWANStatus')
+    async def get_lo_DHCPOption(self,conf=None):
+        ''' DHCP Option '''
+        return await self._access.post('NeMo/Intf/lo:getDHCPOption',conf)
 
-    async def get_lo_config(self):
-        '''
-        Get system configuration:
-        '''
-        return await self._access.post('NeMo/Intf/lo:getDHCPOption')
+    async def get_dsl0_DSLStats(self,conf=None):
+        ''' xDSLS Connection Statistics '''
+        return await self._access.post('NeMo/Intf/dsl0:getDSLStats',conf)
 
-    async def get_dsl0_DSLStats(self):
-        '''
-        Get system configuration:
-        '''
-        return await self._access.post('NeMo/Intf/dsl0:getDSLStats')
+    async def get_dsl0_MIBS(self,conf=None):
+        ''' xDSLS information '''
+        return await self._access.post('NeMo/Intf/dsl0:getMIBs',conf)
 
-    async def get_dsl0_MIBS(self):
+    async def get_data_MIBS(self,conf=None):
         '''
-        Get system configuration:
+        All datas informations
+        conf =  {"parameters":{"mibs":"dsl","traverse":"down"}}
         '''
-        return await self._access.post('NeMo/Intf/dsl0:getMIBs')
+        return await self._access.post('NeMo/Intf/data:getMIBs',conf)
 
-    async def get_data_MIBS(self):
-        '''
-        Get system configuration:
-        '''
-        return await self._access.post('NeMo/Intf/data:getMIBs')
-
-    async def get_lan_MIBS(self):
-        '''
-        Get system configuration:
-        '''
-        return await self._access.post('NeMo/Intf/lan:getMIBs')
+    async def get_lan_MIBS(self,conf=None):
+        ''' LAN Information '''
+        return await self._access.post('NeMo/Intf/lan:getMIBs',conf)
