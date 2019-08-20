@@ -68,8 +68,8 @@ class Access:
             self.username,
             self.timeout)
 
-        logger.info('Session opened')
-        logger.info('Permissions: ' + str(session_permissions))
+        logger.debug('Session opened')
+        logger.debug('Permissions: ' + str(session_permissions))
         self.session_token = session_token
         self.session_permissions = session_permissions
 
