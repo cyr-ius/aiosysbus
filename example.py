@@ -18,7 +18,7 @@ async def demo():
     # example for the first time
     await lvbx.open(host='192.168.1.1', port=80, password='xxxxxx')
 
-    print(await lvbx.system.get_config())
+    print(await lvbx.system.get_deviceinfo())
     print(await lvbx.connection.get_data_MIBS())
     print(await lvbx.connection.get_dsl0_MIBS())
     print(await lvbx.system.get_guest_config())
@@ -28,7 +28,7 @@ async def demo():
     
     #~ parameters={"parameters":{"description":"FTP","persistent":"true","enable":"true","protocol":"6","destinationIPAddress":"192.168.1.250","internalPort":"21","externalPort":"21","origin":"webui","sourceInterface":"data","sourcePrefix":"","id":"FTP"}}
     #~ await lvbx.nat.set_firewall_PortForwarding(parameters)
-    #~ await lvbx.nat.get_firewall_PortForwardingWebUI()
+    #~ await lvbx.nat.get_firewall_PortForwarding()
 
     # Reboot
     #~ await lvbx.system.reboot()
