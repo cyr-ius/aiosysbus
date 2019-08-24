@@ -17,9 +17,9 @@ class Nat:
         '''
         return await self._access.post('Firewall:setPortForwarding',conf)
 
-    async def get_firewall_DMZ(self):
+    async def get_firewall_DMZ(self,conf=None):
         ''' Get DMZ configuration '''
-        return await self._access.post('Firewall:getDMZ')
+        return await self._access.post('Firewall:getDMZ',conf)
 
     async def set_firewall_DMZ(self,conf):
         ''' Set DMZ configuration '''
@@ -50,13 +50,13 @@ class Nat:
         '''
         return await self._access.post('Firewall:getPinhole',conf)
 
-    async def get_dyndns_Hosts(self):
+    async def get_dyndns_Hosts(self,conf=None):
         ''' Get Dynamic DNS Hosts configuration '''
-        return await self._access.post('DynDNS:getHosts')
+        return await self._access.post('DynDNS:getHosts',conf)
 
-    async def get_dyndns_Services(self):
+    async def get_dyndns_Services(self,conf=None):
         ''' Get Dynamic DNS services configuration '''
-        return await self._access.post('DynDNS:getServices')
+        return await self._access.post('DynDNS:getServices',conf)
 
     async def set_dns_name(self,mac,conf):
         '''
@@ -66,9 +66,9 @@ class Nat:
         '''
         return await self._access.post('Devices/Device/'+mac+':setName',conf)
 
-    async def get_upnp_devices(self):
+    async def get_upnp_devices(self,conf=None):
         ''' Get Upnp configuration '''
-        return await self._access.post('UPnP-IGD:get')
+        return await self._access.post('UPnP-IGD:get',conf)
 
     async def set_upnp_config(self,conf):
         '''

@@ -10,17 +10,17 @@ class Dhcp:
         '''
         return await self._access.post('NMC:setLANIP',conf)
 
-    async def get_dhcp_config(self):
+    async def get_dhcp_config(self,conf=None):
         ''' Get DHCP configuration '''
-        return await self._access.post('NMC:getLANIP')
+        return await self._access.post('NMC:getLANIP',conf)
 
-    async def get_dhcp_poolconfig(self):
+    async def get_dhcp_poolconfig(self,conf=None):
         ''' Get Pool configuration '''
-        return await self._access.post('DHCPv4/Server/Pool/default:get')
+        return await self._access.post('DHCPv4/Server/Pool/default:get',conf)
 
-    async def get_dhcp_StaticLeases(self):
+    async def get_dhcp_StaticLeases(self,conf=None):
         ''' Get Leases '''
-        return await self._access.post('DHCPv4/Server/Pool/default:getStaticLeases')
+        return await self._access.post('DHCPv4/Server/Pool/default:getStaticLeases',conf)
 
     async def set_dhcp_StaticLease(self,conf):
         '''
