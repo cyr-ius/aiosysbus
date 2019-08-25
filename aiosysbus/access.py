@@ -5,14 +5,13 @@ from urllib.parse import urljoin,urlsplit
 from aiosysbus.exceptions import *
 
 logger = logging.getLogger(__name__)
-#~ logger.setLevel(logging.DEBUG)
 
 class Access:
-    def __init__(self, session, base_url, password, username, http_timeout):
+    def __init__(self, session, base_url, username, password,  http_timeout):
         self.session = session
         self.base_url = base_url
-        self.password = password
         self.username = username
+        self.password = password
         self.timeout = http_timeout
         self.session_token = None
         self.session_permissions = None
@@ -22,9 +21,9 @@ class Access:
         Return challenge from livebox API
         '''
         url_tbl = urlsplit(base_url)
-        url = url_tbl.scheme+'://'+url_tbl.netloc
-        
+        url = '{}://{}'.format(url_tbl.scheme,url_tbl.netloc)
         logger.debug(url)
+
         try:
             r = self.session.get(url, timeout=timeout)
         except Exception as e:
@@ -44,8 +43,8 @@ class Access:
             auth = json.dumps({'service':'sah.Device.Information',
                                         'method':'createContext',
                                         'parameters':{'applicationName':'so_sdkut',
-                                            'username':username,
-                                            'password':password}})        
+                                        'username':username,
+                                        'password':password}})
             sah_headers = { 'Content-Type':'application/x-sah-ws-1-call+json', 'Authorization':'X-Sah-Login' }
             r = self.session.post(base_url,data=auth, headers=sah_headers, timeout=timeout)
             resp = r.json()

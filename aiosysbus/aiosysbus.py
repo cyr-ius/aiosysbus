@@ -11,26 +11,17 @@ from aiosysbus.api.call import Call
 from aiosysbus.api.connection import Connection
 from aiosysbus.api.nat import Nat
 
-# Default application descriptor
-app_desc = {
-    'username': 'admin',
-    'app_name': 'aiosysbus',
-    'app_version': aiosysbus.__version__
-    }
-
 logger = logging.getLogger(__name__)
 
 
 class Sysbus:
     
-    def __init__(self, app_desc=app_desc, timeout=10):
+    def __init__(self, timeout=10):
         self.timeout = timeout
-        self.app_desc = app_desc
         self._access = None
     
-    async def open(self, host, port,password):
-        self.password = password
-        self._access = await self._get_livebox_access(host, port, self.password, self.app_desc, self.timeout)
+    async def open(self, password, host='192.168.1.1', port='80', username='admin' ):
+        self._access = await self._get_livebox_access(host, port, username, password, self.timeout)
        
         # Instantiate Livebox modules
         self.system = System(self._access)
@@ -49,7 +40,7 @@ class Sysbus:
         #~ await self._access.post('login/logout')
         self._session.close()
         
-    async def _get_livebox_access(self, host, port, password, app_desc, timeout=10):
+    async def _get_livebox_access(self, host, port, username, password, timeout=10):
         '''
         Returns an access object used for HTTP requests.
         '''
@@ -58,7 +49,7 @@ class Sysbus:
         self._session = requests.session()
 
         # Create livebox http access module
-        lvbx_access = Access(self._session, base_url, password, app_desc['username'], timeout)
+        lvbx_access = Access(self._session, base_url, username, password, timeout)
 
         return lvbx_access        
 
