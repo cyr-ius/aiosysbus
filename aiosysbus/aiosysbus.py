@@ -1,68 +1,50 @@
+""" API for livebox routeur."""
 import logging
 import requests
 
-import aiosysbus
-from aiosysbus.exceptions import *
+import aiosysbus.exceptions
 from aiosysbus.access import Access
-from aiosysbus.api.system import System
-from aiosysbus.api.dhcp import Dhcp
-from aiosysbus.api.wifi import Wifi
-from aiosysbus.api.call import Call
-from aiosysbus.api.connection import Connection
-from aiosysbus.api.nat import Nat
+from aiosysbus.api import Call, Connection, Dhcp, Nat, Screen, System, Wifi
 
 logger = logging.getLogger(__name__)
 
 
 class Sysbus:
-    
-    def __init__(self, timeout=10):
-        self.timeout = timeout
+    """Sysbus is API for livebox."""
+
+    def __init__(self, username, password, timeout=10,  host='192.168.1.1', port='80'):
+        """Load parameters."""
         self._access = None
-    
-    async def open(self, password, host='192.168.1.1', port='80', username='admin' ):
-        self._access = await self._get_livebox_access(host, port, username, password, self.timeout)
-       
-        # Instantiate Livebox modules
-        self.system = System(self._access)
-        self.dhcp = Dhcp(self._access)
-        self.wifi = Wifi(self._access)
-        self.call = Call(self._access)
-        self.connection = Connection(self._access)
-        self.nat = Nat(self._access)
-
-    async def close(self):
-        '''
-        Close the livebox session
-        '''
-        if self._access is None:
-            raise NotOpenError('Livebox is not open')
-        #~ await self._access.post('login/logout')
-        self._session.close()
-        
-    async def _get_livebox_access(self, host, port, username, password, timeout=10):
-        '''
-        Returns an access object used for HTTP requests.
-        '''
-
-        base_url = self._get_base_url(host, port)
         self._session = requests.session()
+        self._username = username
+        self._password = password
+        self._timeout = timeout
+        self._host = host
+        self._port = port
+        self._authenticate()
 
+    def _authenticate(self):
+        """ Instantiate modules."""
         # Create livebox http access module
-        lvbx_access = Access(self._session, base_url, username, password, timeout)
+        base_url = self._get_base_url(self._host, self._port)
+        self._access = Access(session=self._session, base_url=base_url, username=self._username, password=self._password, timeout=self._timeout)
 
-        return lvbx_access        
+        # Instantiate Livebox modules
+        if self._access:
+            self.call = Call(self._access)
+            self.connection = Connection(self._access)
+            self.dhcp = Dhcp(self._access)
+            self.nat = Nat(self._access)
+            self.screen = Screen(self._access)
+            self.system = System(self._access)
+            self.wifi = Wifi(self._access)
 
     def _get_base_url(self, host, port):
-        '''
-        Returns base url for HTTPS requests
-        :return:
-        '''
-        return 'http://{0}:{1}/sysbus/'.format(host, port)        
+        """Returns base url for HTTPS requests."""
+        return 'http://{0}:{1}/sysbus/'.format(host, port)
 
-
-    async def get_permissions(self):
-        '''
+    async def async_get_permissions(self):
+        """
         Returns the permissions for this app.
         The permissions are returned as a dictionary key->boolean where the
         keys are the permission identifier (cf. the constants PERMISSION_*).
@@ -72,8 +54,8 @@ class Sysbus:
         opened. If they have been changed in the meantime, they may be outdated
         until the session token is refreshed.
         If the session has not been opened yet, returns None.
-        '''
+        """
         if self._access:
             return await self._access.get_permissions()
         else:
-            return None        
+            return None
