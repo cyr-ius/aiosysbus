@@ -41,7 +41,7 @@ class Sysbus:
 
     def _get_base_url(self, host, port):
         """Returns base url for HTTPS requests."""
-        return 'http://{0}:{1}/sysbus/'.format(host, port)
+        return 'http://{0}:{1}/ws'.format(host, port)
 
     async def async_get_permissions(self):
         """

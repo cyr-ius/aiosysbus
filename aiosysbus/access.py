@@ -83,12 +83,12 @@ class Access:
         return {'X-Context': self.session_token,
                       'Content-Type':'application/x-sah-ws-1-call+json; charset=UTF-8'}
 
-    async def _perform_request(self, verb, end_url, **kwargs):
+    async def _perform_request(self, verb, **kwargs):
         """Perform the given request, refreshing the session token if needed."""
         if not self.session_token:
             await self._refresh_session_token()
 
-        url = self.base_url+end_url
+        url = self.base_url
         
         request_params = {
             **kwargs,
@@ -96,8 +96,7 @@ class Access:
             "timeout": self.timeout
         }
         
-        logger.debug('Request url: '+str(url))
-        logger.debug('Payload for request: '+str(request_params))
+        logger.debug(f"Payload for request: {str(url)} - {str(request_params)}")
         
         # call request
         r = verb(url, **request_params)
@@ -121,24 +120,25 @@ class Access:
 
         return resp['result'] if 'result' in resp else None
 
-    async def get(self, end_url):
+    async def get(self, service, method, parameters={}):
         """Send get request and return results."""
-        return await self._perform_request(self.session.get, end_url)
+        payload = { "service": service , "method": method, "parameters": parameters }
+        return await self._perform_request(self.session.get, json=data)
 
-    async def post(self, end_url, payload=None):
+    async def post(self, service, method, parameters={}):
         """Send post request and return results."""
-        data = json.dumps(payload) if payload is not None else None
-        return await self._perform_request(self.session.post, end_url, data=data)
+        data = { "service": service , "method": method, "parameters": parameters }
+        return await self._perform_request(self.session.post, json=data)
 
-    async def put(self, end_url, payload=None):
+    async def put(self, end_url, service, method, parameters={}):
         """Send put request and return results."""
-        data = json.dumps(payload) if payload is not None else None
-        return await self._perform_request(self.session.put, end_url, data=data)
+        data = { "service": service , "method": method, "parameters": parameters }
+        return await self._perform_request(self.session.put, json=data)
 
-    async def delete(self, end_url, payload=None):
+    async def delete(self, end_url, service, method, parameters={}):
         """Send delete request and return results."""
-        data = json.dumps(payload) if payload is not None else None
-        return await self._perform_request(self.session.delete, end_url, data=data)
+        data = { "service": service , "method": method, "parameters": parameters }
+        return await self._perform_request(self.session.delete, json=data)
 
     async def get_permissions(self):
         """Returns the permissions for this session/app."""

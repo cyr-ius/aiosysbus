@@ -8,11 +8,11 @@ class Dhcp:
         Set DHCP configuration
         conf = {"parameters":{"Address":"80:A5:89:0F:EA:6B","Netmask":"192.168.1.55","DHCPEnable":"","DHCPMinAddress":"","DHCPMaxAddress":""}}
         '''
-        return await self._access.post('NMC:setLANIP',conf)
+        return await self._access.post('NMC','setLANIP',conf)
 
     async def get_dhcp_config(self,conf=None):
         ''' Get DHCP configuration '''
-        return await self._access.post('NMC:getLANIP',conf)
+        return await self._access.post('NMC','getLANIP',conf)
 
     async def get_dhcp_poolconfig(self,conf=None):
         ''' Get Pool configuration '''
