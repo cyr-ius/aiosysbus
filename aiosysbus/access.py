@@ -121,7 +121,7 @@ class Access:
 
         # raise exception if r is empty
         if not r.status_code == 200:
-            raise HttpRequestError("Error HttpRequest (APIResponse: %s)", str(r.status_code))
+            raise HttpRequestError("Error HttpRequest (APIResponse: %s)" % str(r.status_code))
         resp = r.json()
         logger.debug("Result: %s", str(resp))
 
