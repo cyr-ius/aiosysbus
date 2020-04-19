@@ -25,20 +25,20 @@ Get started
 -----------
 ```python
 # Import the aiosysbus package.
-from aiosysbus import Sysbus
+from aiosysbus import AIOSysbus
 
 async def reboot()
     # Instantiate the Sysbus class using default options.
-    lvbx = Sysbus()
+    lvbx = AIOSysbus('192.168.1.1','80','xxxxxx')
 
     # Connect to the livebox with default options. 
-    await lvbx.open('192.168.1.1','80','xxxxxx')
+    lvbx.connect()
 
     # Do something useful, rebooting your livebox for example.
-    await lvbx.system.reboot()
+    lvbx.system.reboot()
 
     # Properly close the session.
-    await lvbx.close()
+    lvbx.close()
 ```
 Have a look at the [example.py](https://github.com/cyr-ius/aiosysbus/blob/master/example.py) for a more complete overview.
 
