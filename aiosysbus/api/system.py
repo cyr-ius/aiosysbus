@@ -115,4 +115,4 @@ class System:
 
     def get_time_Time(self, conf=None):
         """ Get time information """
-        return self._access.post("Time", "getTime", conf=None)
+        return self._access.post("Time", "getTime", conf)
