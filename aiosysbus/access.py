@@ -3,7 +3,7 @@ import logging
 from requests.exceptions import RequestException
 
 from urllib.parse import urlsplit
-from aiosysbus.exceptions import NotOpenError, AuthorizationError, HttpRequestError
+from aiosysbus.exceptions import NotOpenError, AuthorizationError, HttpRequestError, TimeoutExceeded
 
 logger = logging.getLogger(__name__)
 
@@ -125,14 +125,15 @@ class Access:
         resp = r.json()
         logger.debug("Result: %s", str(resp))
 
-        if resp.get("error_code") in ["auth_required", "invalid_session"]:
+        # if resp.get("error_code") in ["auth_required", "invalid_session"]:
+        if resp.get("result", {}).get("errors"):
+            self.retry += 1
             self._refresh_session_token()
-            request_params["headers"] = self._get_headers()
-            try:
-                r = verb(url, **request_params)
-                resp = r.json()
-            except RequestException as e:
-                logger.error(e)
+            if self.retry < self.max_retry:
+                logger.debug("Retrying (%s) request..", self.retry)
+                self._perform_request(verb, **kwargs)
+            else:
+                raise TimeoutExceeded("Timeout exceeded %s" % self.retry)
 
         return resp["result"] if "result" in resp else None
 
