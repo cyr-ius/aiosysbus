@@ -1,4 +1,4 @@
-""" API for livebox routeur."""
+"""API for livebox routeur."""
 import logging
 import requests
 
@@ -24,7 +24,7 @@ class AIOSysbus:
         self._authorize = False
 
     def _load_modules(self):
-        """ Instantiate modules."""
+        """Instantiate modules."""
         # Instantiate Livebox modules
         if self._access:
             self.call = Call(self._access)
@@ -36,12 +36,12 @@ class AIOSysbus:
             self.wifi = Wifi(self._access)
 
     def _get_base_url(self, host, port):
-        """Returns base url for HTTPS requests."""
+        """Return base url for HTTPS requests."""
         return "http://{0}:{1}/ws".format(host, port)
 
     def get_permissions(self):
-        """
-        Returns the permissions for this app.
+        """Return the permissions for this app.
+
         The permissions are returned as a dictionary key->boolean where the
         keys are the permission identifier (cf. the constants PERMISSION_*).
         A permission not listed in the returned permissions is equivalent to
@@ -56,8 +56,7 @@ class AIOSysbus:
         return None
 
     def connect(self):
-        """ Instantiate modules."""
-
+        """Instantiate modules."""
         # Create livebox http access module
         base_url = self._get_base_url(self._host, self._port)
         self._access = Access(
