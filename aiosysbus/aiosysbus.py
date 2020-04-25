@@ -22,7 +22,7 @@ class AIOSysbus:
         self._host = host
         self._port = port
         self._authorize = False
-        
+
     def _load_modules(self):
         """ Instantiate modules."""
         # Instantiate Livebox modules
@@ -57,7 +57,7 @@ class AIOSysbus:
 
     def connect(self):
         """ Instantiate modules."""
-        
+
         # Create livebox http access module
         base_url = self._get_base_url(self._host, self._port)
         self._access = Access(
@@ -74,7 +74,7 @@ class AIOSysbus:
             except AuthorizationError as e:
                 raise AuthorizationError(e)
             except NotOpenError as e:
-                raise NotOpenError(e)              
-            
+                raise NotOpenError(e)
+
             # Instantiate Livebox modules
             self._load_modules()

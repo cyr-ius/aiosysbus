@@ -1,6 +1,5 @@
 import json
 import logging
-from requests.exceptions import RequestException
 
 from urllib.parse import urlsplit
 from aiosysbus.exceptions import NotOpenError, AuthorizationError, HttpRequestError, TimeoutExceeded
@@ -75,7 +74,7 @@ class Access:
 
             session_token = resp.get("data").get("contextID")
             session_permissions = resp.get("data").get("groups")
-            logger.debug("Token %s",session_token)
+            logger.debug("Token %s", session_token)
 
             return (session_token, session_permissions)
 
@@ -89,7 +88,6 @@ class Access:
     def _retry(self, response, callback, *kwargs):
         if response.status_code == 401 and self.retry < self.max_retry:
             self.retry += 1
-            #~ self._authenticate()
             callback(kwargs)
         else:
             self.retry = 0
@@ -114,7 +112,7 @@ class Access:
             "timeout": self.timeout,
         }
 
-        logger.debug("Payload for request: %s - %s", str(url),str(request_params))
+        logger.debug("Payload for request: %s - %s", str(url), str(request_params))
 
         # call request
         r = verb(url, **request_params)
@@ -166,4 +164,4 @@ class Access:
     def connect(self):
         """Check connect successful."""
         if not self.session_token:
-            self._refresh_session_token()           
+            self._refresh_session_token()
