@@ -1,10 +1,11 @@
 """API for livebox routeur."""
 import logging
+
 import requests
 
-from aiosysbus.access import Access
-from aiosysbus.exceptions import NotOpenError, AuthorizationError
-from aiosysbus.api import Call, Connection, Dhcp, Nat, Screen, System, Wifi
+from .access import Access
+from .api import Call, Connection, Dhcp, Nat, Screen, System, Wifi
+from .exceptions import AuthorizationError, HttpRequestError, NotOpenError
 
 logger = logging.getLogger(__name__)
 
@@ -70,6 +71,8 @@ class AIOSysbus:
         if self._access:
             try:
                 self._access.connect()
+            except HttpRequestError as e:
+                raise HttpRequestError(e)
             except AuthorizationError as e:
                 raise AuthorizationError(e)
             except NotOpenError as e:

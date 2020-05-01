@@ -1,14 +1,19 @@
+"""API Acces for livebox."""
 import json
 import logging
-
 from urllib.parse import urlsplit
-from aiosysbus.exceptions import NotOpenError, AuthorizationError, HttpRequestError, TimeoutExceeded
+
+from .exceptions import AuthorizationError, HttpRequestError, NotOpenError, TimeoutExceededError
+from requests import RequestException
 
 logger = logging.getLogger(__name__)
 
 
 class Access:
+    """Access control."""
+
     def __init__(self, session, base_url, username, password, timeout):
+        """Init class."""
         self.session = session
         self.base_url = base_url
         self.username = username
@@ -20,16 +25,13 @@ class Access:
         self.max_retry = 3
 
     def _get_challenge(self, base_url, timeout=10):
-        """
-        Return challenge from livebox API
-        """
+        """Return challenge from livebox API."""
         url_tbl = urlsplit(base_url)
         url = "{}://{}".format(url_tbl.scheme, url_tbl.netloc)
-        logger.debug(url)
 
         try:
             self.session.get(url, timeout=timeout)
-        except Exception as e:
+        except RequestException as e:
             raise NotOpenError("Open session failed (APIResponse: {0})".format(str(e)))
         return True
 
@@ -59,18 +61,15 @@ class Access:
                 "Authorization": "X-Sah-Login",
             }
 
-            r = self.session.post(
-                self.base_url, data=auth, headers=sah_headers, timeout=self.timeout
-            )
-            resp = r.json()
+            try:
+                r = self.session.post(self.base_url, data=auth, headers=sah_headers, timeout=self.timeout)
+            except RequestException as e:
+                raise HttpRequestError("Error HttpRequest (APIResponse: {})".format(str(e)))
 
+            resp = r.json()
             # raise exception if resp.success != True
             if not resp.get("data"):
-                raise AuthorizationError(
-                    "Starting session failed (APIResponse: {0})".format(
-                        json.dumps(resp)
-                    )
-                )
+                raise AuthorizationError("Starting session failed (APIResponse: {})".format(json.dumps(resp)))
 
             session_token = resp.get("data").get("contextID")
             session_permissions = resp.get("data").get("groups")
@@ -115,11 +114,14 @@ class Access:
         logger.debug("Payload for request: %s - %s", str(url), str(request_params))
 
         # call request
-        r = verb(url, **request_params)
+        try:
+            r = verb(url, **request_params)
+        except RequestException as e:
+            raise HttpRequestError("Error HttpRequest (APIResponse: {})".format(str(e)))
 
         # raise exception if r is empty
         if not r.status_code == 200:
-            raise HttpRequestError("Error HttpRequest (APIResponse: %s)" % str(r.status_code))
+            raise HttpRequestError("Error HttpRequest (APIResponse: {})".format(str(r.status_code)))
         resp = r.json()
         logger.debug("Result: %s", str(resp))
 
@@ -131,7 +133,7 @@ class Access:
                 logger.debug("Retrying (%s) request..", self.retry)
                 self._perform_request(verb, **kwargs)
             else:
-                raise TimeoutExceeded("Timeout exceeded %s" % self.retry)
+                raise TimeoutExceededError("Timeout exceeded (Retry {})".format(str(self.retry)))
 
         return resp["result"] if "result" in resp else None
 
@@ -156,7 +158,7 @@ class Access:
         return self._perform_request(self.session.delete, json=data)
 
     def get_permissions(self):
-        """Returns the permissions for this session/app."""
+        """Return the permissions for this session/app."""
         if not self.session_permissions:
             self._refresh_session_token()
         return self.session_permissions

@@ -1,26 +1,25 @@
-class InvalidTokenError(Exception):
-    def __init__(self, *args, **kwargs):
-        Exception.__init__(self, *args, **kwargs)
+"""Exceptions for livebox."""
 
 
-class NotOpenError(Exception):
-    def __init__(self, *args, **kwargs):
-        Exception.__init__(self, *args, **kwargs)
+class LiveboxException(Exception):
+    """General exception."""
 
 
-class AuthorizationError(Exception):
-    def __init__(self, *args, **kwargs):
-        Exception.__init__(self, *args, **kwargs)
+class NotOpenError(LiveboxException):
+    """Not open url."""
 
 
-class HttpRequestError(Exception):
-    def __init__(self, *args, **kwargs):
-        Exception.__init__(self, *args, **kwargs)
+class AuthorizationError(LiveboxException):
+    """Authentification error."""
+
+
+class HttpRequestError(LiveboxException):
+    """Requests error."""
 
 
 class InsufficientPermissionsError(HttpRequestError):
-    def __init__(self, *args, **kwargs):
-        HttpRequestError.__init__(self, *args, **kwargs)
+    """Insufficient Permissions."""
 
-class TimeoutExceeded(Exception):
+
+class TimeoutExceededError(LiveboxException):
     """Timeout exceeded."""

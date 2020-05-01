@@ -6,4 +6,4 @@ Provides authentification and row access to Livebox.
 from .aiosysbus import AIOSysbus
 
 name = "aiosysbus"
-__version__ = "0.1.6"
+__version__ = "0.1.7"
