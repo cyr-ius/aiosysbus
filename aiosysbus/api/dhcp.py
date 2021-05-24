@@ -5,7 +5,7 @@ class Dhcp:
     def set_dhcp_config(self, conf):
         """
         Set DHCP configuration
-        conf = {"parameters":{"Address":"80:A5:89:0F:EA:6B","Netmask":"192.168.1.55","DHCPEnable":"","DHCPMinAddress":"","DHCPMaxAddress":""}}
+        conf = {"parameters":{"Address":"01:02:03:04:05:06","Netmask":"192.168.1.55","DHCPEnable":"","DHCPMinAddress":"","DHCPMaxAddress":""}}
         """
         return self._access.post("NMC", "setLANIP", conf)
 
@@ -24,13 +24,13 @@ class Dhcp:
     def set_dhcp_StaticLease(self, conf):
         """
         Set static lease
-        conf = {"parameters":{"MACAddress":"80:A5:89:0F:EA:6B","IPAddress":"192.168.1.55"}}
+        conf = {"parameters":{"MACAddress":"01:02:03:04:05:06","IPAddress":"192.168.1.55"}}
         """
         return self._access.post("DHCPv4/Server/Pool/default:addStaticLease", conf)
 
     def del_dhcp_StaticLease(self, conf):
         """
         Remove static lease
-        conf = {"parameters":{"MACAddress":"80:a5:89:0f:ea:6b"}}
+        conf = {"parameters":{"MACAddress":"01:02:03:04:05:06"}}
         """
         return self._access.post("DHCPv4/Server/Pool/default:deleteStaticLease", conf)
