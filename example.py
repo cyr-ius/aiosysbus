@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-"""
-This example can be run safely as it won't change anything in your box configuration
-"""
+"""This example can be run safely as it won't change anything in your box configuration."""
 
 import logging
 
@@ -20,9 +18,9 @@ logger.addHandler(ch)
 
 
 def demo():
-    # Instantiate Livebox class
+    """Instantiate Livebox class."""
     lvbx = AIOSysbus(host="192.168.1.1", port=80, password="xxxxxx")
-    
+
     try:
         lvbx.connect()
     except AuthorizationError as e:
@@ -31,8 +29,8 @@ def demo():
     except NotOpenError as e:
         logger.error(e)
         return
-    
-    #Fetch datas
+
+    # Fetch datas
     lvbx.system.get_deviceinfo()
     lvbx.connection.get_data_MIBS()
     lvbx.connection.get_dsl0_MIBS()
