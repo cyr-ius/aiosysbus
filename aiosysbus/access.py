@@ -146,8 +146,8 @@ class Access:
                 logger.debug("Retrying (%s) request..", self.retry)
                 self._perform_request(verb, **kwargs)
             else:
-                raise TimeoutExceededError(
-                    "Timeout exceeded (Retry {})".format(str(self.retry))
+                raise HttpRequestError(
+                    "{}".format(resp["result"].get("errors")),
                 )
 
         return resp["result"] if "result" in resp else None
