@@ -1,11 +1,11 @@
 """API for livebox routeur."""
 import logging
-
+import inspect
 import requests
 
 from .access import Access
-from .api import Call, Connection, Dhcp, Nat, Screen, System, Wifi
 from .exceptions import AuthorizationError, HttpRequestError, NotOpenError
+import aiosysbus.api as Api
 
 logger = logging.getLogger(__name__)
 
@@ -26,15 +26,10 @@ class AIOSysbus:
 
     def _load_modules(self):
         """Instantiate modules."""
-        # Instantiate Livebox modules
-        if self._access:
-            self.call = Call(self._access)
-            self.connection = Connection(self._access)
-            self.dhcp = Dhcp(self._access)
-            self.nat = Nat(self._access)
-            self.screen = Screen(self._access)
-            self.system = System(self._access)
-            self.wifi = Wifi(self._access)
+        for name in Api.__dict__.keys():
+            obj = getattr(Api, name)
+            if inspect.isclass(obj):
+                setattr(self, name.lower(), obj(self._access))
 
     def _get_base_url(self, host, port):
         """Return base url for HTTPS requests."""
@@ -71,12 +66,12 @@ class AIOSysbus:
         if self._access:
             try:
                 self._access.connect()
-            except HttpRequestError as e:
-                raise HttpRequestError(e)
-            except AuthorizationError as e:
-                raise AuthorizationError(e)
-            except NotOpenError as e:
-                raise NotOpenError(e)
+            except HttpRequestError as error:
+                raise HttpRequestError from error
+            except AuthorizationError as error:
+                raise AuthorizationError from error
+            except NotOpenError as error:
+                raise NotOpenError from error
 
             # Instantiate Livebox modules
             self._load_modules()

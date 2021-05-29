@@ -3,7 +3,11 @@ import json
 import logging
 from urllib.parse import urlsplit
 
-from .exceptions import AuthorizationError, HttpRequestError, NotOpenError, TimeoutExceededError
+from .exceptions import (
+    AuthorizationError,
+    HttpRequestError,
+    NotOpenError,
+)
 from requests import RequestException
 
 logger = logging.getLogger(__name__)
@@ -62,14 +66,20 @@ class Access:
             }
 
             try:
-                r = self.session.post(self.base_url, data=auth, headers=sah_headers, timeout=self.timeout)
+                r = self.session.post(
+                    self.base_url, data=auth, headers=sah_headers, timeout=self.timeout
+                )
             except RequestException as e:
-                raise HttpRequestError("Error HttpRequest (APIResponse: {})".format(str(e)))
+                raise HttpRequestError(
+                    "Error HttpRequest (APIResponse: {})".format(str(e))
+                )
 
             resp = r.json()
             # raise exception if resp.success != True
             if not resp.get("data"):
-                raise AuthorizationError("Starting session failed (APIResponse: {})".format(json.dumps(resp)))
+                raise AuthorizationError(
+                    "Starting session failed (APIResponse: {})".format(json.dumps(resp))
+                )
 
             session_token = resp.get("data").get("contextID")
             session_permissions = resp.get("data").get("groups")
@@ -121,7 +131,9 @@ class Access:
 
         # raise exception if r is empty
         if not r.status_code == 200:
-            raise HttpRequestError("Error HttpRequest (APIResponse: {})".format(str(r.status_code)))
+            raise HttpRequestError(
+                "Error HttpRequest (APIResponse: {})".format(str(r.status_code))
+            )
         resp = r.json()
         logger.debug("Result: %s", str(resp))
 
@@ -133,7 +145,9 @@ class Access:
                 logger.debug("Retrying (%s) request..", self.retry)
                 self._perform_request(verb, **kwargs)
             else:
-                raise TimeoutExceededError("Timeout exceeded (Retry {})".format(str(self.retry)))
+                raise HttpRequestError(
+                    "{}".format(resp["result"].get("errors")),
+                )
 
         return resp["result"] if "result" in resp else None
 
