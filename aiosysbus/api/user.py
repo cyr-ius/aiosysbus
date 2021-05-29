@@ -67,8 +67,8 @@ class UserManagement:
 
     def get_loginattempt_info(self, conf={"id": None}):
         """Get login attempt for id."""
-        id = conf.pop("id")
-        return self._access.post(f"UserManagement.LoginAttempt.{id}", "get", conf)
+        userid = conf.pop("id")
+        return self._access.post(f"UserManagement.LoginAttempt.{userid}", "get", conf)
 
     def get_logincounters(self, conf=None):
         """Get login counters."""

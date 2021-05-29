@@ -66,12 +66,12 @@ class AIOSysbus:
         if self._access:
             try:
                 self._access.connect()
-            except HttpRequestError as e:
-                raise HttpRequestError(e)
-            except AuthorizationError as e:
-                raise AuthorizationError(e)
-            except NotOpenError as e:
-                raise NotOpenError(e)
+            except HttpRequestError as error:
+                raise HttpRequestError from error
+            except AuthorizationError as error:
+                raise AuthorizationError from error
+            except NotOpenError as error:
+                raise NotOpenError from error
 
             # Instantiate Livebox modules
             self._load_modules()

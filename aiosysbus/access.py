@@ -7,7 +7,6 @@ from .exceptions import (
     AuthorizationError,
     HttpRequestError,
     NotOpenError,
-    TimeoutExceededError,
 )
 from requests import RequestException
 

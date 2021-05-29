@@ -88,7 +88,7 @@ class Phonebook:
 
     def del_contacts(self, conf):
         """Remove all contacts."""
-        return self._access.post("Phonebook", "removeAllContacts")
+        return self._access.post("Phonebook", "removeAllContacts", conf)
 
     def get_contact_uid(self, conf):
         """Get contact by UID."""
