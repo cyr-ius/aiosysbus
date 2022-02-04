@@ -35,8 +35,8 @@ class Access:
 
         try:
             self.session.get(url, timeout=timeout)
-        except RequestException as e:
-            raise NotOpenError("Open session failed (APIResponse: {0})".format(str(e)))
+        except RequestException as error:
+            raise NotOpenError("Open session failed") from error
         return True
 
     def _get_session_token(self):
@@ -69,13 +69,10 @@ class Access:
                 r = self.session.post(
                     self.base_url, data=auth, headers=sah_headers, timeout=self.timeout
                 )
-            except RequestException as e:
-                raise HttpRequestError(
-                    "Error HttpRequest (APIResponse: {})".format(str(e))
-                )
+            except RequestException as error:
+                raise HttpRequestError("Error HttpRequest") from error
 
             resp = r.json()
-            # raise exception if resp.success != True
             if not resp.get("data"):
                 raise AuthorizationError(
                     "Starting session failed (APIResponse: {})".format(json.dumps(resp))
@@ -126,10 +123,9 @@ class Access:
         # call request
         try:
             r = verb(url, **request_params)
-        except RequestException as e:
-            raise HttpRequestError("Error HttpRequest (APIResponse: {})".format(str(e)))
+        except RequestException as error:
+            raise HttpRequestError("Error HttpRequest") from error
 
-        # raise exception if r is empty
         if not r.status_code == 200:
             raise HttpRequestError(
                 "Error HttpRequest (APIResponse: {})".format(str(r.status_code))
@@ -137,7 +133,6 @@ class Access:
         resp = r.json()
         logger.debug("Result: %s", str(resp))
 
-        # if resp.get("error_code") in ["auth_required", "invalid_session"]:
         if resp.get("result", {}).get("errors"):
             self.retry += 1
             self._refresh_session_token()
