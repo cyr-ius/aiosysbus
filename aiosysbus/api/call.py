@@ -34,10 +34,6 @@ class Call:
         """Set Ring."""
         return self._access.post("VoiceService.VoiceApplication", "ring", conf)
 
-    def get_voiceapplication_ring(self, conf=None):
-        """Ring phone."""
-        return self._access.post("VoiceService.VoiceApplication", "ring", conf)
-
     def set_dect_startPairing(self, conf):
         """Appairing DECT."""
         return self._access.post("DECT", "startPairing", conf)
