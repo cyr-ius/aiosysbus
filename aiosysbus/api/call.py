@@ -29,6 +29,10 @@ class Call:
         conf = {"callId":"xx"} or empty for all
         """
         return self._access.post("VoiceService.VoiceApplication", "clearCallList", conf)
+    
+    def set_voiceapplication_ring(self, conf=None):
+        """Set Ring."""
+        return self._access.post("VoiceService.VoiceApplication", "ring", conf)
 
     def set_dect_startPairing(self, conf):
         """Appairing DECT."""
