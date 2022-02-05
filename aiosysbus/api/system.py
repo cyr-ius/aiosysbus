@@ -103,18 +103,6 @@ class System:
         """Reboot livebox."""
         return self._access.post("NMC", "reboot")
 
-    # def get_lan_ip(self, conf=None):
-    #     """Reboot livebox."""
-    #     return self._access.post("NMC", "getLANIP", conf)
-
-    # def set_lan_ip(self, conf=None):
-    #     """Reboot livebox."""
-    #     return self._access.post("NMC", "setLANIP", conf)
-
-    # def get_remoteaccess(self):
-    #     """Set disable remote access."""
-    #     return self._access.post("NMC", "getRemoteAccess")
-
     def disable_remoteaccess(self):
         """Set disable remote access."""
         return self._access.post("NMC", "disableRemoteAccess")
@@ -134,14 +122,6 @@ class System:
     def get_datatracking(self, conf=None):
         """Get datatracking."""
         return self._access.post("NMC.DataTracking", "get", conf)
-
-    # def get_IPv6(self, conf=None):
-    #     """Get IPv6 information."""
-    #     return self._access.post("NMC.IPv6", "get", conf)
-
-    # def set_IPv6(self, conf):
-    #     """Set IPv6 information."""
-    #     return self._access.post("NMC.IPv6", "set", conf)
 
     def get_guest(self, conf=None):
         """Get guest."""
@@ -170,10 +150,6 @@ class System:
     def get_networkconfig(self, conf=None):
         """Get saveset configuration."""
         return self._access.post("NMC.NetworkConfig", "get", conf)
-
-    # def set_networkconfig_NetworkBR(self, conf={"parameters": {"state": "true"}}):
-    #     """Save configuration."""
-    #     return self._access.post("NMC.NetworkConfig", "enableNetworkBR", conf)
 
     def get_orangetv_IPTVStatus(self, conf=None):
         """Get iptv status."""
@@ -218,26 +194,6 @@ class System:
     def disable_wlantimer(self):
         """Disable WLAN timer."""
         return self._access.post("NMC.WlanTimer", "disableActivationTimer")
-
-    # def start_wifi_pairing(self):
-    #     """Wifi start pairing."""
-    #     return self._access.post("NMC.Wifi", "startPairing")
-
-    # def stop_wifi_pairing(self):
-    #     """Wifi stop pairing."""
-    #     return self._access.post("NMC.Wifi", "stopPairing")
-
-    # def start_wifi_autochannel(self):
-    #     """Wifi select auto channel."""
-    #     return self._access.post("NMC.Wifi", "startAutoChannelSelection")
-
-    # def get_wifi(self, conf=None):
-    #     """Get Wifi."""
-    #     return self._access.post("NMC.Wifi", "get", conf)
-
-    # def set_wifi(self, conf):
-    #     """Set Wifi."""
-    #     return self._access.post("NMC.Wifi", "set", conf)
 
     # ############ HOSTS #############
 
