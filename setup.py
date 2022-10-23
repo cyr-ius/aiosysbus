@@ -32,7 +32,7 @@ with open(os.path.join(here, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='aiosysbus',
-    version=find_version("aiosysbus", "__init__.py"),
+    version='replace_by_workflow',
     packages=find_packages(),
     author='cyr-ius',
     author_email='cyr-ius@ipocus.net',
@@ -43,15 +43,15 @@ setup(
     license='GPL-3',
     include_package_data=True,
     url='https://github.com/cyr-ius/aiosysbus/tree/master/aiosysbus',
-    keywords='livebox async',
+    keywords=['livebox', 'async'],
     classifiers=[
         'Programming Language :: Python',
         'Development Status :: 5 - Production/Stable',
         'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
         'Framework :: AsyncIO',
         'Intended Audience :: Developers',
         'Intended Audience :: System Administrators',

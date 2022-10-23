@@ -31,11 +31,11 @@ class Wifi:
         """Wifi select auto channel."""
         return self._access.post("NMC.Wifi", "startAutoChannelSelection")
 
-    def get_openmode_Status(self, conf=None):
+    def get_openmode_status(self, conf=None):
         """Get Wifi sharing information."""
         return self._access.post("Wificom.OpenMode", "getStatus", conf)
 
-    def get_securemode_Status(self, conf=None):
+    def get_securemode_status(self, conf=None):
         """Get secure for wifi."""
         return self._access.post("Wificom.SecureMode", "getStatus", conf)
 
@@ -65,6 +65,10 @@ class Lan:
     def get_lan_status(self, conf=None):
         """Get Status."""
         return self._access.post("HomeLan", "getStatus", conf)
+
+    def get_devices_results(self, conf=None):
+        """Get Status."""
+        return self._access.post("HomeLan", "getDeviceResults", conf)
 
     def import_lan(self, conf):
         """Import."""
