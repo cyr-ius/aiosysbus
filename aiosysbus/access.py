@@ -3,12 +3,9 @@ import json
 import logging
 from urllib.parse import urlsplit
 
-from .exceptions import (
-    AuthorizationError,
-    HttpRequestError,
-    NotOpenError,
-)
 from requests import RequestException
+
+from .exceptions import AuthorizationError, HttpRequestError, NotOpenError
 
 logger = logging.getLogger(__name__)
 

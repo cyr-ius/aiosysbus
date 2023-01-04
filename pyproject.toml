@@ -1,0 +1,3 @@
+[tool.isort]
+# https://github.com/PyCQA/isort/wiki/isort-Settings
+profile = "black"
