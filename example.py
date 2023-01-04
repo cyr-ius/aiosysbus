@@ -7,7 +7,7 @@ in your box configuration."""
 import logging
 
 from aiosysbus import AIOSysbus
-from aiosysbus.exceptions import NotOpenError, AuthorizationError
+from aiosysbus.exceptions import AuthorizationError, NotOpenError
 
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)

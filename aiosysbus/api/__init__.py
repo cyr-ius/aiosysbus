@@ -12,17 +12,17 @@ from .network import Lan, Wifi
 from .schedule import Schedule
 from .screen import Screen
 from .services import (
-    Locations,
-    RuleEngine,
-    RuleFactory,
-    Profiles,
-    Manifests,
     DataHub,
     Domino,
+    Locations,
+    Manifests,
+    Profiles,
+    RuleEngine,
+    RuleFactory,
     Ssw,
     Zwave,
 )
-from .storage import StorageService, HTTPService, USBHosts
+from .storage import HTTPService, StorageService, USBHosts
 from .system import System
 from .user import UserManagement
 

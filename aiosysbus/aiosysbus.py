@@ -1,6 +1,7 @@
 """API for livebox routeur."""
-import logging
 import inspect
+import logging
+
 import requests
 
 from . import api as Api

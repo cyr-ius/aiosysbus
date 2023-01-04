@@ -3,8 +3,8 @@
 import codecs
 import os
 import re
-from setuptools import setup, find_packages
 
+from setuptools import find_packages, setup
 
 # Method for retrieving the version is taken from the setup.py of pip itself:
 # https://github.com/pypa/pip/blob/master/setup.py
