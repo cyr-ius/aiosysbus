@@ -19,7 +19,8 @@ class Dhcp:
     def set_dhcp_staticlease(self, conf={"pool": "default"}):
         """Set static lease.
 
-        conf = {"pool":"default", "MACAddress":"01:02:03:04:05:06","IPAddress":"192.168.1.55"}
+        conf = {"pool":"default", "MACAddress":"01:02:03:04:05:06",
+        "IPAddress":"192.168.1.55"}
         """
         pool = conf.pop("pool")
         return self._access.post(f"DHCPv4.Server.Pool.{pool}", "addStaticLease", conf)
@@ -27,7 +28,8 @@ class Dhcp:
     def set_dhcp_staticlease_frompool(self, conf={"pool": "default"}):
         """Set static lease.
 
-        conf = {"pool":"default", "MACAddress":"01:02:03:04:05:06","IPAddress":"192.168.1.55"}
+        conf = {"pool":"default", "MACAddress":"01:02:03:04:05:06",
+        "IPAddress":"192.168.1.55"}
         """
         pool = conf.pop("pool")
         return self._access.post(f"DHCPv4.Server.Pool.{pool}", "addLeaseFromPool", conf)
@@ -68,7 +70,8 @@ class Dhcp:
     def set_dhcp_config(self, conf):
         """Set DHCP configuration.
 
-        conf = {"Address":"01:02:03:04:05:06","Netmask":"192.168.1.55","DHCPEnable":"","DHCPMinAddress":"","DHCPMaxAddress":""}
+        conf = {"Address":"01:02:03:04:05:06","Netmask":"192.168.1.55",
+        "DHCPEnable":"","DHCPMinAddress":"","DHCPMaxAddress":""}
         """
         return self._access.post("NMC", "setLANIP", conf)
 

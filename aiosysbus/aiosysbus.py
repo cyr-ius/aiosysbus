@@ -3,9 +3,9 @@ import logging
 import inspect
 import requests
 
+from . import api as Api
 from .access import Access
 from .exceptions import AuthorizationError, HttpRequestError, NotOpenError
-import aiosysbus.api as Api
 
 logger = logging.getLogger(__name__)
 

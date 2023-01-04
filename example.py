@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-"""This example can be run safely as it won't change anything in your box configuration."""
+"""This example can be run safely as it won't change anything
+in your box configuration."""
 
 import logging
 
@@ -42,14 +43,17 @@ def demo():
     logger.info("LAN IP Address: %s", str(lip))
     logger.info("WAN IP Address: %s", str(wip))
 
-    parameters = {
-        "expression": {
-            "eth": 'eth and .IPAddress!="" and .DeviceType!="" and .Active==true',
-            "wifi": 'wifi and .IPAddress!="" and .Active==true',
-        }
-    }
+    # parameters = {
+    #     "expression": {
+    #         "eth": 'eth and .IPAddress!="" and .DeviceType!="" and .Active==true',
+    #         "wifi": 'wifi and .IPAddress!="" and .Active==true',
+    #     }
+    # }
 
-    # ~ parameters={"description":"FTP","persistent":"true","enable":"true","protocol":"6","destinationIPAddress":"192.168.1.250","internalPort":"21","externalPort":"21","origin":"webui","sourceInterface":"data","sourcePrefix":"","id":"FTP"}
+    # ~ parameters={"description":"FTP","persistent":"true","enable":"true",
+    # "protocol":"6","destinationIPAddress":"192.168.1.250","internalPort":"21",
+    # "externalPort":"21","origin":"webui","sourceInterface":"data","sourcePrefix":"",
+    # "id":"FTP"}
     # ~ lvbx.nat.set_firewall_PortForwarding(parameters)
     lvbx.nat.get_firewall_PortForwarding()
 
