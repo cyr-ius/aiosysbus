@@ -1,5 +1,6 @@
 """Diagnostics and data statistics."""
 
+
 class Diagnostic:
     """System class."""
 
@@ -75,11 +76,15 @@ class Diagnostic:
 
     def get_topodiags_isautoupload(self, conf=None):
         """Is Automatic Upload enabled of topology diagnostics."""
-        return self._access.post("TopologyDiagnostics", "isAutomaticUploadEnabled", conf)
+        return self._access.post(
+            "TopologyDiagnostics", "isAutomaticUploadEnabled", conf
+        )
 
     def set_topodiags_customerauthor(self, conf):
         """Set customer authorization of topology diagnostics."""
-        return self._access.post("TopologyDiagnostics", "setCustomerAuthorization", conf)
+        return self._access.post(
+            "TopologyDiagnostics", "setCustomerAuthorization", conf
+        )
 
     def export_topodiags(self, conf):
         """Export topology diagnostics."""
@@ -92,7 +97,9 @@ class Diagnostic:
     def get_topodiags_result(self, conf={"result": None}):
         """Get result of topology diagnostics."""
         result = conf.pop("result")
-        return self._access.post(f"TopologyDiagnostics.Results.Result.{result}", "get", conf)
+        return self._access.post(
+            f"TopologyDiagnostics.Results.Result.{result}", "get", conf
+        )
 
     # ############ PROCESS MONITOR #############
 
