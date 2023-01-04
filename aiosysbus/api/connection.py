@@ -1,5 +1,6 @@
 """Livebox connection information."""
 
+
 class Connection:
     """Connection class."""
 

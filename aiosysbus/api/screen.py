@@ -1,5 +1,6 @@
 """Screen (LCD) interface."""
 
+
 class Screen:
     """Class Screen."""
 

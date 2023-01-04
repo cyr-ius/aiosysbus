@@ -1,5 +1,6 @@
 """Services and co."""
 
+
 class Profiles:
     """Profiles class."""
 
@@ -26,6 +27,7 @@ class Profiles:
     def get_profile_name(self, conf=None):
         """Get profil name."""
         return self._access.post("Profiles.Profile", "getNames", conf)
+
 
 class Manifests:
     """Manifests class."""
@@ -57,6 +59,7 @@ class Manifests:
     def import_manifests(self, conf):
         """Import manifests."""
         return self._access.post("Manifests", "import", conf)
+
 
 class DataHub:
     """DataHub class."""
@@ -101,6 +104,7 @@ class DataHub:
         """Get DataHub status."""
         return self._access.post("DataHub", "reset")
 
+
 class Locations:
     """Locations class."""
 
@@ -137,12 +141,14 @@ class Locations:
         """Get composition of location."""
         return self._access.post("Locations", "getComposition", conf)
 
+
 class Domino:
     """Locations class."""
 
     def __init__(self, access):
         """Init."""
         self._access = access
+
 
 class Ssw:
     """Locations class."""
@@ -151,6 +157,7 @@ class Ssw:
         """Init."""
         self._access = access
 
+
 class RuleFactory:
     """Locations class."""
 
@@ -158,12 +165,14 @@ class RuleFactory:
         """Init."""
         self._access = access
 
+
 class RuleEngine:
     """Rule Engine class."""
 
     def __init__(self, access):
         """Init."""
         self._access = access
+
 
 class Zwave:
     """Locations class."""

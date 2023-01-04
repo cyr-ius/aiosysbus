@@ -1,5 +1,6 @@
 """Scheduler for Internet Access."""
 
+
 class Schedule:
     """Scheduler class."""
 

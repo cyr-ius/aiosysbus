@@ -1,5 +1,6 @@
 """Livebox DHCP v4,v6 and Dynamic DNS update."""
 
+
 class Dhcp:
     """DHCP class."""
 
@@ -37,7 +38,9 @@ class Dhcp:
         conf = {"MACAddress":"01:02:03:04:05:06"}
         """
         pool = conf.pop("pool")
-        return self._access.post(f"DHCPv4.Server.Pool.{pool}", "deleteStaticLease", conf)
+        return self._access.post(
+            f"DHCPv4.Server.Pool.{pool}", "deleteStaticLease", conf
+        )
 
     def get_dhcp_staticleases(self, conf={"pool": "default"}):
         """Get leases."""

@@ -1,5 +1,6 @@
 """Users."""
 
+
 class UserManagement:
     """User Management class."""
 

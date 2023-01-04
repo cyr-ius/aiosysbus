@@ -13,8 +13,17 @@ from aiosysbus.api.nat import Nat
 from aiosysbus.api.network import Lan, Wifi
 from aiosysbus.api.schedule import Schedule
 from aiosysbus.api.screen import Screen
-from aiosysbus.api.services import Locations, RuleEngine, RuleFactory, Profiles, Manifests, DataHub, Domino, Ssw, Zwave
+from aiosysbus.api.services import (
+    Locations,
+    RuleEngine,
+    RuleFactory,
+    Profiles,
+    Manifests,
+    DataHub,
+    Domino,
+    Ssw,
+    Zwave,
+)
 from aiosysbus.api.storage import StorageService, HTTPService, USBHosts
 from aiosysbus.api.system import System
 from aiosysbus.api.user import UserManagement
-

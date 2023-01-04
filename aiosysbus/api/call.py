@@ -1,5 +1,6 @@
 """DECT, VoiceService and Phone book."""
 
+
 class Call:
     """Call class."""
 

@@ -1,11 +1,12 @@
 """Storage & co."""
 
+
 class HTTPService:
     """HTTPService class."""
 
     def __init__(self, access):
         """Init."""
-        self._access = access        
+        self._access = access
 
     def get_webdav_authmodes(self, conf=None):
         """Get authentication modes."""
@@ -21,11 +22,14 @@ class HTTPService:
 
     def set_webdav_password(self, conf=None):
         """Change password for WebDav user."""
-        return self._access.post("HTTPService.WebDav.DigestManager", "changePassword", conf)
+        return self._access.post(
+            "HTTPService.WebDav.DigestManager", "changePassword", conf
+        )
 
     def import_webdav(self, conf=None):
         """Upload to WebDav."""
         return self._access.post("HTTPService.WebDav.DigestManager", "Upload", conf)
+
 
 class StorageService:
     """Locations class."""
@@ -33,6 +37,7 @@ class StorageService:
     def __init__(self, access):
         """Init."""
         self._access = access
+
 
 class USBHosts:
     """USBHosts class."""

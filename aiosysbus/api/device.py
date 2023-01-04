@@ -1,5 +1,6 @@
 """Devices."""
 
+
 class DeviceInfo:
     """Device information."""
 
@@ -30,6 +31,7 @@ class DeviceInfo:
         """Get device information."""
         info = conf.pop("info")
         return self._access.post(f"DeviceInfo.{info}", "get", conf)
+
 
 class Devices:
     """Devices information."""

@@ -1,5 +1,6 @@
 """System information."""
 
+
 class System:
     """System class."""
 

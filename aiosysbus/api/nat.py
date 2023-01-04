@@ -11,17 +11,17 @@ class Nat:
 
     def set_firewall_PortForwarding(self, conf):
         """
-        Set port forwarding configuration
-       conf = {"parameters":{"description":"FTP","persistent":true,"enable":true,"protocol":"6","destinationIPAddress":"192.168.1.250","internalPort":"21","externalPort":"21","origin":"webui","sourceInterface":"data","sourcePrefix":"","id":"FTP"}}
+         Set port forwarding configuration
+        conf = {"parameters":{"description":"FTP","persistent":true,"enable":true,"protocol":"6","destinationIPAddress":"192.168.1.250","internalPort":"21","externalPort":"21","origin":"webui","sourceInterface":"data","sourcePrefix":"","id":"FTP"}}
         """
         return self._access.post("Firewall", "setPortForwarding", conf)
 
     def get_firewall_DMZ(self, conf=None):
-        """ Get DMZ configuration """
+        """Get DMZ configuration"""
         return self._access.post("Firewall", "getDMZ", conf)
 
     def set_firewall_DMZ(self, conf):
-        """ Set DMZ configuration """
+        """Set DMZ configuration"""
         return self._access.post("Firewall", "setDMZ", conf)
 
     def set_firewall_IPv6Level(self, conf):
@@ -39,7 +39,7 @@ class Nat:
         return self._access.post("Firewall", "setFirewallLevel", conf)
 
     def set_firewall_Commit(self):
-        """ Commit rules """
+        """Commit rules"""
         return self._access.post("Firewall", "commit")
 
     def get_upnp_Pinhole(self, conf=None):
@@ -50,11 +50,11 @@ class Nat:
         return self._access.post("Firewall", "getPinhole", conf)
 
     def get_dyndns_Hosts(self, conf=None):
-        """ Get Dynamic DNS Hosts configuration """
+        """Get Dynamic DNS Hosts configuration"""
         return self._access.post("DynDNS", "getHosts", conf)
 
     def get_dyndns_Services(self, conf=None):
-        """ Get Dynamic DNS services configuration """
+        """Get Dynamic DNS services configuration"""
         return self._access.post("DynDNS", "getServices", conf)
 
     def set_dns_name(self, mac, conf):
@@ -66,7 +66,7 @@ class Nat:
         return self._access.post("Devices/Device/" + mac + ":setName", conf)
 
     def get_upnp_devices(self, conf=None):
-        """ Get Upnp configuration """
+        """Get Upnp configuration"""
         return self._access.post("UPnP-IGD", "get", conf)
 
     def set_upnp_config(self, conf):

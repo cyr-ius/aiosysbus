@@ -1,5 +1,6 @@
 """Network settings."""
 
+
 class Wifi:
     """Wifi setting."""
 
@@ -38,6 +39,7 @@ class Wifi:
     def get_securemode_status(self, conf=None):
         """Get secure for wifi."""
         return self._access.post("Wificom.SecureMode", "getStatus", conf)
+
 
 class Lan:
     """Home Lan."""
