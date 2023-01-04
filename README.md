@@ -34,7 +34,7 @@ async def reboot()
     # Instantiate the Sysbus class using default options.
     lvbx = AIOSysbus('192.168.1.1','80','xxxxxx')
 
-    # Connect to the livebox with default options. 
+    # Connect to the livebox with default options.
     lvbx.connect()
 
     # Do something useful, rebooting your livebox for example.
