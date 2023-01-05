@@ -1,7 +1,7 @@
 """System information."""
 
 
-class System:
+class System:  # pylint: disable=[too-many-public-methods]
     """System class."""
 
     def __init__(self, access):

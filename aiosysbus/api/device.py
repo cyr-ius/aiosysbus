@@ -33,7 +33,7 @@ class DeviceInfo:
         return self._access.post(f"DeviceInfo.{info}", "get", conf)
 
 
-class Devices:
+class Devices:  # pylint: disable=[too-many-public-methods]
     """Devices information."""
 
     def __init__(self, access):

@@ -142,7 +142,7 @@ class Locations:
         return self._access.post("Locations", "getComposition", conf)
 
 
-class Domino:
+class Domino:  # pylint: disable=[too-few-public-methods]
     """Locations class."""
 
     def __init__(self, access):
@@ -150,7 +150,7 @@ class Domino:
         self._access = access
 
 
-class Ssw:
+class Ssw:  # pylint: disable=[too-few-public-methods]
     """Locations class."""
 
     def __init__(self, access):
@@ -158,7 +158,7 @@ class Ssw:
         self._access = access
 
 
-class RuleFactory:
+class RuleFactory:  # pylint: disable=[too-few-public-methods]
     """Locations class."""
 
     def __init__(self, access):
@@ -166,7 +166,7 @@ class RuleFactory:
         self._access = access
 
 
-class RuleEngine:
+class RuleEngine:  # pylint: disable=[too-few-public-methods]
     """Rule Engine class."""
 
     def __init__(self, access):
@@ -174,7 +174,7 @@ class RuleEngine:
         self._access = access
 
 
-class Zwave:
+class Zwave:  # pylint: disable=[too-few-public-methods]
     """Locations class."""
 
     def __init__(self, access):

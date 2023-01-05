@@ -1,4 +1,9 @@
+"""NAT settings."""
+
+
 class Nat:
+    """NAT settings."""
+
     def __init__(self, access):
         """Init."""
         self._access = access
