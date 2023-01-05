@@ -1,3 +1,9 @@
 [tool.isort]
 # https://github.com/PyCQA/isort/wiki/isort-Settings
 profile = "black"
+
+[tool.pylint."MESSAGES CONTROL"]
+disable = [
+    "dangerous-default-value",
+    "invalid-name",
+]
