@@ -1,7 +1,7 @@
 """Diagnostics and data statistics."""
 
 
-class Diagnostic:
+class Diagnostic:  # pylint: disable=[too-many-public-methods]
     """System class."""
 
     def __init__(self, access):

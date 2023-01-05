@@ -11,9 +11,15 @@ from .exceptions import AuthorizationError, HttpRequestError, NotOpenError
 logger = logging.getLogger(__name__)
 
 
-class AIOSysbus:
+class AIOSysbus:  # pylint: disable=[too-many-instance-attributes]
     """Sysbus is API for livebox."""
 
+    connection: Api.Connection
+    deviceinfo: Api.DeviceInfo
+    nat: Api.Nat
+    system: Api.System
+
+    # pylint: disable-next=[too-many-arguments]
     def __init__(self, username, password, timeout=10, host="192.168.1.1", port="80"):
         """Load parameters."""
         self._access = None
@@ -27,14 +33,13 @@ class AIOSysbus:
 
     def _load_modules(self):
         """Instantiate modules."""
-        for name in Api.__dict__.keys():
-            obj = getattr(Api, name)
+        for name, obj in Api.__dict__.items():
             if inspect.isclass(obj):
                 setattr(self, name.lower(), obj(self._access))
 
     def _get_base_url(self, host, port):
         """Return base url for HTTPS requests."""
-        return "http://{0}:{1}/ws".format(host, port)
+        return f"http://{host}:{port}/ws"
 
     def get_permissions(self):
         """Return the permissions for this app.
@@ -76,3 +81,7 @@ class AIOSysbus:
 
             # Instantiate Livebox modules
             self._load_modules()
+
+    def close(self) -> None:
+        """Close session."""
+        self._session.close()

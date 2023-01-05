@@ -20,15 +20,15 @@ logger.addHandler(ch)
 
 def demo():
     """Instantiate Livebox class."""
-    lvbx = AIOSysbus(host="192.168.1.1", port=80, password="xxxxxx")
+    lvbx = AIOSysbus(host="192.168.1.1", port=80, username="admin", password="xxxxxx")
 
     try:
         lvbx.connect()
-    except AuthorizationError as e:
-        logger.error(e)
+    except AuthorizationError as err:
+        logger.error(err)
         return
-    except NotOpenError as e:
-        logger.error(e)
+    except NotOpenError as err:
+        logger.error(err)
         return
 
     # Fetch datas

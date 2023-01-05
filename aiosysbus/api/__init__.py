@@ -1,5 +1,9 @@
 # -*- coding:utf-8 -*-
 
+"""
+Provides API access to Livebox.
+"""
+
 from .call import Call, Phonebook
 from .connection import Connection
 from .device import DeviceInfo, Devices

@@ -10,9 +10,10 @@ from .exceptions import AuthorizationError, HttpRequestError, NotOpenError
 logger = logging.getLogger(__name__)
 
 
-class Access:
+class Access:  # pylint: disable=[too-many-instance-attributes]
     """Access control."""
 
+    # pylint: disable-next=[too-many-arguments]
     def __init__(self, session, base_url, username, password, timeout):
         """Init class."""
         self.session = session
@@ -28,13 +29,12 @@ class Access:
     def _get_challenge(self, base_url, timeout=10):
         """Return challenge from livebox API."""
         url_tbl = urlsplit(base_url)
-        url = "{}://{}".format(url_tbl.scheme, url_tbl.netloc)
+        url = f"{url_tbl.scheme}://{url_tbl.netloc}"
 
         try:
             self.session.get(url, timeout=timeout)
         except RequestException as error:
             raise NotOpenError("Open session failed") from error
-        return True
 
     def _get_session_token(self):
         """Get session token from livebox.
@@ -42,44 +42,43 @@ class Access:
         Returns (session_token, session_permissions)
         """
         # Get challenge from API
-        challenge = self._get_challenge(self.base_url, self.timeout)
+        self._get_challenge(self.base_url, self.timeout)
 
-        if challenge:
-            auth = json.dumps(
-                {
-                    "service": "sah.Device.Information",
-                    "method": "createContext",
-                    "parameters": {
-                        "applicationName": "so_sdkut",
-                        "username": self.username,
-                        "password": self.password,
-                    },
-                }
+        auth = json.dumps(
+            {
+                "service": "sah.Device.Information",
+                "method": "createContext",
+                "parameters": {
+                    "applicationName": "so_sdkut",
+                    "username": self.username,
+                    "password": self.password,
+                },
+            }
+        )
+
+        sah_headers = {
+            "Content-Type": "application/x-sah-ws-1-call+json",
+            "Authorization": "X-Sah-Login",
+        }
+
+        try:
+            response = self.session.post(
+                self.base_url, data=auth, headers=sah_headers, timeout=self.timeout
+            )
+        except RequestException as error:
+            raise HttpRequestError("Error HttpRequest") from error
+
+        resp = response.json()
+        if not resp.get("data"):
+            raise AuthorizationError(
+                f"Starting session failed (APIResponse: {json.dumps(resp)})"
             )
 
-            sah_headers = {
-                "Content-Type": "application/x-sah-ws-1-call+json",
-                "Authorization": "X-Sah-Login",
-            }
+        session_token = resp.get("data").get("contextID")
+        session_permissions = resp.get("data").get("groups")
+        logger.debug("Token %s", session_token)
 
-            try:
-                r = self.session.post(
-                    self.base_url, data=auth, headers=sah_headers, timeout=self.timeout
-                )
-            except RequestException as error:
-                raise HttpRequestError("Error HttpRequest") from error
-
-            resp = r.json()
-            if not resp.get("data"):
-                raise AuthorizationError(
-                    "Starting session failed (APIResponse: {})".format(json.dumps(resp))
-                )
-
-            session_token = resp.get("data").get("contextID")
-            session_permissions = resp.get("data").get("groups")
-            logger.debug("Token %s", session_token)
-
-            return (session_token, session_permissions)
+        return (session_token, session_permissions)
 
     def _refresh_session_token(self):
         """Refresh token."""
@@ -119,15 +118,15 @@ class Access:
 
         # call request
         try:
-            r = verb(url, **request_params)
+            response = verb(url, **request_params)
         except RequestException as error:
             raise HttpRequestError("Error HttpRequest") from error
 
-        if not r.status_code == 200:
+        if not response.status_code == 200:
             raise HttpRequestError(
-                "Error HttpRequest (APIResponse: {})".format(str(r.status_code))
+                f"Error HttpRequest (APIResponse: {str(response.status_code)})"
             )
-        resp = r.json()
+        resp = response.json()
         logger.debug("Result: %s", str(resp))
 
         if resp.get("result", {}).get("errors"):
@@ -137,9 +136,7 @@ class Access:
                 logger.debug("Retrying (%s) request..", self.retry)
                 self._perform_request(verb, **kwargs)
             else:
-                raise HttpRequestError(
-                    "{}".format(resp["result"].get("errors")),
-                )
+                raise HttpRequestError(f"{resp['result'].get('errors')}")
 
         return resp["result"] if "result" in resp else None
 

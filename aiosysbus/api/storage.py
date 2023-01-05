@@ -31,7 +31,7 @@ class HTTPService:
         return self._access.post("HTTPService.WebDav.DigestManager", "Upload", conf)
 
 
-class StorageService:
+class StorageService:  # pylint: disable=[too-few-public-methods]
     """Locations class."""
 
     def __init__(self, access):
