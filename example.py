@@ -18,9 +18,9 @@ ch.setFormatter(formatter)
 logger.addHandler(ch)
 
 
-def demo():
+def demo() -> None:
     """Instantiate Livebox class."""
-    lvbx = AIOSysbus(host="192.168.1.1", port=80, username="admin", password="xxxxxx")
+    lvbx = AIOSysbus(host="192.168.1.1", port="80", username="admin", password="xxxxxx")
 
     try:
         lvbx.connect()
@@ -32,7 +32,7 @@ def demo():
         return
 
     # Fetch datas
-    lvbx.system.get_deviceinfo()
+    lvbx.deviceinfo.get_deviceinfo()
     lvbx.connection.get_data_MIBS()
     lvbx.connection.get_dsl0_MIBS()
     lvbx.system.get_guest()

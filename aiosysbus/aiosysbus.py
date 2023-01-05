@@ -1,4 +1,6 @@
 """API for livebox routeur."""
+from __future__ import annotations
+
 import inspect
 import logging
 
@@ -20,9 +22,16 @@ class AIOSysbus:  # pylint: disable=[too-many-instance-attributes]
     system: Api.System
 
     # pylint: disable-next=[too-many-arguments]
-    def __init__(self, username, password, timeout=10, host="192.168.1.1", port="80"):
+    def __init__(
+        self,
+        username: str,
+        password: str,
+        timeout: int = 10,
+        host: str = "192.168.1.1",
+        port: str = "80",
+    ) -> None:
         """Load parameters."""
-        self._access = None
+        self._access: Access | None = None
         self._session = requests.session()
         self._username = username
         self._password = password
@@ -31,17 +40,17 @@ class AIOSysbus:  # pylint: disable=[too-many-instance-attributes]
         self._port = port
         self._authorize = False
 
-    def _load_modules(self):
+    def _load_modules(self) -> None:
         """Instantiate modules."""
         for name, obj in Api.__dict__.items():
             if inspect.isclass(obj):
                 setattr(self, name.lower(), obj(self._access))
 
-    def _get_base_url(self, host, port):
+    def _get_base_url(self, host: str, port: str) -> str:
         """Return base url for HTTPS requests."""
         return f"http://{host}:{port}/ws"
 
-    def get_permissions(self):
+    def get_permissions(self) -> str | None:
         """Return the permissions for this app.
 
         The permissions are returned as a dictionary key->boolean where the
@@ -57,7 +66,7 @@ class AIOSysbus:  # pylint: disable=[too-many-instance-attributes]
             return self._access.get_permissions()
         return None
 
-    def connect(self):
+    def connect(self) -> None:
         """Instantiate modules."""
         # Create livebox http access module
         base_url = self._get_base_url(self._host, self._port)
