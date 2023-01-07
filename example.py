@@ -37,11 +37,13 @@ def demo() -> None:
     lvbx.connection.get_dsl0_MIBS()
     lvbx.system.get_guest()
 
-    lip = (lvbx.connection.get_lan_luckyAddrAddress())["status"]
-    wip = (lvbx.connection.get_data_luckyAddrAddress())["status"]
+    lip = lvbx.connection.get_lan_luckyAddrAddress()
+    wip = lvbx.connection.get_data_luckyAddrAddress()
 
-    logger.info("LAN IP Address: %s", str(lip))
-    logger.info("WAN IP Address: %s", str(wip))
+    if lip:
+        logger.info("LAN IP Address: %s", str(lip["status"]))
+    if wip:
+        logger.info("WAN IP Address: %s", str(wip["status"]))
 
     # parameters = {
     #     "expression": {
