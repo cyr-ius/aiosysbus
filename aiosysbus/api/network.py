@@ -117,3 +117,19 @@ class Lan:
     def set_IPv6(self, conf: dict[str, Any] | None) -> dict[str, Any] | None:
         """Set IPv6 information."""
         return self._access.post("NMC.IPv6", "set", conf)
+
+
+class GuestWifi:
+    """GuestWifi setting."""
+
+    def __init__(self, access: Access) -> None:
+        """Init."""
+        self._access = access
+
+    def get_guest_wifi(self, conf: dict[str, Any] | None = None) -> dict[str, Any] | None:
+        """Get wifi configuration."""
+        return self._access.post("NMC.Guest", "get", conf)
+
+    def set_guest_wifi(self, conf: dict[str, Any] | None) -> dict[str, Any] | None:
+        """Set wifi configuration."""
+        return self._access.post("NMC.Guest", "set", conf)

@@ -12,7 +12,7 @@ from .dnsdhcp import Dhcp, DynDNS
 from .event import Event
 from .gui import UserInterface
 from .nat import Nat
-from .network import Lan, Wifi
+from .network import Lan, Wifi, GuestWifi
 from .schedule import Schedule
 from .screen import Screen
 from .services import (
@@ -41,6 +41,7 @@ __all__ = [
     "Domino",
     "DynDNS",
     "Event",
+    "GuestWifi",
     "HTTPService",
     "Lan",
     "Locations",
