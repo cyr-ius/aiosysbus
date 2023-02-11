@@ -12,7 +12,7 @@ from .dnsdhcp import Dhcp, DynDNS
 from .event import Event
 from .gui import UserInterface
 from .nat import Nat
-from .network import Lan, Wifi, GuestWifi
+from .network import GuestWifi, Lan, Wifi
 from .schedule import Schedule
 from .screen import Screen
 from .services import (
