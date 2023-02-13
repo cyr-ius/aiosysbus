@@ -126,7 +126,9 @@ class GuestWifi:
         """Init."""
         self._access = access
 
-    def get_guest_wifi(self, conf: dict[str, Any] | None = None) -> dict[str, Any] | None:
+    def get_guest_wifi(
+        self, conf: dict[str, Any] | None = None
+    ) -> dict[str, Any] | None:
         """Get wifi configuration."""
         return self._access.post("NMC.Guest", "get", conf)
 
