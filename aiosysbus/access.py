@@ -3,10 +3,10 @@ from __future__ import annotations
 
 import json
 import logging
-from typing import Any, Callable
+from typing import Any, Callable, Coroutine
 from urllib.parse import urlsplit
 
-from requests import RequestException, Response, Session
+import httpx
 
 from .exceptions import AuthorizationError, HttpRequestError, NotOpenError
 
@@ -19,7 +19,7 @@ class Access:  # pylint: disable=[too-many-instance-attributes]
     # pylint: disable-next=[too-many-arguments]
     def __init__(
         self,
-        session: Session,
+        session: httpx.AsyncClient,
         base_url: str,
         username: str,
         password: str,
@@ -36,23 +36,23 @@ class Access:  # pylint: disable=[too-many-instance-attributes]
         self.retry = 0
         self.max_retry = 3
 
-    def _get_challenge(self, base_url: str, timeout: int = 10) -> None:
+    async def _get_challenge(self, base_url: str, timeout: int = 10) -> None:
         """Return challenge from livebox API."""
         url_tbl = urlsplit(base_url)
         url = f"{url_tbl.scheme}://{url_tbl.netloc}"
 
         try:
-            self.session.get(url, timeout=timeout)
-        except RequestException as error:
+            await self.session.get(url, timeout=timeout)
+        except httpx.RequestError as error:
             raise NotOpenError("Open session failed") from error
 
-    def _get_session_token(self) -> tuple[str | None, str | None]:
+    async def _get_session_token(self) -> tuple[str | None, str | None]:
         """Get session token from livebox.
 
         Returns (session_token, session_permissions)
         """
         # Get challenge from API
-        self._get_challenge(self.base_url, self.timeout)
+        await self._get_challenge(self.base_url, self.timeout)
 
         auth = json.dumps(
             {
@@ -72,10 +72,10 @@ class Access:  # pylint: disable=[too-many-instance-attributes]
         }
 
         try:
-            response = self.session.post(
+            response = await self.session.post(
                 self.base_url, data=auth, headers=sah_headers, timeout=self.timeout
             )
-        except RequestException as error:
+        except httpx.RequestError as error:
             raise HttpRequestError("Error HttpRequest") from error
 
         resp = response.json()
@@ -90,15 +90,15 @@ class Access:  # pylint: disable=[too-many-instance-attributes]
 
         return (session_token, session_permissions)
 
-    def _refresh_session_token(self) -> None:
+    async def _refresh_session_token(self) -> None:
         """Refresh token."""
         # Get token for the current session
-        session_token, session_permissions = self._get_session_token()
+        session_token, session_permissions = await self._get_session_token()
         self.session_token = session_token
         self.session_permissions = session_permissions
 
     def _retry(
-        self, response: Response, callback: Callable[..., Any], *kwargs: Any
+        self, response: httpx.Response, callback: Callable[..., Any], *kwargs: Any
     ) -> None:
         if response.status_code == 401 and self.retry < self.max_retry:
             self.retry += 1
@@ -115,12 +115,12 @@ class Access:  # pylint: disable=[too-many-instance-attributes]
             "Content-Type": "application/x-sah-ws-1-call+json; charset=UTF-8",
         }
 
-    def _perform_request(
-        self, verb: Callable[..., Response], **kwargs: Any
+    async def _perform_request(
+        self, verb: Callable[..., Coroutine[Any, Any, httpx.Response]], **kwargs: Any
     ) -> dict[str, Any] | None:
         """Perform the given request, refreshing the session token if needed."""
         if not self.session_token:
-            self._refresh_session_token()
+            await self._refresh_session_token()
 
         url = self.base_url
 
@@ -134,8 +134,8 @@ class Access:  # pylint: disable=[too-many-instance-attributes]
 
         # call request
         try:
-            response = verb(url, **request_params)
-        except RequestException as error:
+            response = await verb(url, **request_params)
+        except httpx.RequestError as error:
             raise HttpRequestError("Error HttpRequest") from error
 
         if not response.status_code == 200:
@@ -147,50 +147,50 @@ class Access:  # pylint: disable=[too-many-instance-attributes]
 
         if resp.get("result", {}).get("errors"):
             self.retry += 1
-            self._refresh_session_token()
+            await self._refresh_session_token()
             if self.retry < self.max_retry:
                 logger.debug("Retrying (%s) request..", self.retry)
-                self._perform_request(verb, **kwargs)
+                await self._perform_request(verb, **kwargs)
             else:
                 raise HttpRequestError(f"{resp['result'].get('errors')}")
 
         return resp["result"] if "result" in resp else None
 
-    def get(
+    async def get(
         self, service: str, method: str, parameters: dict[str, Any] | None = {}
     ) -> dict[str, Any] | None:
         """Send get request and return results."""
         data = {"service": service, "method": method, "parameters": parameters}
-        return self._perform_request(self.session.get, json=data)
+        return await self._perform_request(self.session.get, json=data)
 
-    def post(
+    async def post(
         self, service: str, method: str, parameters: dict[str, Any] | None = {}
     ) -> dict[str, Any] | None:
         """Send post request and return results."""
         data = {"service": service, "method": method, "parameters": parameters}
-        return self._perform_request(self.session.post, json=data)
+        return await self._perform_request(self.session.post, json=data)
 
-    def put(
+    async def put(
         self, service: str, method: str, parameters: dict[str, Any] | None = {}
     ) -> dict[str, Any] | None:
         """Send put request and return results."""
         data = {"service": service, "method": method, "parameters": parameters}
-        return self._perform_request(self.session.put, json=data)
+        return await self._perform_request(self.session.put, json=data)
 
-    def delete(
+    async def delete(
         self, service: str, method: str, parameters: dict[str, Any] | None = {}
     ) -> dict[str, Any] | None:
         """Send delete request and return results."""
         data = {"service": service, "method": method, "parameters": parameters}
-        return self._perform_request(self.session.delete, json=data)
+        return await self._perform_request(self.session.delete, json=data)
 
-    def get_permissions(self) -> str | None:
+    async def get_permissions(self) -> str | None:
         """Return the permissions for this session/app."""
         if not self.session_permissions:
-            self._refresh_session_token()
+            await self._refresh_session_token()
         return self.session_permissions
 
-    def connect(self) -> None:
+    async def connect(self) -> None:
         """Check connect successful."""
         if not self.session_token:
-            self._refresh_session_token()
+            await self._refresh_session_token()

@@ -14,14 +14,16 @@ class Schedule:
         """Init."""
         self._access = access
 
-    def get_schedule(self, conf: dict[str, Any] | None = None) -> dict[str, Any] | None:
+    async def get_schedule(
+        self, conf: dict[str, Any] | None = None
+    ) -> dict[str, Any] | None:
         """Get schedule information.
 
         conf = {"parameters":{"type":"ToD","ID":"01:02:03:04:05:06"}}
         """
-        return self._access.post("Scheduler", "getSchedule", conf)
+        return await self._access.post("Scheduler", "getSchedule", conf)
 
-    def add_schedule(self, conf: dict[str, Any] | None) -> dict[str, Any] | None:
+    async def add_schedule(self, conf: dict[str, Any] | None) -> dict[str, Any] | None:
         """Add schedule.
 
         Enable MAC Address
@@ -40,44 +42,48 @@ class Schedule:
         "schedule":[{"begin":0,"end":3600,"state":"Disable"},
         {"begin":601200,"end":604800,"state":"Disable"}]}}}
         """
-        return self._access.post("Scheduler", "addSchedule", conf)
+        return await self._access.post("Scheduler", "addSchedule", conf)
 
-    def enable_schedule(self, conf: dict[str, Any] | None) -> dict[str, Any] | None:
+    async def enable_schedule(
+        self, conf: dict[str, Any] | None
+    ) -> dict[str, Any] | None:
         """Get schedule information."""
-        return self._access.post("Scheduler", "enableSchedule", conf)
+        return await self._access.post("Scheduler", "enableSchedule", conf)
 
-    def set_schedule(self, conf: dict[str, Any] | None) -> dict[str, Any] | None:
+    async def set_schedule(self, conf: dict[str, Any] | None) -> dict[str, Any] | None:
         """Get schedule information."""
-        return self._access.post("Scheduler", "overridedSchedule", conf)
+        return await self._access.post("Scheduler", "overridedSchedule", conf)
 
-    def set_state(self, conf: dict[str, Any] | None) -> dict[str, Any] | None:
+    async def set_state(self, conf: dict[str, Any] | None) -> dict[str, Any] | None:
         """Get schedule information."""
-        return self._access.post("Scheduler", "overrideState", conf)
+        return await self._access.post("Scheduler", "overrideState", conf)
 
-    def remove_schedule(self, conf: dict[str, Any] | None) -> dict[str, Any] | None:
+    async def remove_schedule(
+        self, conf: dict[str, Any] | None
+    ) -> dict[str, Any] | None:
         """Get schedule information."""
-        return self._access.post("Scheduler", "removeSchedule", conf)
+        return await self._access.post("Scheduler", "removeSchedule", conf)
 
-    def get_scheduletypes(
+    async def get_scheduletypes(
         self, conf: dict[str, Any] | None = None
     ) -> dict[str, Any] | None:
         """Get schedule information."""
-        return self._access.post("Scheduler", "getScheduleTypes", conf)
+        return await self._access.post("Scheduler", "getScheduleTypes", conf)
 
-    def get_schedules(
+    async def get_schedules(
         self, conf: dict[str, Any] | None = None
     ) -> dict[str, Any] | None:
         """Get schedule information."""
-        return self._access.post("Scheduler", "getSchedules", conf)
+        return await self._access.post("Scheduler", "getSchedules", conf)
 
-    def get_completeschedules(
+    async def get_completeschedules(
         self, conf: dict[str, Any] | None = None
     ) -> dict[str, Any] | None:
         """Get schedule information."""
-        return self._access.post("Scheduler", "getCompleteSchedules", conf)
+        return await self._access.post("Scheduler", "getCompleteSchedules", conf)
 
-    def set_wlanscheduler_state(
+    async def set_wlanscheduler_state(
         self, conf: dict[str, Any] | None = None
     ) -> dict[str, Any] | None:
         """Get schedule information."""
-        return self._access.post("WLanScheduler", "setState", conf)
+        return await self._access.post("WLanScheduler", "setState", conf)

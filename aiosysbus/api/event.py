@@ -14,18 +14,26 @@ class Event:
         """Init."""
         self._access = access
 
-    def get_events(self, conf: dict[str, Any] | None = None) -> dict[str, Any] | None:
+    async def get_events(
+        self, conf: dict[str, Any] | None = None
+    ) -> dict[str, Any] | None:
         """Get all events."""
-        return self._access.post("eventmanager", "get_events", conf)
+        return await self._access.post("eventmanager", "get_events", conf)
 
-    def open_channel(self, conf: dict[str, Any] | None = None) -> dict[str, Any] | None:
+    async def open_channel(
+        self, conf: dict[str, Any] | None = None
+    ) -> dict[str, Any] | None:
         """Open channel."""
-        return self._access.post("eventmanager", "open_channel", conf)
+        return await self._access.post("eventmanager", "open_channel", conf)
 
-    def subscribe(self, conf: dict[str, Any] | None = None) -> dict[str, Any] | None:
+    async def subscribe(
+        self, conf: dict[str, Any] | None = None
+    ) -> dict[str, Any] | None:
         """Subscribe Event."""
-        return self._access.post("eventmanager", "subscribe", conf)
+        return await self._access.post("eventmanager", "subscribe", conf)
 
-    def unsubscribe(self, conf: dict[str, Any] | None = None) -> dict[str, Any] | None:
+    async def unsubscribe(
+        self, conf: dict[str, Any] | None = None
+    ) -> dict[str, Any] | None:
         """Unsubscribe Event."""
-        return self._access.post("eventmanager", "unsubscribe", conf)
+        return await self._access.post("eventmanager", "unsubscribe", conf)

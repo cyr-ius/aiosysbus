@@ -14,22 +14,22 @@ class UserInterface:
         """Init."""
         self._access = access
 
-    def getLanguage(self) -> dict[str, Any] | None:
+    async def getLanguage(self) -> dict[str, Any] | None:
         """Return language."""
-        return self._access.post("UserInterface", "getLanguage")
+        return await self._access.post("UserInterface", "getLanguage")
 
-    def setLanguage(self, conf: dict[str, Any] | None) -> dict[str, Any] | None:
+    async def setLanguage(self, conf: dict[str, Any] | None) -> dict[str, Any] | None:
         """Set language."""
-        return self._access.post("UserInterface", "setLanguage", conf)
+        return await self._access.post("UserInterface", "setLanguage", conf)
 
-    def getState(self) -> dict[str, Any] | None:
+    async def getState(self) -> dict[str, Any] | None:
         """Return state."""
-        return self._access.post("UserInterface", "getState")
+        return await self._access.post("UserInterface", "getState")
 
-    def setState(self, conf: dict[str, Any] | None) -> dict[str, Any] | None:
+    async def setState(self, conf: dict[str, Any] | None) -> dict[str, Any] | None:
         """Set state."""
-        return self._access.post("UserInterface", "setState", conf)
+        return await self._access.post("UserInterface", "setState", conf)
 
-    def getDebugInformation(self) -> dict[str, Any] | None:
+    async def getDebugInformation(self) -> dict[str, Any] | None:
         """Return Debug information."""
-        return self._access.post("UserInterface", "getDebugInformation")
+        return await self._access.post("UserInterface", "getDebugInformation")

@@ -26,7 +26,7 @@ setup(
     description="Provides asynchronous authentication and access to Livebox",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    install_requires=["requests>=2"],
+    install_requires=["httpx>=0.23.1"],
     license="GPL-3",
     include_package_data=True,
     url="https://github.com/cyr-ius/aiosysbus/tree/master/aiosysbus",

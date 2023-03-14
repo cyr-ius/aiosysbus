@@ -4,7 +4,7 @@ from __future__ import annotations
 import inspect
 import logging
 
-import requests
+import httpx
 
 from . import api as Api
 from .access import Access
@@ -29,10 +29,11 @@ class AIOSysbus:  # pylint: disable=[too-many-instance-attributes]
         timeout: int = 10,
         host: str = "192.168.1.1",
         port: str = "80",
+        session: httpx.AsyncClient | None = None,
     ) -> None:
         """Load parameters."""
         self._access: Access | None = None
-        self._session = requests.session()
+        self._session = session or httpx.AsyncClient()
         self._username = username
         self._password = password
         self._timeout = timeout
@@ -50,7 +51,7 @@ class AIOSysbus:  # pylint: disable=[too-many-instance-attributes]
         """Return base url for HTTPS requests."""
         return f"http://{host}:{port}/ws"
 
-    def get_permissions(self) -> str | None:
+    async def get_permissions(self) -> str | None:
         """Return the permissions for this app.
 
         The permissions are returned as a dictionary key->boolean where the
@@ -63,10 +64,10 @@ class AIOSysbus:  # pylint: disable=[too-many-instance-attributes]
         If the session has not been opened yet, returns None.
         """
         if self._access:
-            return self._access.get_permissions()
+            return await self._access.get_permissions()
         return None
 
-    def connect(self) -> None:
+    async def connect(self) -> None:
         """Instantiate modules."""
         # Create livebox http access module
         base_url = self._get_base_url(self._host, self._port)
@@ -80,7 +81,7 @@ class AIOSysbus:  # pylint: disable=[too-many-instance-attributes]
 
         if self._access:
             try:
-                self._access.connect()
+                await self._access.connect()
             except HttpRequestError as error:
                 raise HttpRequestError from error
             except AuthorizationError as error:
@@ -91,6 +92,6 @@ class AIOSysbus:  # pylint: disable=[too-many-instance-attributes]
             # Instantiate Livebox modules
             self._load_modules()
 
-    def close(self) -> None:
+    async def close(self) -> None:
         """Close session."""
-        self._session.close()
+        await self._session.aclose()
