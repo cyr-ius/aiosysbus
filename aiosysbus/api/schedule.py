@@ -48,7 +48,7 @@ class Schedule:
 
     def set_schedule(self, conf: dict[str, Any] | None) -> dict[str, Any] | None:
         """Get schedule information."""
-        return self._access.post("Scheduler", "overridedSchedule", conf)
+        return self._access.post("Scheduler", "overrideSchedule", conf)
 
     def set_state(self, conf: dict[str, Any] | None) -> dict[str, Any] | None:
         """Get schedule information."""
