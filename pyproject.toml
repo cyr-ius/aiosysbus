@@ -1,3 +1,36 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name        = "aiosysbus"
+version     = "replace_by_workflow"
+license     = {text = "GPL-3"}
+description = "Provides asynchronous authentication and access to Livebox"
+readme      = "README.md"
+authors     = [
+    {name = "Cyr-ius", email = "cyr-ius@ipocus.net"}
+]
+keywords    = ["livebox", "async"]
+classifiers = [
+    "Programming Language :: Python",
+    "Development Status :: 5 - Production/Stable",
+    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",    
+    "Programming Language :: Python :: 3.11",
+    "Framework :: AsyncIO",
+    "Intended Audience :: Developers",
+    "Intended Audience :: System Administrators",
+    "Topic :: Home Automation",
+]
+requires-python = ">=3.8"
+dependencies    = [
+    "requests>=2",
+]
+
 [tool.isort]
 # https://github.com/PyCQA/isort/wiki/isort-Settings
 profile = "black"
