@@ -1,0 +1,9 @@
+# AIOSysbus
+-r requirements.txt
+
+codespell
+mypy
+pre-commit
+python-typing-update
+ruff
+yamllint
