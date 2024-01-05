@@ -12,10 +12,8 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     name: Deploy to PyPi
-    # Specifying a GitHub environment is optional, but strongly encouraged
     environment: release
     permissions:
-      # IMPORTANT: this permission is mandatory for trusted publishing
       id-token: write
     steps:
       - name: 📥 Checkout the repository
@@ -29,13 +27,18 @@ jobs:
       - name: 📦 Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install setuptools wheel twine
+          pip install setuptools wheel twine build
 
       - name: 🔢 Set version number
         run: |
           export version=${{ github.ref }}
-          sed -i "s|replace_by_workflow|${version##*/}|" ./setup.py
-          cat ./setup.py
+          sed -i "s|replace_by_workflow|${version##*/}|" ./pyproject.toml
+          cat ./pyproject.toml
 
+      - name: Build package
+        shell: bash
+        run: |
+          python3 -m build
+  
       - name: 🚀 Publish to PyPi
         uses: pypa/gh-action-pypi-publish@release/v1
