@@ -169,9 +169,7 @@ class Devices:  # pylint: disable=[too-many-public-methods]
         conf = {"key:"01:02:03:04:05:06","parameter": "Name"}
         """
         key = conf.pop("key")
-        return await self._auth.post(
-            f"Devices.Device.{key}", "getFirstParameter", conf
-        )
+        return await self._auth.post(f"Devices.Device.{key}", "getFirstParameter", conf)
 
     async def async_get_device_params(
         self, conf: dict[str, Any] = {"key": None}
@@ -251,9 +249,7 @@ class Devices:  # pylint: disable=[too-many-public-methods]
     ) -> dict[str, Any] | None:
         """Del Alternative for device."""
         key = conf.pop("key")
-        return await self._auth.post(
-            f"Devices.Device.{key}", "removeAlternative", conf
-        )
+        return await self._auth.post(f"Devices.Device.{key}", "removeAlternative", conf)
 
     async def async_get_device_isalternative(
         self, conf: dict[str, Any] = {"key": None}
