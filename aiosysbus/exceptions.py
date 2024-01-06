@@ -1,25 +1,33 @@
 """Exceptions for livebox."""
 
 
-class LiveboxException(Exception):
+class AiosysbusException(Exception):
     """General exception."""
 
 
-class NotOpenError(LiveboxException):
+class NotOpenError(AiosysbusException):
     """Not open url."""
 
 
-class AuthorizationError(LiveboxException):
+class AuthenticationFailed(AiosysbusException):
     """Authentication error."""
 
 
-class HttpRequestError(LiveboxException):
+class TimeoutExceededError(AiosysbusException):
+    """Timeout exceeded."""
+
+
+class HttpRequestFailed(AiosysbusException):
     """Requests error."""
 
 
-class InsufficientPermissionsError(HttpRequestError):
+class InsufficientPermissionsError(HttpRequestFailed):
     """Insufficient Permissions."""
 
 
-class TimeoutExceededError(LiveboxException):
-    """Timeout exceeded."""
+class RetrieveFailed(HttpRequestFailed):
+    """Retrieve exception."""
+
+
+class UnexpectedResponse(HttpRequestFailed):
+    """Unexpected response."""

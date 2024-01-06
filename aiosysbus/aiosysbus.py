@@ -3,12 +3,14 @@ from __future__ import annotations
 
 import inspect
 import logging
+from typing import Self
 
-import requests
+from aiohttp import ClientSession
+from yarl import URL as yurl
 
 from . import api as Api
-from .access import Access
-from .exceptions import AuthorizationError, HttpRequestError, NotOpenError
+from .auth import Auth
+from .exceptions import AiosysbusException, AuthenticationFailed
 
 logger = logging.getLogger(__name__)
 
@@ -36,31 +38,56 @@ class AIOSysbus:  # pylint: disable=[too-many-instance-attributes]
         self,
         username: str,
         password: str,
-        timeout: int = 10,
+        session: ClientSession | None = None,
+        timeout: int = 120,
         host: str = "192.168.1.1",
-        port: str = "80",
+        port: int = 80,
+        use_tls: bool = False,
     ) -> None:
         """Load parameters."""
-        self._access: Access | None = None
-        self._session = requests.session()
+        self._auth: Auth | None = None
+        self._session = session or ClientSession()
         self._username = username
         self._password = password
         self._timeout = timeout
         self._host = host
         self._port = port
         self._authorize = False
+        self._use_tls = use_tls
+
+    async def async_connect(self) -> None:
+        """Instantiate modules."""
+        # Create livebox http access module
+        scheme = "https" if self._use_tls else "http"
+        base_url = yurl.build(
+            scheme=scheme, host=self._host, port=self._port, path="/ws"
+        )
+        self._auth = Auth(
+            session=self._session,
+            base_url=base_url,
+            username=self._username,
+            password=self._password,
+            timeout=self._timeout,
+        )
+
+        if self._auth:
+            try:
+                await self._auth.async_get_session_token()
+            except AuthenticationFailed as error:
+                raise AuthenticationFailed(error) from error
+            except AiosysbusException as error:
+                raise AiosysbusException(error) from error
+
+            # Instantiate Livebox modules
+            self._load_modules()
 
     def _load_modules(self) -> None:
         """Instantiate modules."""
         for name, obj in Api.__dict__.items():
             if inspect.isclass(obj):
-                setattr(self, name.lower(), obj(self._access))
+                setattr(self, name.lower(), obj(self._auth))
 
-    def _get_base_url(self, host: str, port: str) -> str:
-        """Return base url for HTTPS requests."""
-        return f"http://{host}:{port}/ws"
-
-    def get_permissions(self) -> str | None:
+    async def async_get_permissions(self) -> str | None:
         """Return the permissions for this app.
 
         The permissions are returned as a dictionary key->boolean where the
@@ -72,35 +99,19 @@ class AIOSysbus:  # pylint: disable=[too-many-instance-attributes]
         until the session token is refreshed.
         If the session has not been opened yet, returns None.
         """
-        if self._access:
-            return self._access.get_permissions()
+        if self._auth:
+            return self._auth.session_permissions
         return None
 
-    def connect(self) -> None:
-        """Instantiate modules."""
-        # Create livebox http access module
-        base_url = self._get_base_url(self._host, self._port)
-        self._access = Access(
-            session=self._session,
-            base_url=base_url,
-            username=self._username,
-            password=self._password,
-            timeout=self._timeout,
-        )
-
-        if self._access:
-            try:
-                self._access.connect()
-            except HttpRequestError as error:
-                raise HttpRequestError from error
-            except AuthorizationError as error:
-                raise AuthorizationError from error
-            except NotOpenError as error:
-                raise NotOpenError from error
-
-            # Instantiate Livebox modules
-            self._load_modules()
-
-    def close(self) -> None:
+    async def async_close(self) -> None:
         """Close session."""
-        self._session.close()
+        if self._session:
+            await self._session.close()
+
+    async def __aenter__(self) -> Self:
+        """Async enter."""
+        return self
+
+    async def __aexit__(self, *_exc_info: object) -> None:
+        """Async exit."""
+        await self.async_close()
