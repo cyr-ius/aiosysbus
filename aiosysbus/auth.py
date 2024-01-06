@@ -7,6 +7,7 @@ import socket
 from typing import Any
 
 from aiohttp import ClientError, ClientResponseError, ClientSession
+from yarl import URL
 
 from .exceptions import (
     AuthenticationFailed,
@@ -45,7 +46,7 @@ class Auth:
 
     async def async_request(
         self, method: str, json: dict[str, Any] | None = None
-    ) -> dict[str, Any]:
+    ) -> Any:
         """Make a request."""
         if not self.session_token:
             await self._async_refresh_session_token()
@@ -200,7 +201,7 @@ class Auth:
         _LOGGER.debug("Token %s", session_token)
         return (session_token, session_permissions)
 
-    async def _async_get_challenge(self, base_url: str) -> None:
+    async def _async_get_challenge(self, base_url: URL) -> None:
         """Return challenge from livebox API."""
         try:
             async with asyncio.timeout(self.timeout):

@@ -10,35 +10,35 @@ if TYPE_CHECKING:
 class Connection:
     """Connection class."""
 
-    def __init__(self, access: Auth) -> None:
+    def __init__(self, auth: Auth) -> None:
         """Init."""
-        self._access = access
+        self._auth = auth
 
     async def async_get_lan_luckyAddrAddress(self) -> dict[str, Any] | None:
         """LAN IP Address."""
-        return await self._access.post("NeMo.Intf.lan", "luckyAddrAddress")
+        return await self._auth.post("NeMo.Intf.lan", "luckyAddrAddress")
 
     async def async_get_data_luckyAddrAddress(self) -> dict[str, Any] | None:
         """WAN IP Address."""
-        return await self._access.post("NeMo.Intf.data", "luckyAddrAddress")
+        return await self._auth.post("NeMo.Intf.data", "luckyAddrAddress")
 
     async def async_get_lo_DHCPOption(
         self, conf: dict[str, Any] | None = None
     ) -> dict[str, Any] | None:
         """DHCP Option."""
-        return await self._access.post("NeMo.Intf.lo", "getDHCPOption", conf)
+        return await self._auth.post("NeMo.Intf.lo", "getDHCPOption", conf)
 
     async def async_get_dsl0_DSLStats(
         self, conf: dict[str, Any] | None = None
     ) -> dict[str, Any] | None:
         """Xdsl Connection Statistics."""
-        return await self._access.post("NeMo.Intf.dsl0", "getDSLStats", conf)
+        return await self._auth.post("NeMo.Intf.dsl0", "getDSLStats", conf)
 
     async def async_get_dsl0_MIBS(
         self, conf: dict[str, Any] | None = None
     ) -> dict[str, Any] | None:
         """Xdsl information."""
-        return await self._access.post("NeMo.Intf.dsl0", "getMIBs", conf)
+        return await self._auth.post("NeMo.Intf.dsl0", "getMIBs", conf)
 
     async def async_get_data_MIBS(
         self, conf: dict[str, Any] | None = None
@@ -47,10 +47,10 @@ class Connection:
 
         conf = {"mibs":"dsl","traverse":"down"}
         """
-        return await self._access.post("NeMo.Intf.data", "getMIBs", conf)
+        return await self._auth.post("NeMo.Intf.data", "getMIBs", conf)
 
     async def async_get_lan_MIBS(
         self, conf: dict[str, Any] | None = None
     ) -> dict[str, Any] | None:
         """LAN Information."""
-        return await self._access.post("NeMo.Intf.lan", "getMIBs", conf)
+        return await self._auth.post("NeMo.Intf.lan", "getMIBs", conf)

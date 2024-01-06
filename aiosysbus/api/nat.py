@@ -10,9 +10,9 @@ if TYPE_CHECKING:
 class Nat:
     """NAT settings."""
 
-    def __init__(self, access: Auth) -> None:
+    def __init__(self, auth: Auth) -> None:
         """Init."""
-        self._access = access
+        self._auth = auth
 
     async def async_get_firewall_PortForwarding(
         self, conf: dict[str, Any] | None = None
@@ -21,7 +21,7 @@ class Nat:
 
         conf = {"parameters":{"origin":"webui"}}
         """
-        return await self._access.post("Firewall", "getPortForwarding", conf)
+        return await self._auth.post("Firewall", "getPortForwarding", conf)
 
     async def async_set_firewall_PortForwarding(
         self, conf: dict[str, Any] | None
@@ -33,19 +33,19 @@ class Nat:
         "externalPort":"21","origin":"webui","sourceInterface":"data",
         "sourcePrefix":"","id":"FTP"}}
         """
-        return await self._access.post("Firewall", "setPortForwarding", conf)
+        return await self._auth.post("Firewall", "setPortForwarding", conf)
 
     async def async_get_firewall_DMZ(
         self, conf: dict[str, Any] | None = None
     ) -> dict[str, Any] | None:
         """Get DMZ configuration"""
-        return await self._access.post("Firewall", "getDMZ", conf)
+        return await self._auth.post("Firewall", "getDMZ", conf)
 
     async def async_set_firewall_DMZ(
         self, conf: dict[str, Any] | None
     ) -> dict[str, Any] | None:
         """Set DMZ configuration"""
-        return await self._access.post("Firewall", "setDMZ", conf)
+        return await self._auth.post("Firewall", "setDMZ", conf)
 
     async def async_set_firewall_IPv6Level(
         self, conf: dict[str, Any] | None
@@ -54,7 +54,7 @@ class Nat:
 
         conf = {"parameters":{"level":"Low"}}
         """
-        return await self._access.post("Firewall", "setFirewallIPv6Level", conf)
+        return await self._auth.post("Firewall", "setFirewallIPv6Level", conf)
 
     async def async_set_firewall_Level(
         self, conf: dict[str, Any] | None
@@ -63,11 +63,11 @@ class Nat:
 
         conf = {"parameters":{"level":"Low"}}
         """
-        return await self._access.post("Firewall", "setFirewallLevel", conf)
+        return await self._auth.post("Firewall", "setFirewallLevel", conf)
 
     async def async_set_firewall_Commit(self) -> dict[str, Any] | None:
         """Commit rules"""
-        return await self._access.post("Firewall", "commit")
+        return await self._auth.post("Firewall", "commit")
 
     async def async_get_upnp_Pinhole(
         self, conf: dict[str, Any] | None = None
@@ -76,19 +76,19 @@ class Nat:
 
         conf = {"parameters":{"origin":"upnp"}}
         """
-        return await self._access.post("Firewall", "getPinhole", conf)
+        return await self._auth.post("Firewall", "getPinhole", conf)
 
     async def async_get_dyndns_Hosts(
         self, conf: dict[str, Any] | None = None
     ) -> dict[str, Any] | None:
         """Get Dynamic DNS Hosts configuration"""
-        return await self._access.post("DynDNS", "getHosts", conf)
+        return await self._auth.post("DynDNS", "getHosts", conf)
 
     async def async_get_dyndns_Services(
         self, conf: dict[str, Any] | None = None
     ) -> dict[str, Any] | None:
         """Get Dynamic DNS services configuration"""
-        return await self._access.post("DynDNS", "getServices", conf)
+        return await self._auth.post("DynDNS", "getServices", conf)
 
     async def async_set_dns_name(self, mac, conf):  # type:ignore[no-untyped-def]
         """Set DNS name
@@ -96,17 +96,17 @@ class Nat:
         mac = '00:01:2B:3C:4D:5E'
         conf = {"parameters":{"name":"nestor","source":"dns"}}
         """
-        return await self._access.post("Devices/Device/" + mac + ":setName", conf)
+        return await self._auth.post("Devices/Device/" + mac + ":setName", conf)
 
     async def async_get_upnp_devices(
         self, conf: dict[str, Any] | None = None
     ) -> dict[str, Any] | None:
         """Get Upnp configuration"""
-        return await self._access.post("UPnP-IGD", "get", conf)
+        return await self._auth.post("UPnP-IGD", "get", conf)
 
     async def async_set_upnp_config(self, conf):  # type:ignore[no-untyped-def]
         """Set Upnp configuration
 
         conf = {"Enable":"1"}
         """
-        return await self._access.post("UPnP-IGD?_restAction=put", conf)
+        return await self._auth.post("UPnP-IGD?_restAction=put", conf)
