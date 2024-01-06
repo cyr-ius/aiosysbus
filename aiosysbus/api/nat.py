@@ -4,13 +4,13 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
-    from ..access import Access
+    from ..auth import Auth
 
 
 class Nat:
     """NAT settings."""
 
-    def __init__(self, access: Access) -> None:
+    def __init__(self, access: Auth) -> None:
         """Init."""
         self._access = access
 
@@ -41,7 +41,9 @@ class Nat:
         """Get DMZ configuration"""
         return await self._access.post("Firewall", "getDMZ", conf)
 
-    async def async_set_firewall_DMZ(self, conf: dict[str, Any] | None) -> dict[str, Any] | None:
+    async def async_set_firewall_DMZ(
+        self, conf: dict[str, Any] | None
+    ) -> dict[str, Any] | None:
         """Set DMZ configuration"""
         return await self._access.post("Firewall", "setDMZ", conf)
 
@@ -54,7 +56,9 @@ class Nat:
         """
         return await self._access.post("Firewall", "setFirewallIPv6Level", conf)
 
-    async def async_set_firewall_Level(self, conf: dict[str, Any] | None) -> dict[str, Any] | None:
+    async def async_set_firewall_Level(
+        self, conf: dict[str, Any] | None
+    ) -> dict[str, Any] | None:
         """Set level for IPv4 Firewall
 
         conf = {"parameters":{"level":"Low"}}

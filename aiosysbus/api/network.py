@@ -4,21 +4,25 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
-    from ..access import Access
+    from ..auth import Auth
 
 
 class Wifi:
     """Wifi setting."""
 
-    def __init__(self, access: Access) -> None:
+    def __init__(self, access: Auth) -> None:
         """Init."""
         self._access = access
 
-    async def async_get_wifi(self, conf: dict[str, Any] | None = None) -> dict[str, Any] | None:
+    async def async_get_wifi(
+        self, conf: dict[str, Any] | None = None
+    ) -> dict[str, Any] | None:
         """Get wifi configuration."""
         return await self._access.post("NMC.Wifi", "get", conf)
 
-    async def async_set_wifi(self, conf: dict[str, Any] | None) -> dict[str, Any] | None:
+    async def async_set_wifi(
+        self, conf: dict[str, Any] | None
+    ) -> dict[str, Any] | None:
         """Set wifi configuration."""
         return await self._access.post("NMC.Wifi", "set", conf)
 
@@ -56,11 +60,13 @@ class Wifi:
 class Lan:
     """Home Lan."""
 
-    def __init__(self, access: Access) -> None:
+    def __init__(self, access: Auth) -> None:
         """Init."""
         self._access = access
 
-    async def async_get_lan(self, conf: dict[str, Any] | None = None) -> dict[str, Any] | None:
+    async def async_get_lan(
+        self, conf: dict[str, Any] | None = None
+    ) -> dict[str, Any] | None:
         """Results for Lan."""
         return await self._access.post("HomeLan", "getResults", conf)
 
@@ -94,27 +100,39 @@ class Lan:
         """Get Status."""
         return await self._access.post("HomeLan", "getDeviceResults", conf)
 
-    async def async_import_lan(self, conf: dict[str, Any] | None) -> dict[str, Any] | None:
+    async def async_import_lan(
+        self, conf: dict[str, Any] | None
+    ) -> dict[str, Any] | None:
         """Import."""
         return await self._access.post("HomeLan", "import", conf)
 
-    async def async_export_lan(self, conf: dict[str, Any] | None) -> dict[str, Any] | None:
+    async def async_export_lan(
+        self, conf: dict[str, Any] | None
+    ) -> dict[str, Any] | None:
         """Export."""
         return await self._access.post("HomeLan", "export", conf)
 
-    async def async_get_lan_ip(self, conf: dict[str, Any] | None = None) -> dict[str, Any] | None:
+    async def async_get_lan_ip(
+        self, conf: dict[str, Any] | None = None
+    ) -> dict[str, Any] | None:
         """Reboot livebox."""
         return await self._access.post("NMC", "getLANIP", conf)
 
-    async def async_set_lan_ip(self, conf: dict[str, Any] | None = None) -> dict[str, Any] | None:
+    async def async_set_lan_ip(
+        self, conf: dict[str, Any] | None = None
+    ) -> dict[str, Any] | None:
         """Reboot livebox."""
         return await self._access.post("NMC", "setLANIP", conf)
 
-    async def async_get_IPv6(self, conf: dict[str, Any] | None = None) -> dict[str, Any] | None:
+    async def async_get_IPv6(
+        self, conf: dict[str, Any] | None = None
+    ) -> dict[str, Any] | None:
         """Get IPv6 information."""
         return await self._access.post("NMC.IPv6", "get", conf)
 
-    async def async_set_IPv6(self, conf: dict[str, Any] | None) -> dict[str, Any] | None:
+    async def async_set_IPv6(
+        self, conf: dict[str, Any] | None
+    ) -> dict[str, Any] | None:
         """Set IPv6 information."""
         return await self._access.post("NMC.IPv6", "set", conf)
 
@@ -122,7 +140,7 @@ class Lan:
 class GuestWifi:
     """GuestWifi setting."""
 
-    def __init__(self, access: Access) -> None:
+    def __init__(self, access: Auth) -> None:
         """Init."""
         self._access = access
 
@@ -132,6 +150,8 @@ class GuestWifi:
         """Get wifi configuration."""
         return await self._access.post("NMC.Guest", "get", conf)
 
-    async def async_set_guest_wifi(self, conf: dict[str, Any] | None) -> dict[str, Any] | None:
+    async def async_set_guest_wifi(
+        self, conf: dict[str, Any] | None
+    ) -> dict[str, Any] | None:
         """Set wifi configuration."""
         return await self._access.post("NMC.Guest", "set", conf)

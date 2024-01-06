@@ -4,17 +4,19 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
-    from ..access import Access
+    from ..auth import Auth
 
 
 class Profiles:
     """Profiles class."""
 
-    def __init__(self, access: Access) -> None:
+    def __init__(self, access: Auth) -> None:
         """Init."""
         self._access = access
 
-    async def async_get_profile(self, conf: dict[str, Any] | None = None) -> dict[str, Any] | None:
+    async def async_get_profile(
+        self, conf: dict[str, Any] | None = None
+    ) -> dict[str, Any] | None:
         """Get profile."""
         return await self._access.post("Profiles.Profile", "get", conf)
 
@@ -24,7 +26,9 @@ class Profiles:
         """Get data profile."""
         return await self._access.post("Profiles.Profile", "getData", conf)
 
-    async def async_set_profile_data(self, conf: dict[str, Any] | None) -> dict[str, Any] | None:
+    async def async_set_profile_data(
+        self, conf: dict[str, Any] | None
+    ) -> dict[str, Any] | None:
         """Set data profile."""
         return await self._access.post("Profiles.Profile", "setData", conf)
 
@@ -44,7 +48,7 @@ class Profiles:
 class Manifests:
     """Manifests class."""
 
-    def __init__(self, access: Access) -> None:
+    def __init__(self, access: Auth) -> None:
         """Init."""
         self._access = access
 
@@ -66,15 +70,21 @@ class Manifests:
         """Get store manifests."""
         return await self._access.post("Manifests", "store", conf)
 
-    async def async_retreive_manifests(self, conf: dict[str, Any] | None) -> dict[str, Any] | None:
+    async def async_retreive_manifests(
+        self, conf: dict[str, Any] | None
+    ) -> dict[str, Any] | None:
         """Retrieve manifests."""
         return await self._access.post("Manifests", "retrieve", conf)
 
-    async def async_export_manifests(self, conf: dict[str, Any] | None) -> dict[str, Any] | None:
+    async def async_export_manifests(
+        self, conf: dict[str, Any] | None
+    ) -> dict[str, Any] | None:
         """Export manifests."""
         return await self._access.post("Manifests", "export", conf)
 
-    async def async_import_manifests(self, conf: dict[str, Any] | None) -> dict[str, Any] | None:
+    async def async_import_manifests(
+        self, conf: dict[str, Any] | None
+    ) -> dict[str, Any] | None:
         """Import manifests."""
         return await self._access.post("Manifests", "import", conf)
 
@@ -82,15 +92,19 @@ class Manifests:
 class DataHub:
     """DataHub class."""
 
-    def __init__(self, access: Access) -> None:
+    def __init__(self, access: Auth) -> None:
         """Init."""
         self._access = access
 
-    async def async_get_datahub(self, conf: dict[str, Any] | None = None) -> dict[str, Any] | None:
+    async def async_get_datahub(
+        self, conf: dict[str, Any] | None = None
+    ) -> dict[str, Any] | None:
         """Get DataHub status."""
         return await self._access.post("DataHub", "getStatus", conf)
 
-    async def async_set_datahub(self, conf: dict[str, Any] | None) -> dict[str, Any] | None:
+    async def async_set_datahub(
+        self, conf: dict[str, Any] | None
+    ) -> dict[str, Any] | None:
         """Set DataHub status."""
         return await self._access.post("DataHub", "setStatus", conf)
 
@@ -100,15 +114,21 @@ class DataHub:
         """Get DataHub User information."""
         return await self._access.post("DataHub", "getUserInfo", conf)
 
-    async def async_add_datahub_user(self, conf: dict[str, Any] | None) -> dict[str, Any] | None:
+    async def async_add_datahub_user(
+        self, conf: dict[str, Any] | None
+    ) -> dict[str, Any] | None:
         """Add DataHub user."""
         return await self._access.post("DataHub", "addUser", conf)
 
-    async def async_del_datahub_user(self, conf: dict[str, Any] | None) -> dict[str, Any] | None:
+    async def async_del_datahub_user(
+        self, conf: dict[str, Any] | None
+    ) -> dict[str, Any] | None:
         """Del DataHub user."""
         return await self._access.post("DataHub", "removeUser", conf)
 
-    async def async_set_datahub_user(self, conf: dict[str, Any] | None) -> dict[str, Any] | None:
+    async def async_set_datahub_user(
+        self, conf: dict[str, Any] | None
+    ) -> dict[str, Any] | None:
         """Set DataHub user."""
         return await self._access.post("DataHub", "setUserState", conf)
 
@@ -132,11 +152,13 @@ class DataHub:
 class Locations:
     """Locations class."""
 
-    def __init__(self, access: Access) -> None:
+    def __init__(self, access: Auth) -> None:
         """Init."""
         self._access = access
 
-    async def async_get_locations_domain(self, conf: dict[str, Any]) -> dict[str, Any] | None:
+    async def async_get_locations_domain(
+        self, conf: dict[str, Any]
+    ) -> dict[str, Any] | None:
         """Get domain location."""
         domain = conf.pop("domain")
         return await self._access.post(f"Locations.Location.{domain}", "get", conf)
@@ -147,11 +169,15 @@ class Locations:
         """Get location."""
         return await self._access.post("Locations", "getLocations", conf)
 
-    async def async_add_locations(self, conf: dict[str, Any] | None) -> dict[str, Any] | None:
+    async def async_add_locations(
+        self, conf: dict[str, Any] | None
+    ) -> dict[str, Any] | None:
         """Add location."""
         return await self._access.post("Locations", "addLocation", conf)
 
-    async def async_del_locations(self, conf: dict[str, Any] | None) -> dict[str, Any] | None:
+    async def async_del_locations(
+        self, conf: dict[str, Any] | None
+    ) -> dict[str, Any] | None:
         """Remove location."""
         return await self._access.post("Locations", "removeLocation", conf)
 
@@ -177,7 +203,7 @@ class Locations:
 class Domino:  # pylint: disable=[too-few-public-methods]
     """Locations class."""
 
-    def __init__(self, access: Access) -> None:
+    def __init__(self, access: Auth) -> None:
         """Init."""
         self._access = access
 
@@ -185,7 +211,7 @@ class Domino:  # pylint: disable=[too-few-public-methods]
 class Ssw:  # pylint: disable=[too-few-public-methods]
     """Locations class."""
 
-    def __init__(self, access: Access) -> None:
+    def __init__(self, access: Auth) -> None:
         """Init."""
         self._access = access
 
@@ -193,7 +219,7 @@ class Ssw:  # pylint: disable=[too-few-public-methods]
 class RuleFactory:  # pylint: disable=[too-few-public-methods]
     """Locations class."""
 
-    def __init__(self, access: Access) -> None:
+    def __init__(self, access: Auth) -> None:
         """Init."""
         self._access = access
 
@@ -201,7 +227,7 @@ class RuleFactory:  # pylint: disable=[too-few-public-methods]
 class RuleEngine:  # pylint: disable=[too-few-public-methods]
     """Rule Engine class."""
 
-    def __init__(self, access: Access) -> None:
+    def __init__(self, access: Auth) -> None:
         """Init."""
         self._access = access
 
@@ -209,6 +235,6 @@ class RuleEngine:  # pylint: disable=[too-few-public-methods]
 class Zwave:  # pylint: disable=[too-few-public-methods]
     """Locations class."""
 
-    def __init__(self, access: Access) -> None:
+    def __init__(self, access: Auth) -> None:
         """Init."""
         self._access = access

@@ -4,23 +4,27 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
-    from ..access import Access
+    from ..auth import Auth
 
 
 class System:  # pylint: disable=[too-many-public-methods]
     """System class."""
 
-    def __init__(self, access: Access) -> None:
+    def __init__(self, access: Auth) -> None:
         """Init."""
         self._access = access
 
-    async def async_get_led(self, conf: dict[str, Any] | None = None) -> dict[str, Any] | None:
+    async def async_get_led(
+        self, conf: dict[str, Any] | None = None
+    ) -> dict[str, Any] | None:
         """Get LED information."""
         return await self._access.post("LED", "get", conf)
 
     # ############ PnP #############
 
-    async def async_get_pnp(self, conf: dict[str, Any] | None = None) -> dict[str, Any] | None:
+    async def async_get_pnp(
+        self, conf: dict[str, Any] | None = None
+    ) -> dict[str, Any] | None:
         """Get Plug&play."""
         return await self._access.post("PnP", "get", conf)
 
@@ -60,17 +64,23 @@ class System:  # pylint: disable=[too-many-public-methods]
 
     # ############ PROBE #############
 
-    async def async_get_probe(self, conf: dict[str, Any] | None = None) -> dict[str, Any] | None:
+    async def async_get_probe(
+        self, conf: dict[str, Any] | None = None
+    ) -> dict[str, Any] | None:
         """Get Wifi secure mode status."""
         return await self._access.post("Probe", "getStatus", conf)
 
     # ############ TIME #############
 
-    async def async_get_time(self, conf: dict[str, Any] | None = None) -> dict[str, Any] | None:
+    async def async_get_time(
+        self, conf: dict[str, Any] | None = None
+    ) -> dict[str, Any] | None:
         """Get time information."""
         return await self._access.post("Time", "getTime", conf)
 
-    async def async_get_utctime(self, conf: dict[str, Any] | None = None) -> dict[str, Any] | None:
+    async def async_get_utctime(
+        self, conf: dict[str, Any] | None = None
+    ) -> dict[str, Any] | None:
         """Get time information."""
         return await self._access.post("Time", "getUTCTime", conf)
 
@@ -80,7 +90,9 @@ class System:  # pylint: disable=[too-many-public-methods]
         """Get time information."""
         return await self._access.post("Time", "getStatus", conf)
 
-    async def async_get_time_ntp(self, conf: dict[str, Any] | None = None) -> dict[str, Any] | None:
+    async def async_get_time_ntp(
+        self, conf: dict[str, Any] | None = None
+    ) -> dict[str, Any] | None:
         """Get time information."""
         return await self._access.post("Time", "getNTPServers", conf)
 
@@ -98,7 +110,9 @@ class System:  # pylint: disable=[too-many-public-methods]
 
     # ############ NMC #############
 
-    async def async_get_nmc(self, conf: dict[str, Any] | None = None) -> dict[str, Any] | None:
+    async def async_get_nmc(
+        self, conf: dict[str, Any] | None = None
+    ) -> dict[str, Any] | None:
         """Get WAN information."""
         return await self._access.post("NMC", "get", conf)
 
@@ -112,7 +126,9 @@ class System:  # pylint: disable=[too-many-public-methods]
         """Get WAN status."""
         return await self._access.post("NMC", "getWanModeList", conf)
 
-    async def async_set_wanmode(self, conf: dict[str, Any] | None) -> dict[str, Any] | None:
+    async def async_set_wanmode(
+        self, conf: dict[str, Any] | None
+    ) -> dict[str, Any] | None:
         """Get WAN status."""
         return await self._access.post("NMC", "setWanMode", conf)
 
@@ -152,11 +168,15 @@ class System:  # pylint: disable=[too-many-public-methods]
         """Get datatracking."""
         return await self._access.post("NMC.DataTracking", "get", conf)
 
-    async def async_get_guest(self, conf: dict[str, Any] | None = None) -> dict[str, Any] | None:
+    async def async_get_guest(
+        self, conf: dict[str, Any] | None = None
+    ) -> dict[str, Any] | None:
         """Get guest."""
         return await self._access.post("NMC.Guest", "get", conf)
 
-    async def async_set_guest(self, conf: dict[str, Any] | None) -> dict[str, Any] | None:
+    async def async_set_guest(
+        self, conf: dict[str, Any] | None
+    ) -> dict[str, Any] | None:
         """Set guest."""
         return await self._access.post("NMC.Guest", "set", conf)
 
@@ -182,7 +202,9 @@ class System:  # pylint: disable=[too-many-public-methods]
         self, conf: dict[str, Any] | None
     ) -> dict[str, Any] | None:
         """Restore network config."""
-        return await self._access.post("NMC.NetworkConfig", "launchNetworkRestore", conf)
+        return await self._access.post(
+            "NMC.NetworkConfig", "launchNetworkRestore", conf
+        )
 
     async def async_get_networkconfig(
         self, conf: dict[str, Any] | None = None
@@ -214,7 +236,9 @@ class System:  # pylint: disable=[too-many-public-methods]
         """Get multiscreeens for iptv."""
         return await self._access.post("NMC.OrangeTV", "setIPTVMultiScreens", conf)
 
-    async def async_get_profiles(self, conf: dict[str, Any] | None = None) -> dict[str, Any] | None:
+    async def async_get_profiles(
+        self, conf: dict[str, Any] | None = None
+    ) -> dict[str, Any] | None:
         """Get Profiles."""
         return await self._access.post("NMC.Profiles", "get", conf)
 
@@ -224,11 +248,15 @@ class System:  # pylint: disable=[too-many-public-methods]
         """Autodetect."""
         return await self._access.post("NMC.Autodetect", "get", conf)
 
-    async def async_set_tppp(self, conf: dict[str, Any] | None) -> dict[str, Any] | None:
+    async def async_set_tppp(
+        self, conf: dict[str, Any] | None
+    ) -> dict[str, Any] | None:
         """Get username."""
         return await self._access.post("NMC.TPPP", "force", conf)
 
-    async def async_get_acs(self, conf: dict[str, Any] | None = None) -> dict[str, Any] | None:
+    async def async_get_acs(
+        self, conf: dict[str, Any] | None = None
+    ) -> dict[str, Any] | None:
         """Get ACS."""
         return await self._access.post("NMC.ACS", "get", conf)
 
@@ -238,7 +266,9 @@ class System:  # pylint: disable=[too-many-public-methods]
         """Get WLAN timer."""
         return await self._access.post("NMC.WlanTimer", "getActivationTimer", conf)
 
-    async def async_set_wlantimer(self, conf: dict[str, Any] | None) -> dict[str, Any] | None:
+    async def async_set_wlantimer(
+        self, conf: dict[str, Any] | None
+    ) -> dict[str, Any] | None:
         """Det WLAN timer."""
         return await self._access.post("NMC.WlanTimer", "setActivationTimer", conf)
 
@@ -252,14 +282,20 @@ class System:  # pylint: disable=[too-many-public-methods]
         """Get devices."""
         return await self._access.post("Hosts", "getDevices")
 
-    async def async_set_hosts_name(self, conf: dict[str, Any] | None) -> dict[str, Any] | None:
+    async def async_set_hosts_name(
+        self, conf: dict[str, Any] | None
+    ) -> dict[str, Any] | None:
         """Set host name."""
         return await self._access.post("Hosts", "setName", conf)
 
-    async def async_del_hosts(self, conf: dict[str, Any] | None) -> dict[str, Any] | None:
+    async def async_del_hosts(
+        self, conf: dict[str, Any] | None
+    ) -> dict[str, Any] | None:
         """Remove hosts."""
         return await self._access.post("Hosts", "delHost", conf)
 
-    async def async_set_hosts_device(self, conf: dict[str, Any] | None) -> dict[str, Any] | None:
+    async def async_set_hosts_device(
+        self, conf: dict[str, Any] | None
+    ) -> dict[str, Any] | None:
         """Set host device."""
         return await self._access.post("Hosts", "setDevice", conf)
