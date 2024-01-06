@@ -50,4 +50,3 @@ repos:
     hooks:
       - id: mypy
         args: [--strict, --ignore-missing-imports]
-        additional_dependencies: [types-requests==2.28.11.7]
