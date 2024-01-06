@@ -10,7 +10,7 @@ class NotOpenError(LiveboxException):
 
 
 class AuthorizationError(LiveboxException):
-    """Authentification error."""
+    """Authentication error."""
 
 
 class HttpRequestError(LiveboxException):

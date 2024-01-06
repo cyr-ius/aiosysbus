@@ -43,7 +43,7 @@ class Connection:
     def get_data_MIBS(
         self, conf: dict[str, Any] | None = None
     ) -> dict[str, Any] | None:
-        """All datas informations.
+        """All data information.
 
         conf = {"mibs":"dsl","traverse":"down"}
         """

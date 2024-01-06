@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 
 """
-Provides authentification and raw access to Livebox.
+Provides authentication and raw access to Livebox.
 """
 from .aiosysbus import AIOSysbus
 

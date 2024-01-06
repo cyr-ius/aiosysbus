@@ -31,7 +31,7 @@ def demo() -> None:
         logger.error(err)
         return
 
-    # Fetch datas
+    # Fetch data
     lvbx.deviceinfo.get_deviceinfo()
     lvbx.connection.get_data_MIBS()
     lvbx.connection.get_dsl0_MIBS()

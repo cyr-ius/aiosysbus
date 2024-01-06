@@ -37,13 +37,13 @@ class UserManagement:
         return self._access.post("UserManagement", "getGroups", conf)
 
     def authenticate(self, conf: dict[str, Any] | None = None) -> dict[str, Any] | None:
-        """Authentification."""
+        """Authentication."""
         return self._access.post("UserManagement", "authenticate", conf)
 
     def add_authenticationlog(
         self, conf: dict[str, Any] | None = None
     ) -> dict[str, Any] | None:
-        """Add authentification log."""
+        """Add authentication log."""
         return self._access.post("UserManagement", "addAuthenticationLog", conf)
 
     def get_userlog(self, conf: dict[str, Any] | None = None) -> dict[str, Any] | None:
@@ -63,7 +63,7 @@ class UserManagement:
     def get_group_info(
         self, conf: dict[str, Any] = {"group": None}
     ) -> dict[str, Any] | None:
-        """Get informations for a group."""
+        """Get information for a group."""
         group = conf.pop("group")
         return self._access.post(f"UserManagement.Group.{group}", "get", conf)
 

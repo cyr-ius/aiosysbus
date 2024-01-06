@@ -1,4 +1,4 @@
-"""API Acces for livebox."""
+"""API Access for livebox."""
 from __future__ import annotations
 
 import json
