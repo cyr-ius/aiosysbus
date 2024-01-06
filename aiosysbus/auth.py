@@ -97,7 +97,7 @@ class Auth:
             self.retry -= 1
             if self.retry > 0:
                 _LOGGER.debug("Retrying (%s) request..", self.retry)
-                await self._async_refresh_session_token_refresh_session_token()
+                await self._async_refresh_session_token()
                 return await self.async_request(method, json)
             raise RetrieveFailed(error_msg)
 
