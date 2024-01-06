@@ -106,27 +106,27 @@ class Auth:
         _LOGGER.debug("RESPONSE: %s", result)
         return result
 
-    async def get(self, method: str) -> Any:
+    async def get(self, method: str) -> dict[str, Any]:
         """Send get request and return results."""
         return await self.async_request(method="get")
 
     async def post(
         self, service: str, method: str, params: dict[str, Any] | None = None
-    ) -> Any:
+    ) -> dict[str, Any]:
         """Send post request and return results."""
         data = {"service": service, "method": method, "parameters": params}
         return await self.async_request(method="post", json=data)
 
     async def put(
         self, service: str, method: str, params: dict[str, Any] | None = None
-    ) -> Any:
+    ) -> dict[str, Any]:
         """Send put request and return results."""
         data = {"service": service, "method": method, "parameters": params}
         return await self.async_request(method="put", json=data)
 
     async def delete(
         self, service: str, method: str, params: dict[str, Any] | None = None
-    ) -> Any:
+    ) -> dict[str, Any]:
         """Send delete request and return results."""
         data = {"service": service, "method": method, "parameters": params}
         return await self.async_request(method="delete", json=data)

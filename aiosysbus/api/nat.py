@@ -16,7 +16,7 @@ class Nat:
 
     async def async_get_firewall_PortForwarding(
         self, conf: dict[str, Any] | None = None
-    ) -> dict[str, Any] | None:
+    ) -> dict[str, Any]:
         """Get port forwarding configuration
 
         conf = {"parameters":{"origin":"webui"}}
@@ -25,7 +25,7 @@ class Nat:
 
     async def async_set_firewall_PortForwarding(
         self, conf: dict[str, Any] | None
-    ) -> dict[str, Any] | None:
+    ) -> dict[str, Any]:
         """Set port forwarding configuration
 
         conf = {"parameters":{"description":"FTP","persistent":true,"enable":true,
@@ -37,19 +37,19 @@ class Nat:
 
     async def async_get_firewall_DMZ(
         self, conf: dict[str, Any] | None = None
-    ) -> dict[str, Any] | None:
+    ) -> dict[str, Any]:
         """Get DMZ configuration"""
         return await self._auth.post("Firewall", "getDMZ", conf)
 
     async def async_set_firewall_DMZ(
         self, conf: dict[str, Any] | None
-    ) -> dict[str, Any] | None:
+    ) -> dict[str, Any]:
         """Set DMZ configuration"""
         return await self._auth.post("Firewall", "setDMZ", conf)
 
     async def async_set_firewall_IPv6Level(
         self, conf: dict[str, Any] | None
-    ) -> dict[str, Any] | None:
+    ) -> dict[str, Any]:
         """Set level for IPv6 Firewall
 
         conf = {"parameters":{"level":"Low"}}
@@ -58,20 +58,20 @@ class Nat:
 
     async def async_set_firewall_Level(
         self, conf: dict[str, Any] | None
-    ) -> dict[str, Any] | None:
+    ) -> dict[str, Any]:
         """Set level for IPv4 Firewall
 
         conf = {"parameters":{"level":"Low"}}
         """
         return await self._auth.post("Firewall", "setFirewallLevel", conf)
 
-    async def async_set_firewall_Commit(self) -> dict[str, Any] | None:
+    async def async_set_firewall_Commit(self) -> dict[str, Any]:
         """Commit rules"""
         return await self._auth.post("Firewall", "commit")
 
     async def async_get_upnp_Pinhole(
         self, conf: dict[str, Any] | None = None
-    ) -> dict[str, Any] | None:
+    ) -> dict[str, Any]:
         """Upnp configuration
 
         conf = {"parameters":{"origin":"upnp"}}
@@ -80,13 +80,13 @@ class Nat:
 
     async def async_get_dyndns_Hosts(
         self, conf: dict[str, Any] | None = None
-    ) -> dict[str, Any] | None:
+    ) -> dict[str, Any]:
         """Get Dynamic DNS Hosts configuration"""
         return await self._auth.post("DynDNS", "getHosts", conf)
 
     async def async_get_dyndns_Services(
         self, conf: dict[str, Any] | None = None
-    ) -> dict[str, Any] | None:
+    ) -> dict[str, Any]:
         """Get Dynamic DNS services configuration"""
         return await self._auth.post("DynDNS", "getServices", conf)
 
@@ -100,7 +100,7 @@ class Nat:
 
     async def async_get_upnp_devices(
         self, conf: dict[str, Any] | None = None
-    ) -> dict[str, Any] | None:
+    ) -> dict[str, Any]:
         """Get Upnp configuration"""
         return await self._auth.post("UPnP-IGD", "get", conf)
 

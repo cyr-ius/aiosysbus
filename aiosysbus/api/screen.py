@@ -14,12 +14,12 @@ class Screen:
         """Init."""
         self._auth = auth
 
-    async def async_getShowWifiPassword(self) -> dict[str, Any] | None:
+    async def async_getShowWifiPassword(self) -> dict[str, Any]:
         """Show status display wifi password (display on box)."""
         return await self._auth.post("Screen", "getShowWifiPassword")
 
     async def async_setShowWifiPassword(
         self, conf: dict[str, Any] | None
-    ) -> dict[str, Any] | None:
+    ) -> dict[str, Any]:
         """Set wifi password (display on box)."""
         return await self._auth.post("Screen", "setShowWifiPassword", conf)
