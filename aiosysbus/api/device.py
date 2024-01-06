@@ -14,37 +14,37 @@ class DeviceInfo:
         """Init."""
         self._access = access
 
-    def get_deviceinfo(
+    async def async_get_deviceinfo(
         self, conf: dict[str, Any] | None = None
     ) -> dict[str, Any] | None:
         """Get device information."""
-        return self._access.post("DeviceInfo", "get", conf)
+        return await self._access.post("DeviceInfo", "get", conf)
 
-    def get_deviceinfo_pairing(
+    async def async_get_deviceinfo_pairing(
         self, conf: dict[str, Any] | None = None
     ) -> dict[str, Any] | None:
         """Get device information.
 
         conf = {"getPairingInfo":""}
         """
-        return self._access.post("DeviceInfo", "getPairingInfo", conf)
+        return await self._access.post("DeviceInfo", "getPairingInfo", conf)
 
-    def update_deviceinfo(
+    async def async_update_deviceinfo(
         self, conf: dict[str, Any] | None = None
     ) -> dict[str, Any] | None:
         """Get device information."""
-        return self._access.post("DeviceInfo", "update", conf)
+        return await self._access.post("DeviceInfo", "update", conf)
 
-    def export_deviceinfo(self, conf: dict[str, Any] | None) -> dict[str, Any] | None:
+    async def async_export_deviceinfo(self, conf: dict[str, Any] | None) -> dict[str, Any] | None:
         """Get device information."""
-        return self._access.post("DeviceInfo", "export", conf)
+        return await self._access.post("DeviceInfo", "export", conf)
 
-    def get_deviceinfo_info(
+    async def async_get_deviceinfo_info(
         self, conf: dict[str, Any] = {"info": ""}
     ) -> dict[str, Any] | None:
         """Get device information."""
         info = conf.pop("info")
-        return self._access.post(f"DeviceInfo.{info}", "get", conf)
+        return await self._access.post(f"DeviceInfo.{info}", "get", conf)
 
 
 class Devices:  # pylint: disable=[too-many-public-methods]
@@ -54,76 +54,76 @@ class Devices:  # pylint: disable=[too-many-public-methods]
         """Init."""
         self._access = access
 
-    def del_devices_device(self, conf: dict[str, Any] | None) -> dict[str, Any] | None:
+    async def async_del_devices_device(self, conf: dict[str, Any] | None) -> dict[str, Any] | None:
         """Remove devices.
 
         conf = {"key": 123}
         """
-        return self._access.post("Devices", "destroyDevice", conf)
+        return await self._access.post("Devices", "destroyDevice", conf)
 
-    def find_devices(self, conf: dict[str, Any] | None) -> dict[str, Any] | None:
+    async def async_find_devices(self, conf: dict[str, Any] | None) -> dict[str, Any] | None:
         """Find devices.
 
         conf = {"key": 123}
         """
-        return self._access.post("Devices", "find", conf)
+        return await self._access.post("Devices", "find", conf)
 
-    def get_devices(self, conf: dict[str, Any] | None = None) -> dict[str, Any] | None:
+    async def async_get_devices(self, conf: dict[str, Any] | None = None) -> dict[str, Any] | None:
         """Get devices.
 
         conf = {"key": 123}
         """
-        return self._access.post("Devices", "get", conf)
+        return await self._access.post("Devices", "get", conf)
 
-    def fetch_devices(
+    async def async_fetch_devices(
         self, conf: dict[str, Any] | None = None
     ) -> dict[str, Any] | None:
         """Fetch devices."""
-        return self._access.post("Devices", "fetchDevice", conf)
+        return await self._access.post("Devices", "fetchDevice", conf)
 
-    def get_devices_config(
+    async def async_get_devices_config(
         self, conf: dict[str, Any] | None = None
     ) -> dict[str, Any] | None:
         """Get config for device.
 
         conf = {"module":""}
         """
-        return self._access.post("Devices.Config", "get", conf)
+        return await self._access.post("Devices.Config", "get", conf)
 
-    def set_devices_config(self, conf: dict[str, Any] | None) -> dict[str, Any] | None:
+    async def async_set_devices_config(self, conf: dict[str, Any] | None) -> dict[str, Any] | None:
         """Set config for device."""
-        return self._access.post("Devices.Config", "set", conf)
+        return await self._access.post("Devices.Config", "set", conf)
 
-    def export_devices_config(
+    async def async_export_devices_config(
         self, conf: dict[str, Any] | None
     ) -> dict[str, Any] | None:
         """Save config for device."""
-        return self._access.post("Devices.Config", "save", conf)
+        return await self._access.post("Devices.Config", "save", conf)
 
-    def import_devices_config(
+    async def async_import_devices_config(
         self, conf: dict[str, Any] | None
     ) -> dict[str, Any] | None:
         """Load config for device."""
-        return self._access.post("Devices.Config", "load", conf)
+        return await self._access.post("Devices.Config", "load", conf)
 
-    def get_devices_config1(
+    async def async_get_devices_config1(
         self, conf: dict[str, Any] = {"key": None}
     ) -> dict[str, Any] | None:
         """Get config for device."""
         key = conf.pop("key")
-        return self._access.post(f"Devices.Config.{key}", "get", conf)
+        return await self._access.post(f"Devices.Config.{key}", "get", conf)
 
-    def get_device(self, conf: dict[str, Any] = {"key": None}) -> dict[str, Any] | None:
+    async def async_get_device(self, conf: dict[str, Any] = {"key": None}) -> dict[str, Any] | None:
         """Get device."""
         key = conf.pop("key")
-        return self._access.post(f"Devices.Device.{key}", "get", conf)
+        return await self._access.post(f"Devices.Device.{key}", "get", conf)
 
-    def set_device(self, conf: dict[str, Any] = {"key": None}) -> dict[str, Any] | None:
+    async def async_set_device(self, conf: dict[str, Any] = {"key": None}) -> dict[str, Any] | None:
         """Set device."""
         key = conf.pop("key")
-        return self._access.post(f"Devices.Device.{key}", "set", conf)
+        return await self._access.post(f"Devices.Device.{key}", "set", conf)
 
-    def get_device_hastag(
+    async def async_get_device_hastag(
         self, conf: dict[str, Any] = {"key": None}
     ) -> dict[str, Any] | None:
         """Has tag for device.
@@ -131,23 +131,23 @@ class Devices:  # pylint: disable=[too-many-public-methods]
         conf = {"tag": "1"}
         """
         key = conf.pop("key")
-        return self._access.post(f"Devices.Device.{key}", "hasTag", conf)
+        return await self._access.post(f"Devices.Device.{key}", "hasTag", conf)
 
-    def set_device_tag(
+    async def async_set_device_tag(
         self, conf: dict[str, Any] = {"key": None}
     ) -> dict[str, Any] | None:
         """Set Tag for device."""
         key = conf.pop("key")
-        return self._access.post(f"Devices.Device.{key}", "setTag", conf)
+        return await self._access.post(f"Devices.Device.{key}", "setTag", conf)
 
-    def del_device_tag(
+    async def async_del_device_tag(
         self, conf: dict[str, Any] = {"key": None}
     ) -> dict[str, Any] | None:
         """Remove tag for devices."""
         key = conf.pop("key")
-        return self._access.post(f"Devices.Device.{key}", "clearTag", conf)
+        return await self._access.post(f"Devices.Device.{key}", "clearTag", conf)
 
-    def get_device_first(
+    async def async_get_device_first(
         self, conf: dict[str, Any] = {"key": None}
     ) -> dict[str, Any] | None:
         """Get parameter for device.
@@ -155,9 +155,9 @@ class Devices:  # pylint: disable=[too-many-public-methods]
         conf = {"key:"01:02:03:04:05:06","parameter": "Name"}
         """
         key = conf.pop("key")
-        return self._access.post(f"Devices.Device.{key}", "getFirstParameter", conf)
+        return await self._access.post(f"Devices.Device.{key}", "getFirstParameter", conf)
 
-    def get_device_params(
+    async def async_get_device_params(
         self, conf: dict[str, Any] = {"key": None}
     ) -> dict[str, Any] | None:
         """Get parameters for device.
@@ -165,88 +165,88 @@ class Devices:  # pylint: disable=[too-many-public-methods]
         conf = {"key:"01:02:03:04:05:06","parameter": "Name"}
         """
         key = conf.pop("key")
-        return self._access.post(f"Devices.Device.{key}", "getParameters", conf)
+        return await self._access.post(f"Devices.Device.{key}", "getParameters", conf)
 
-    def get_device_topology(
+    async def async_get_device_topology(
         self, conf: dict[str, Any] = {"key": None}
     ) -> dict[str, Any] | None:
         """Get topology for device."""
         key = conf.pop("key")
-        return self._access.post(f"Devices.Device.{key}", "topology", conf)
+        return await self._access.post(f"Devices.Device.{key}", "topology", conf)
 
-    def get_device_islinked(
+    async def async_get_device_islinked(
         self, conf: dict[str, Any] = {"key": None}
     ) -> dict[str, Any] | None:
         """Is Linked."""
         key = conf.pop("key")
-        return self._access.post(f"Devices.Device.{key}", "isLinkedTo", conf)
+        return await self._access.post(f"Devices.Device.{key}", "isLinkedTo", conf)
 
-    def set_device_name(
+    async def async_set_device_name(
         self, conf: dict[str, Any] = {"key": None}
     ) -> dict[str, Any] | None:
         """Set device name."""
         key = conf.pop("key")
-        return self._access.post(f"Devices.Device.{key}", "setName", conf)
+        return await self._access.post(f"Devices.Device.{key}", "setName", conf)
 
-    def add_device_name(
+    async def async_add_device_name(
         self, conf: dict[str, Any] = {"key": None}
     ) -> dict[str, Any] | None:
         """Add device name."""
         key = conf.pop("key")
-        return self._access.post(f"Devices.Device.{key}", "addName", conf)
+        return await self._access.post(f"Devices.Device.{key}", "addName", conf)
 
-    def remove_device_name(
+    async def async_remove_device_name(
         self, conf: dict[str, Any] = {"key": None}
     ) -> dict[str, Any] | None:
         """Remove device name."""
         key = conf.pop("key")
-        return self._access.post(f"Devices.Device.{key}", "removeName", conf)
+        return await self._access.post(f"Devices.Device.{key}", "removeName", conf)
 
-    def del_device_name(
+    async def async_del_device_name(
         self, conf: dict[str, Any] = {"key": None}
     ) -> dict[str, Any] | None:
         """Del name of device."""
         key = conf.pop("key")
-        return self._access.post(f"Devices.Device.{key}", "delName", conf)
+        return await self._access.post(f"Devices.Device.{key}", "delName", conf)
 
-    def set_device_type(
+    async def async_set_device_type(
         self, conf: dict[str, Any] = {"key": None}
     ) -> dict[str, Any] | None:
         """Set device type."""
         key = conf.pop("key")
-        return self._access.post(f"Devices.Device.{key}", "setType", conf)
+        return await self._access.post(f"Devices.Device.{key}", "setType", conf)
 
-    def del_device_type(
+    async def async_del_device_type(
         self, conf: dict[str, Any] = {"key": None}
     ) -> dict[str, Any] | None:
         """Del device type."""
         key = conf.pop("key")
-        return self._access.post(f"Devices.Device.{key}", "removeType", conf)
+        return await self._access.post(f"Devices.Device.{key}", "removeType", conf)
 
-    def set_device_alternative(
+    async def async_set_device_alternative(
         self, conf: dict[str, Any] = {"key": None}
     ) -> dict[str, Any] | None:
         """Set Alternative for device."""
         key = conf.pop("key")
-        return self._access.post(f"Devices.Device.{key}", "setAlternative", conf)
+        return await self._access.post(f"Devices.Device.{key}", "setAlternative", conf)
 
-    def del_device_alternative(
+    async def async_del_device_alternative(
         self, conf: dict[str, Any] = {"key": None}
     ) -> dict[str, Any] | None:
         """Del Alternative for device."""
         key = conf.pop("key")
-        return self._access.post(f"Devices.Device.{key}", "removeAlternative", conf)
+        return await self._access.post(f"Devices.Device.{key}", "removeAlternative", conf)
 
-    def get_device_isalternative(
+    async def async_get_device_isalternative(
         self, conf: dict[str, Any] = {"key": None}
     ) -> dict[str, Any] | None:
         """Is Alternative for device."""
         key = conf.pop("key")
-        return self._access.post(f"Devices.Device.{key}", "isAlternative", conf)
+        return await self._access.post(f"Devices.Device.{key}", "isAlternative", conf)
 
-    def set_device_service(
+    async def async_set_device_service(
         self, conf: dict[str, Any] = {"key": None}
     ) -> dict[str, Any] | None:
         """Add service for device."""
         key = conf.pop("key")
-        return self._access.post(f"Devices.Device.{key}", "addService", conf)
+        return await self._access.post(f"Devices.Device.{key}", "addService", conf)
