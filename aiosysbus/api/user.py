@@ -4,17 +4,19 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
-    from ..access import Access
+    from ..auth import Auth
 
 
 class UserManagement:
     """User Management class."""
 
-    def __init__(self, access: Access) -> None:
+    def __init__(self, access: Auth) -> None:
         """Init."""
         self._access = access
 
-    async def async_add_user(self, conf: dict[str, Any] | None = None) -> dict[str, Any] | None:
+    async def async_add_user(
+        self, conf: dict[str, Any] | None = None
+    ) -> dict[str, Any]:
         """Add user."""
         return await self._access.post("UserManagement", "addUser", conf)
 
@@ -24,19 +26,27 @@ class UserManagement:
         """Change password for a user."""
         return await self._access.post("UserManagement", "changePassword", conf)
 
-    async def async_del_user(self, conf: dict[str, Any] | None = None) -> dict[str, Any] | None:
+    async def async_del_user(
+        self, conf: dict[str, Any] | None = None
+    ) -> dict[str, Any] | None:
         """Del user."""
         return await self._access.post("UserManagement", "removeUsers", conf)
 
-    async def async_get_users(self, conf: dict[str, Any] | None = None) -> dict[str, Any] | None:
+    async def async_get_users(
+        self, conf: dict[str, Any] | None = None
+    ) -> dict[str, Any] | None:
         """Get users."""
         return await self._access.post("UserManagement", "getUsers", conf)
 
-    async def async_get_groups(self, conf: dict[str, Any] | None = None) -> dict[str, Any] | None:
+    async def async_get_groups(
+        self, conf: dict[str, Any] | None = None
+    ) -> dict[str, Any] | None:
         """Get groups."""
         return await self._access.post("UserManagement", "getGroups", conf)
 
-    async def async_authenticate(self, conf: dict[str, Any] | None = None) -> dict[str, Any] | None:
+    async def async_authenticate(
+        self, conf: dict[str, Any] | None = None
+    ) -> dict[str, Any] | None:
         """Authentication."""
         return await self._access.post("UserManagement", "authenticate", conf)
 
@@ -46,7 +56,9 @@ class UserManagement:
         """Add authentication log."""
         return await self._access.post("UserManagement", "addAuthenticationLog", conf)
 
-    async def async_get_userlog(self, conf: dict[str, Any] | None = None) -> dict[str, Any] | None:
+    async def async_get_userlog(
+        self, conf: dict[str, Any] | None = None
+    ) -> dict[str, Any] | None:
         """Get user log."""
         return await self._access.post("UserManagement", "getUserLog", conf)
 
@@ -56,7 +68,9 @@ class UserManagement:
         """Get Last login info."""
         return await self._access.post("UserManagement", "getLastLoginInfo", conf)
 
-    async def async_get_group(self, conf: dict[str, Any] | None = None) -> dict[str, Any] | None:
+    async def async_get_group(
+        self, conf: dict[str, Any] | None = None
+    ) -> dict[str, Any] | None:
         """Get group."""
         return await self._access.post("UserManagement.Group", "get", conf)
 
@@ -67,7 +81,9 @@ class UserManagement:
         group = conf.pop("group")
         return await self._access.post(f"UserManagement.Group.{group}", "get", conf)
 
-    async def async_get_user(self, conf: dict[str, Any] | None = None) -> dict[str, Any] | None:
+    async def async_get_user(
+        self, conf: dict[str, Any] | None = None
+    ) -> dict[str, Any] | None:
         """Get user."""
         return await self._access.post("UserManagement.User", "get", conf)
 
@@ -89,7 +105,9 @@ class UserManagement:
     ) -> dict[str, Any] | None:
         """Get login attempt for id."""
         userid = conf.pop("id")
-        return await self._access.post(f"UserManagement.LoginAttempt.{userid}", "get", conf)
+        return await self._access.post(
+            f"UserManagement.LoginAttempt.{userid}", "get", conf
+        )
 
     async def async_get_logincounters(
         self, conf: dict[str, Any] | None = None

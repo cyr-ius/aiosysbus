@@ -4,13 +4,13 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
-    from ..access import Access
+    from ..auth import Auth
 
 
 class DeviceInfo:
     """Device information."""
 
-    def __init__(self, access: Access) -> None:
+    def __init__(self, access: Auth) -> None:
         """Init."""
         self._access = access
 
@@ -35,7 +35,9 @@ class DeviceInfo:
         """Get device information."""
         return await self._access.post("DeviceInfo", "update", conf)
 
-    async def async_export_deviceinfo(self, conf: dict[str, Any] | None) -> dict[str, Any] | None:
+    async def async_export_deviceinfo(
+        self, conf: dict[str, Any] | None
+    ) -> dict[str, Any] | None:
         """Get device information."""
         return await self._access.post("DeviceInfo", "export", conf)
 
@@ -50,25 +52,31 @@ class DeviceInfo:
 class Devices:  # pylint: disable=[too-many-public-methods]
     """Devices information."""
 
-    def __init__(self, access: Access) -> None:
+    def __init__(self, access: Auth) -> None:
         """Init."""
         self._access = access
 
-    async def async_del_devices_device(self, conf: dict[str, Any] | None) -> dict[str, Any] | None:
+    async def async_del_devices_device(
+        self, conf: dict[str, Any] | None
+    ) -> dict[str, Any] | None:
         """Remove devices.
 
         conf = {"key": 123}
         """
         return await self._access.post("Devices", "destroyDevice", conf)
 
-    async def async_find_devices(self, conf: dict[str, Any] | None) -> dict[str, Any] | None:
+    async def async_find_devices(
+        self, conf: dict[str, Any] | None
+    ) -> dict[str, Any] | None:
         """Find devices.
 
         conf = {"key": 123}
         """
         return await self._access.post("Devices", "find", conf)
 
-    async def async_get_devices(self, conf: dict[str, Any] | None = None) -> dict[str, Any] | None:
+    async def async_get_devices(
+        self, conf: dict[str, Any] | None = None
+    ) -> dict[str, Any] | None:
         """Get devices.
 
         conf = {"key": 123}
@@ -90,7 +98,9 @@ class Devices:  # pylint: disable=[too-many-public-methods]
         """
         return await self._access.post("Devices.Config", "get", conf)
 
-    async def async_set_devices_config(self, conf: dict[str, Any] | None) -> dict[str, Any] | None:
+    async def async_set_devices_config(
+        self, conf: dict[str, Any] | None
+    ) -> dict[str, Any] | None:
         """Set config for device."""
         return await self._access.post("Devices.Config", "set", conf)
 
@@ -113,12 +123,16 @@ class Devices:  # pylint: disable=[too-many-public-methods]
         key = conf.pop("key")
         return await self._access.post(f"Devices.Config.{key}", "get", conf)
 
-    async def async_get_device(self, conf: dict[str, Any] = {"key": None}) -> dict[str, Any] | None:
+    async def async_get_device(
+        self, conf: dict[str, Any] = {"key": None}
+    ) -> dict[str, Any] | None:
         """Get device."""
         key = conf.pop("key")
         return await self._access.post(f"Devices.Device.{key}", "get", conf)
 
-    async def async_set_device(self, conf: dict[str, Any] = {"key": None}) -> dict[str, Any] | None:
+    async def async_set_device(
+        self, conf: dict[str, Any] = {"key": None}
+    ) -> dict[str, Any] | None:
         """Set device."""
         key = conf.pop("key")
         return await self._access.post(f"Devices.Device.{key}", "set", conf)
@@ -155,7 +169,9 @@ class Devices:  # pylint: disable=[too-many-public-methods]
         conf = {"key:"01:02:03:04:05:06","parameter": "Name"}
         """
         key = conf.pop("key")
-        return await self._access.post(f"Devices.Device.{key}", "getFirstParameter", conf)
+        return await self._access.post(
+            f"Devices.Device.{key}", "getFirstParameter", conf
+        )
 
     async def async_get_device_params(
         self, conf: dict[str, Any] = {"key": None}
@@ -235,7 +251,9 @@ class Devices:  # pylint: disable=[too-many-public-methods]
     ) -> dict[str, Any] | None:
         """Del Alternative for device."""
         key = conf.pop("key")
-        return await self._access.post(f"Devices.Device.{key}", "removeAlternative", conf)
+        return await self._access.post(
+            f"Devices.Device.{key}", "removeAlternative", conf
+        )
 
     async def async_get_device_isalternative(
         self, conf: dict[str, Any] = {"key": None}

@@ -4,13 +4,13 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
-    from ..access import Access
+    from ..auth import Auth
 
 
 class Diagnostic:  # pylint: disable=[too-many-public-methods]
     """System class."""
 
-    def __init__(self, access: Access) -> None:
+    def __init__(self, access: Auth) -> None:
         """Init."""
         self._access = access
 
@@ -36,15 +36,21 @@ class Diagnostic:  # pylint: disable=[too-many-public-methods]
 
     # ############ AUTO DIAG #############
 
-    async def async_run_diags(self, conf: dict[str, Any] | None) -> dict[str, Any] | None:
+    async def async_run_diags(
+        self, conf: dict[str, Any] | None
+    ) -> dict[str, Any] | None:
         """Set  enable remote access."""
         return await self._access.post("AutoDiag", "executeDiagnostics", conf)
 
-    async def async_run_diags_trigger(self, conf: dict[str, Any] | None) -> dict[str, Any] | None:
+    async def async_run_diags_trigger(
+        self, conf: dict[str, Any] | None
+    ) -> dict[str, Any] | None:
         """Get time left for remote access."""
         return await self._access.post("AutoDiag", "executeTrigger", conf)
 
-    async def async_remove_diags(self, conf: dict[str, Any] | None) -> dict[str, Any] | None:
+    async def async_remove_diags(
+        self, conf: dict[str, Any] | None
+    ) -> dict[str, Any] | None:
         """Reset timer for remote access."""
         return await self._access.post("AutoDiag", "cancelDiagnostics", conf)
 
@@ -66,7 +72,9 @@ class Diagnostic:  # pylint: disable=[too-many-public-methods]
         """Reset timer for remote access."""
         return await self._access.post("AutoDiag", "listDiagnostics", conf)
 
-    async def async_set_diags(self, conf: dict[str, Any] | None) -> dict[str, Any] | None:
+    async def async_set_diags(
+        self, conf: dict[str, Any] | None
+    ) -> dict[str, Any] | None:
         """Set  enable remote access."""
         return await self._access.post("AutoDiag", "setUserInput", conf)
 
@@ -78,7 +86,9 @@ class Diagnostic:  # pylint: disable=[too-many-public-methods]
         """Get topology diagnostics."""
         return await self._access.post("TopologyDiagnostics", "get", conf)
 
-    async def async_set_topodiags(self, conf: dict[str, Any] | None) -> dict[str, Any] | None:
+    async def async_set_topodiags(
+        self, conf: dict[str, Any] | None
+    ) -> dict[str, Any] | None:
         """Set topology diagnostics."""
         return await self._access.post("TopologyDiagnostics", "set", conf)
 
@@ -98,7 +108,9 @@ class Diagnostic:  # pylint: disable=[too-many-public-methods]
         self, conf: dict[str, Any] | None = None
     ) -> dict[str, Any] | None:
         """Enable topology diagnostics."""
-        return await self._access.post("TopologyDiagnostics", "enableAutomaticUpload", conf)
+        return await self._access.post(
+            "TopologyDiagnostics", "enableAutomaticUpload", conf
+        )
 
     async def async_get_topodiags_isautoupload(
         self, conf: dict[str, Any] | None = None
@@ -116,11 +128,15 @@ class Diagnostic:  # pylint: disable=[too-many-public-methods]
             "TopologyDiagnostics", "setCustomerAuthorization", conf
         )
 
-    async def async_export_topodiags(self, conf: dict[str, Any] | None) -> dict[str, Any] | None:
+    async def async_export_topodiags(
+        self, conf: dict[str, Any] | None
+    ) -> dict[str, Any] | None:
         """Export topology diagnostics."""
         return await self._access.post("TopologyDiagnostics", "export", conf)
 
-    async def async_import_topodiags(self, conf: dict[str, Any] | None) -> dict[str, Any] | None:
+    async def async_import_topodiags(
+        self, conf: dict[str, Any] | None
+    ) -> dict[str, Any] | None:
         """Import topology diagnostics."""
         return await self._access.post("TopologyDiagnostics", "import", conf)
 
@@ -135,11 +151,15 @@ class Diagnostic:  # pylint: disable=[too-many-public-methods]
 
     # ############ PROCESS MONITOR #############
 
-    async def async_get_process(self, conf: dict[str, Any] | None = None) -> dict[str, Any] | None:
+    async def async_get_process(
+        self, conf: dict[str, Any] | None = None
+    ) -> dict[str, Any] | None:
         """Get process monitor."""
         return await self._access.post("ProcessMonitor", "get", conf)
 
-    async def async_set_process(self, conf: dict[str, Any] | None) -> dict[str, Any] | None:
+    async def async_set_process(
+        self, conf: dict[str, Any] | None
+    ) -> dict[str, Any] | None:
         """Set process monitor."""
         return await self._access.post("ProcessMonitor", "set", conf)
 
@@ -162,4 +182,6 @@ class Diagnostic:  # pylint: disable=[too-many-public-methods]
     ) -> dict[str, Any] | None:
         """Reset process monitor component."""
         component = conf.pop("component")
-        return await self._access.post(f"ProcessMonitor.Test.{component}", "reset", conf)
+        return await self._access.post(
+            f"ProcessMonitor.Test.{component}", "reset", conf
+        )

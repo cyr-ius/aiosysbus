@@ -4,13 +4,13 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
-    from ..access import Access
+    from ..auth import Auth
 
 
 class Dhcp:
     """DHCP class."""
 
-    def __init__(self, access: Access) -> None:
+    def __init__(self, access: Auth) -> None:
         """Init."""
         self._access = access
 
@@ -31,7 +31,9 @@ class Dhcp:
         "IPAddress":"192.168.1.55"}
         """
         pool = conf.pop("pool")
-        return await self._access.post(f"DHCPv4.Server.Pool.{pool}", "addStaticLease", conf)
+        return await self._access.post(
+            f"DHCPv4.Server.Pool.{pool}", "addStaticLease", conf
+        )
 
     async def async_set_dhcp_staticlease_frompool(
         self, conf: dict[str, Any] = {"pool": "default"}
@@ -42,7 +44,9 @@ class Dhcp:
         "IPAddress":"192.168.1.55"}
         """
         pool = conf.pop("pool")
-        return await self._access.post(f"DHCPv4.Server.Pool.{pool}", "addLeaseFromPool", conf)
+        return await self._access.post(
+            f"DHCPv4.Server.Pool.{pool}", "addLeaseFromPool", conf
+        )
 
     async def async_del_dhcp_staticlease(
         self, conf: dict[str, Any] = {"pool": "default"}
@@ -61,7 +65,9 @@ class Dhcp:
     ) -> dict[str, Any] | None:
         """Get leases."""
         pool = conf.pop("pool")
-        return await self._access.post(f"DHCPv4.Server.Pool.{pool}", "getStaticLeases", conf)
+        return await self._access.post(
+            f"DHCPv4.Server.Pool.{pool}", "getStaticLeases", conf
+        )
 
     async def async_get_dhcp_leases(
         self, conf: dict[str, Any] = {"pool": "default"}
@@ -75,17 +81,25 @@ class Dhcp:
     ) -> dict[str, Any] | None:
         """Set lease time."""
         pool = conf.pop("pool")
-        return await self._access.post(f"DHCPv4.Server.Pool.{pool}", "setLeaseTime", conf)
+        return await self._access.post(
+            f"DHCPv4.Server.Pool.{pool}", "setLeaseTime", conf
+        )
 
-    async def async_set_dhcp_leaserenew(self, conf: dict[str, Any] | None) -> dict[str, Any] | None:
+    async def async_set_dhcp_leaserenew(
+        self, conf: dict[str, Any] | None
+    ) -> dict[str, Any] | None:
         """Set lease force renew."""
-        return await self._access.post("DHCPv4.Server.Pool.Rule.Lease", "forceRenew", conf)
+        return await self._access.post(
+            "DHCPv4.Server.Pool.Rule.Lease", "forceRenew", conf
+        )
 
     async def async_get_dhcp_stats(self) -> dict[str, Any] | None:
         """Get DHCP Pool."""
         return await self._access.post("DHCPv4.Server.Stats", "get")
 
-    async def async_set_dhcp_config(self, conf: dict[str, Any] | None) -> dict[str, Any] | None:
+    async def async_set_dhcp_config(
+        self, conf: dict[str, Any] | None
+    ) -> dict[str, Any] | None:
         """Set DHCP configuration.
 
         conf = {"Address":"01:02:03:04:05:06","Netmask":"192.168.1.55",
@@ -120,7 +134,7 @@ class Dhcp:
 class DynDNS:
     """Dynamic DNS class."""
 
-    def __init__(self, access: Access) -> None:
+    def __init__(self, access: Auth) -> None:
         """Init."""
         self._access = access
 
@@ -132,11 +146,15 @@ class DynDNS:
         """Get DHCP Server status."""
         return await self._access.post("DynDNS", "getHosts")
 
-    async def async_set_host(self, conf: dict[str, Any] | None) -> dict[str, Any] | None:
+    async def async_set_host(
+        self, conf: dict[str, Any] | None
+    ) -> dict[str, Any] | None:
         """Set host."""
         return await self._access.post("DynDNS", "addHost", conf)
 
-    async def async_del_host(self, conf: dict[str, Any] | None) -> dict[str, Any] | None:
+    async def async_del_host(
+        self, conf: dict[str, Any] | None
+    ) -> dict[str, Any] | None:
         """Del Host."""
         return await self._access.post("DynDNS", "delHost", conf)
 
@@ -144,6 +162,8 @@ class DynDNS:
         """Get status."""
         return await self._access.post("DynDNS", "getGlobalEnable")
 
-    async def async_set_ddns(self, conf: dict[str, Any] | None) -> dict[str, Any] | None:
+    async def async_set_ddns(
+        self, conf: dict[str, Any] | None
+    ) -> dict[str, Any] | None:
         """Enable dynamic dns."""
         return await self._access.post("DynDNS", "setGlobalEnable", conf)
