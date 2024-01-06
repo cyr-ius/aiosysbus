@@ -43,7 +43,9 @@ class Auth:
         self.session_permissions: str | None = None
         self.retry = MAX_RETRY
 
-    async def async_request(self, method: str, json: dict[str, Any]) -> dict[str, Any]:
+    async def async_request(
+        self, method: str, json: dict[str, Any] | None = None
+    ) -> dict[str, Any]:
         """Make a request."""
         if not self.session_token:
             await self._async_refresh_session_token()
@@ -95,7 +97,7 @@ class Auth:
             self.retry -= 1
             if self.retry > 0:
                 _LOGGER.debug("Retrying (%s) request..", self.retry)
-                await self._refresh_session_token()
+                await self._async_refresh_session_token_refresh_session_token()
                 return await self.async_request(method, json)
             raise RetrieveFailed(error_msg)
 
@@ -103,7 +105,7 @@ class Auth:
         _LOGGER.debug("RESPONSE: %s", result)
         return result
 
-    async def get(self, url: str, method: str) -> dict[str, Any] | None:
+    async def get(self, method: str) -> dict[str, Any] | None:
         """Send get request and return results."""
         return await self.async_request(method="get")
 
