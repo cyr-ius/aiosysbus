@@ -46,7 +46,7 @@ class Auth:
 
     async def async_request(
         self, method: str, json: dict[str, Any] | None = None
-    ) -> Any:
+    ) -> dict[str, Any]:
         """Make a request."""
         if not self.session_token:
             await self._async_refresh_session_token()
@@ -76,7 +76,7 @@ class Auth:
         content_type = response.headers.get("Content-Type", "")
         if (response.status // 100) in [4, 5]:
             if "application/json" in content_type:
-                result = await response.json()
+                result: dict[str, Any] = await response.json()
                 response.close()
                 raise HttpRequestFailed(result)
 
@@ -106,27 +106,27 @@ class Auth:
         _LOGGER.debug("RESPONSE: %s", result)
         return result
 
-    async def get(self, method: str) -> dict[str, Any] | None:
+    async def get(self, method: str) -> Any:
         """Send get request and return results."""
         return await self.async_request(method="get")
 
     async def post(
-        self, service: str, method: str, params: dict[str, Any] | None
-    ) -> dict[str, Any] | None:
+        self, service: str, method: str, params: dict[str, Any] | None = None
+    ) -> Any:
         """Send post request and return results."""
         data = {"service": service, "method": method, "parameters": params}
         return await self.async_request(method="post", json=data)
 
     async def put(
-        self, service: str, method: str, params: dict[str, Any] | None
-    ) -> dict[str, Any] | None:
+        self, service: str, method: str, params: dict[str, Any] | None = None
+    ) -> Any:
         """Send put request and return results."""
         data = {"service": service, "method": method, "parameters": params}
         return await self.async_request(method="put", json=data)
 
     async def delete(
-        self, service: str, method: str, params: dict[str, Any] | None
-    ) -> dict[str, Any] | None:
+        self, service: str, method: str, params: dict[str, Any] | None = None
+    ) -> Any:
         """Send delete request and return results."""
         data = {"service": service, "method": method, "parameters": params}
         return await self.async_request(method="delete", json=data)

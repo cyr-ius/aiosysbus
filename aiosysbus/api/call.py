@@ -125,9 +125,7 @@ class Phonebook:
         self, conf: dict[str, Any] | None
     ) -> dict[str, Any] | None:
         """Remove contact by name."""
-        return await self._auth.post(
-            "Phonebook", "removeContactByFormattedName", conf
-        )
+        return await self._auth.post("Phonebook", "removeContactByFormattedName", conf)
 
     async def async_del_contact(
         self, conf: dict[str, Any] | None
@@ -193,9 +191,7 @@ class Phonebook:
         self, conf: dict[str, Any] | None
     ) -> dict[str, Any] | None:
         """Set contact by name."""
-        return await self._auth.post(
-            "Phonebook", "modifyContactByFormattedName", conf
-        )
+        return await self._auth.post("Phonebook", "modifyContactByFormattedName", conf)
 
     async def async_set_contact(
         self, conf: dict[str, Any] | None

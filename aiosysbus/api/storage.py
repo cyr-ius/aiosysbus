@@ -48,9 +48,7 @@ class HTTPService:
         self, conf: dict[str, Any] | None = None
     ) -> dict[str, Any] | None:
         """Upload to WebDav."""
-        return await self._auth.post(
-            "HTTPService.WebDav.DigestManager", "Upload", conf
-        )
+        return await self._auth.post("HTTPService.WebDav.DigestManager", "Upload", conf)
 
 
 class StorageService:  # pylint: disable=[too-few-public-methods]

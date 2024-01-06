@@ -182,6 +182,4 @@ class Diagnostic:  # pylint: disable=[too-many-public-methods]
     ) -> dict[str, Any] | None:
         """Reset process monitor component."""
         component = conf.pop("component")
-        return await self._auth.post(
-            f"ProcessMonitor.Test.{component}", "reset", conf
-        )
+        return await self._auth.post(f"ProcessMonitor.Test.{component}", "reset", conf)

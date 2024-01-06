@@ -81,9 +81,7 @@ class Dhcp:
     ) -> dict[str, Any] | None:
         """Set lease time."""
         pool = conf.pop("pool")
-        return await self._auth.post(
-            f"DHCPv4.Server.Pool.{pool}", "setLeaseTime", conf
-        )
+        return await self._auth.post(f"DHCPv4.Server.Pool.{pool}", "setLeaseTime", conf)
 
     async def async_set_dhcp_leaserenew(
         self, conf: dict[str, Any] | None

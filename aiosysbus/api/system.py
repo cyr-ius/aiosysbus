@@ -202,9 +202,7 @@ class System:  # pylint: disable=[too-many-public-methods]
         self, conf: dict[str, Any] | None
     ) -> dict[str, Any] | None:
         """Restore network config."""
-        return await self._auth.post(
-            "NMC.NetworkConfig", "launchNetworkRestore", conf
-        )
+        return await self._auth.post("NMC.NetworkConfig", "launchNetworkRestore", conf)
 
     async def async_get_networkconfig(
         self, conf: dict[str, Any] | None = None
