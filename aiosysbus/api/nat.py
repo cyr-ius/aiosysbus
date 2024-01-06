@@ -90,13 +90,15 @@ class Nat:
         """Get Dynamic DNS services configuration"""
         return await self._auth.post("DynDNS", "getServices", conf)
 
-    async def async_set_dns_name(self, mac, conf):  # type:ignore[no-untyped-def]
+    async def async_set_dns_name(
+        self, mac: str, conf: dict[str, Any] | None = None
+    ) -> dict[str, Any]:
         """Set DNS name
 
         mac = '00:01:2B:3C:4D:5E'
         conf = {"parameters":{"name":"nestor","source":"dns"}}
         """
-        return await self._auth.post("Devices/Device/" + mac + ":setName", conf)
+        return await self._auth.post("Devices/Device/" + mac, "setName", conf)
 
     async def async_get_upnp_devices(
         self, conf: dict[str, Any] | None = None
@@ -104,9 +106,11 @@ class Nat:
         """Get Upnp configuration"""
         return await self._auth.post("UPnP-IGD", "get", conf)
 
-    async def async_set_upnp_config(self, conf):  # type:ignore[no-untyped-def]
+    async def async_set_upnp_config(
+        self, conf: dict[str, Any] | None = None
+    ) -> dict[str, Any]:
         """Set Upnp configuration
 
         conf = {"Enable":"1"}
         """
-        return await self._auth.post("UPnP-IGD?_restAction=put", conf)
+        return await self._auth.post("UPnP-IGD", "put", conf)

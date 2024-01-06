@@ -51,7 +51,7 @@ class HTTPService:
         return await self._auth.post("HTTPService.WebDav.DigestManager", "Upload", conf)
 
 
-class StorageService:  # pylint: disable=[too-few-public-methods]
+class StorageService:
     """Locations class."""
 
     def __init__(self, auth: Auth) -> None:
