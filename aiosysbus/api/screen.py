@@ -10,16 +10,16 @@ if TYPE_CHECKING:
 class Screen:
     """Class Screen."""
 
-    def __init__(self, access: Auth) -> None:
+    def __init__(self, auth: Auth) -> None:
         """Init."""
-        self._access = access
+        self._auth = auth
 
     async def async_getShowWifiPassword(self) -> dict[str, Any] | None:
         """Show status display wifi password (display on box)."""
-        return await self._access.post("Screen", "getShowWifiPassword")
+        return await self._auth.post("Screen", "getShowWifiPassword")
 
     async def async_setShowWifiPassword(
         self, conf: dict[str, Any] | None
     ) -> dict[str, Any] | None:
         """Set wifi password (display on box)."""
-        return await self._access.post("Screen", "setShowWifiPassword", conf)
+        return await self._auth.post("Screen", "setShowWifiPassword", conf)
