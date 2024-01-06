@@ -26,6 +26,7 @@ PASSWORD = "XXXXXXXXXX"
 HOST = "192.168.1.1"
 
 
+# mypy: disable-error-code="attr-defined"
 async def async_main() -> None:
     """Main function."""
 
