@@ -192,7 +192,7 @@ class Locations:
         return await self._auth.post("Locations", "getComposition", conf)
 
 
-class Domino:  # pylint: disable=[too-few-public-methods]
+class Domino:
     """Locations class."""
 
     def __init__(self, auth: Auth) -> None:
@@ -200,7 +200,7 @@ class Domino:  # pylint: disable=[too-few-public-methods]
         self._auth = auth
 
 
-class Ssw:  # pylint: disable=[too-few-public-methods]
+class Ssw:
     """Locations class."""
 
     def __init__(self, auth: Auth) -> None:
@@ -208,7 +208,7 @@ class Ssw:  # pylint: disable=[too-few-public-methods]
         self._auth = auth
 
 
-class RuleFactory:  # pylint: disable=[too-few-public-methods]
+class RuleFactory:
     """Locations class."""
 
     def __init__(self, auth: Auth) -> None:
@@ -216,7 +216,7 @@ class RuleFactory:  # pylint: disable=[too-few-public-methods]
         self._auth = auth
 
 
-class RuleEngine:  # pylint: disable=[too-few-public-methods]
+class RuleEngine:
     """Rule Engine class."""
 
     def __init__(self, auth: Auth) -> None:
@@ -224,7 +224,7 @@ class RuleEngine:  # pylint: disable=[too-few-public-methods]
         self._auth = auth
 
 
-class Zwave:  # pylint: disable=[too-few-public-methods]
+class Zwave:
     """Locations class."""
 
     def __init__(self, auth: Auth) -> None:

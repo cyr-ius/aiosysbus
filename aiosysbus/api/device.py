@@ -49,7 +49,7 @@ class DeviceInfo:
         return await self._auth.post(f"DeviceInfo.{info}", "get", conf)
 
 
-class Devices:  # pylint: disable=[too-many-public-methods]
+class Devices:
     """Devices information."""
 
     def __init__(self, auth: Auth) -> None:

@@ -7,7 +7,7 @@ if TYPE_CHECKING:
     from ..auth import Auth
 
 
-class System:  # pylint: disable=[too-many-public-methods]
+class System:
     """System class."""
 
     def __init__(self, auth: Auth) -> None:

@@ -15,7 +15,7 @@ from .exceptions import AiosysbusException, AuthenticationFailed
 logger = logging.getLogger(__name__)
 
 
-class AIOSysbus:  # pylint: disable=[too-many-instance-attributes]
+class AIOSysbus:
     """Sysbus is API for livebox."""
 
     connection: Api.Connection
@@ -23,7 +23,6 @@ class AIOSysbus:  # pylint: disable=[too-many-instance-attributes]
     nat: Api.Nat
     system: Api.System
 
-    # pylint: disable-next=[too-many-arguments]
     def __init__(
         self,
         username: str,
@@ -47,7 +46,6 @@ class AIOSysbus:  # pylint: disable=[too-many-instance-attributes]
 
     async def async_connect(self) -> None:
         """Instantiate modules."""
-        # Create livebox http access module
         scheme = "https" if self._use_tls else "http"
         base_url = yurl.build(
             scheme=scheme, host=self._host, port=self._port, path="/ws"

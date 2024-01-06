@@ -7,7 +7,7 @@ if TYPE_CHECKING:
     from ..auth import Auth
 
 
-class Diagnostic:  # pylint: disable=[too-many-public-methods]
+class Diagnostic:
     """System class."""
 
     def __init__(self, auth: Auth) -> None:
