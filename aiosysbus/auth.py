@@ -26,6 +26,7 @@ CONTENT_TYPES = [
     "application/json",
 ]
 
+
 class Auth:
     """Class to make authenticated requests."""
 
@@ -89,7 +90,7 @@ class Auth:
 
         if content_type not in CONTENT_TYPES:
             result = await response.text()
-            msg = f"Unexpected response , content-type incorrect ({content_type})"
+            msg = f"Unexpected response, content-type incorrect ({content_type})"
             raise UnexpectedResponse(msg)
 
         rjson = await response.json()
@@ -177,7 +178,7 @@ class Auth:
         content_type = response.headers.get("Content-Type", "")
         if content_type not in CONTENT_TYPES:
             raise UnexpectedResponse(
-                f"Unexpected response , content-type incorrect {content-type}"
+                f"Unexpected response, content-type incorrect {content_type}"
             )
 
         if (response.status // 100) in [4, 5]:
