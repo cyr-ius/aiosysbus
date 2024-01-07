@@ -20,6 +20,7 @@ from .exceptions import (
 
 _LOGGER = logging.getLogger(__name__)
 MAX_RETRY = 5
+CONTENT_TYPES = ["application/x-sah-ws-1-call+json; charset=UTF-8", "application/json"]
 
 
 class Auth:
@@ -65,16 +66,16 @@ class Auth:
                 )
         except (asyncio.CancelledError, asyncio.TimeoutError) as error:
             raise TimeoutExceededError(
-                "Timeout occurred while connecting to Livebox."
+                "Timeout occurred while connecting to Livebox"
             ) from error
         except (ClientError, socket.gaierror) as error:
             raise HttpRequestFailed(
-                "Error occurred while communicating with Livebox."
+                "Error occurred while communicating with Livebox"
             ) from error
 
         content_type = response.headers.get("Content-Type", "")
         if (response.status // 100) in [4, 5]:
-            if "application/json" in content_type:
+            if content_type in CONTENT_TYPES:
                 result: dict[str, Any] = await response.json()
                 response.close()
                 raise HttpRequestFailed(result)
@@ -83,7 +84,7 @@ class Auth:
             response.close()
             raise HttpRequestFailed(result)
 
-        if "application/json" not in content_type:
+        if content_type not in CONTENT_TYPES:
             result = await response.text()
             msg = "Unexpected response from the Livebox API"
             raise UnexpectedResponse(
@@ -174,13 +175,13 @@ class Auth:
             ) from error
 
         content_type = response.headers.get("Content-Type", "")
-        if "application/json" not in content_type:
+        if content_type not in CONTENT_TYPES:
             raise UnexpectedResponse(
                 "Unexpected response , content-type incorrect (%s)", content_type
             )
 
         if (response.status // 100) in [4, 5]:
-            if "application/json" in content_type:
+            if content_type in CONTENT_TYPES:
                 result = await response.json()
                 response.close()
                 raise HttpRequestFailed(result)
