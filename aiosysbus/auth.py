@@ -20,7 +20,7 @@ from .exceptions import (
 
 _LOGGER = logging.getLogger(__name__)
 MAX_RETRY = 5
-CONTENT_TYPES = ["application/x-sah-ws-1-call+json; charset=UTF-8", "application/json"]
+CONTENT_TYPES = ["application/x-sah-ws-1-call+json", "application/x-sah-ws-1-call+json; charset=UTF-8", "application/json"]
 
 
 class Auth:
@@ -86,11 +86,8 @@ class Auth:
 
         if content_type not in CONTENT_TYPES:
             result = await response.text()
-            msg = "Unexpected response from the Livebox API"
-            raise UnexpectedResponse(
-                msg,
-                {"Content-Type": content_type, "response": result},
-            )
+            msg = f"Unexpected response , content-type incorrect ({content_type})"
+            raise UnexpectedResponse(msg)
 
         rjson = await response.json()
         result = rjson.get("result", {})
