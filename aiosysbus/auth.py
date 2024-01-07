@@ -20,8 +20,11 @@ from .exceptions import (
 
 _LOGGER = logging.getLogger(__name__)
 MAX_RETRY = 5
-CONTENT_TYPES = ["application/x-sah-ws-1-call+json", "application/x-sah-ws-1-call+json; charset=UTF-8", "application/json"]
-
+CONTENT_TYPES = [
+    "application/x-sah-ws-1-call+json",
+    "application/x-sah-ws-1-call+json; charset=UTF-8",
+    "application/json",
+]
 
 class Auth:
     """Class to make authenticated requests."""
