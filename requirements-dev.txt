@@ -8,3 +8,5 @@ python-typing-update
 ruff
 yamllint
 types-requests
+pytest
+pytest-asyncio
