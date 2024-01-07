@@ -10,3 +10,4 @@ yamllint
 types-requests
 pytest
 pytest-asyncio
+setuptools_scm
