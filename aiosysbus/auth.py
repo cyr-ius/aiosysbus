@@ -6,7 +6,7 @@ import logging
 import socket
 from typing import Any
 
-from aiohttp import ClientError, ClientResponseError, ClientSession
+from aiohttp import ClientError, ClientSession
 from yarl import URL
 
 from .exceptions import (
@@ -67,7 +67,7 @@ class Auth:
             raise TimeoutExceededError(
                 "Timeout occurred while connecting to Livebox."
             ) from error
-        except (ClientError, ClientResponseError, socket.gaierror) as error:
+        except (ClientError, socket.gaierror) as error:
             raise HttpRequestFailed(
                 "Error occurred while communicating with Livebox."
             ) from error
@@ -168,7 +168,7 @@ class Auth:
             raise TimeoutExceededError(
                 "Timeout occurred while connecting to Livebox."
             ) from error
-        except (ClientError, ClientResponseError, socket.gaierror) as error:
+        except (ClientError, socket.gaierror) as error:
             raise HttpRequestFailed(
                 "Error occurred while communicating with Livebox."
             ) from error
