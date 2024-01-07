@@ -174,7 +174,7 @@ class Auth:
         content_type = response.headers.get("Content-Type", "")
         if content_type not in CONTENT_TYPES:
             raise UnexpectedResponse(
-                "Unexpected response , content-type incorrect (%s)", content_type
+                f"Unexpected response , content-type incorrect {content-type}"
             )
 
         if (response.status // 100) in [4, 5]:
