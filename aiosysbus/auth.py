@@ -190,7 +190,7 @@ class Auth:
         rjson = await response.json()
         if not rjson.get("data"):
             raise AuthenticationFailed(
-                "Starting session failed (APIResponse: %s)", rjson
+                f"Starting session failed (APIResponse: {rjson})"
             )
 
         session_token = rjson.get("data").get("contextID")
