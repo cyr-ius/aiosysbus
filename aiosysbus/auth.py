@@ -63,7 +63,6 @@ class Auth:
                 response = await self.session.request(
                     method, self.base_url, json=json, headers=headers
                 )
-                response.raise_for_status()
         except (asyncio.CancelledError, asyncio.TimeoutError) as error:
             raise TimeoutExceededError(
                 "Timeout occurred while connecting to Livebox."
