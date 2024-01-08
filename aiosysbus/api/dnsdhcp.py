@@ -49,38 +49,38 @@ class Dhcp:
         )
 
     async def async_del_dhcp_staticlease(
-        self, conf: dict[str, Any] = {"pool": "default"}
+        self, conf: dict[str, Any] | None = None
     ) -> dict[str, Any]:
         """Remove static lease.
 
         conf = {"MACAddress":"01:02:03:04:05:06"}
         """
-        pool = conf.pop("pool")
+        pool = (conf if conf else {}).pop("pool", "default")
         return await self._auth.post(
             f"DHCPv4.Server.Pool.{pool}", "deleteStaticLease", conf
         )
 
     async def async_get_dhcp_staticleases(
-        self, conf: dict[str, Any] = {"pool": "default"}
+        self, conf: dict[str, Any] | None = None
     ) -> dict[str, Any]:
         """Get leases."""
-        pool = conf.pop("pool")
+        pool = (conf if conf else {}).pop("pool", "default")
         return await self._auth.post(
             f"DHCPv4.Server.Pool.{pool}", "getStaticLeases", conf
         )
 
     async def async_get_dhcp_leases(
-        self, conf: dict[str, Any] = {"pool": "default"}
+        self, conf: dict[str, Any] | None = None
     ) -> dict[str, Any]:
         """Get leases."""
-        pool = conf.pop("pool")
+        pool = (conf if conf else {}).pop("pool", "default")
         return await self._auth.post(f"DHCPv4.Server.Pool.{pool}", "getLeases", conf)
 
     async def async_set_dhcp_leasetime(
-        self, conf: dict[str, Any] = {"pool": "default"}
+        self, conf: dict[str, Any] | None = None
     ) -> dict[str, Any]:
         """Set lease time."""
-        pool = conf.pop("pool")
+        pool = (conf if conf else {}).pop("pool", "default")
         return await self._auth.post(f"DHCPv4.Server.Pool.{pool}", "setLeaseTime", conf)
 
     async def async_set_dhcp_leaserenew(
