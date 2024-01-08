@@ -51,7 +51,7 @@ async def async_main() -> None:
         # for device in devices["status"]:
         #     if not device.get("Active") and device.get("DeviceType") == "Computer":
         #         await api.system.async_del_devices_device({"key": device.get("PhysAddress")})
-        devices = await api.system.async_get_devices(parameters)
+        devices = await api.devices.async_get_devices(parameters)
         for device in devices["status"]:
             logger.debug(device["Name"])
         # parameters = {
@@ -63,7 +63,7 @@ async def async_main() -> None:
         # parameters = {"parameters": {"expression": ".Master==\"\""}}
         # parameters = {"parameters": {"expression": {"eth":"eth"}}}
         parameters = {"parameters": {"expression": {"wifi": "wifi"}}}
-        hosts = await api.system.async_get_devices(parameters)
+        hosts = await api.devices.async_get_devices(parameters)
         # for device in hosts["status"]["eth"]:
         #     logger.info(
         #         "Key:{} - IP:{} - Name:{}".format(
@@ -72,24 +72,45 @@ async def async_main() -> None:
         #             device.get("Name", "unknown"),
         #         )
         #     )
-        for device in hosts["status"]["wifi"]:
-            logger.info(
-                "Key:{} - IP:{} - Name:{}".format(
-                    device["Key"],
-                    device.get("IPAddress", ""),
-                    device.get("Name", "unknown"),
-                )
-            )
+
+        # Exception:
+        #   Traceback (most recent call last):
+        #     File "/home/bn8/dev/aiosysbus/example.py", line 167, in <module>
+        #       loop.run_until_complete(async_main())
+        #     File "/usr/lib/python3.11/asyncio/base_events.py", line 653, in run_until_complete
+        #       return future.result()
+        #              ^^^^^^^^^^^^^^^
+        #     File "/home/bn8/dev/aiosysbus/example.py", line 75, in async_main
+        #       for device in hosts["status"]["wifi"]:
+        #                     ~~~~~~~~~~~~~~~^^^^^^^^
+        #   TypeError: list indices must be integers or slices, not str
+        # for device in hosts["status"]["wifi"]:
+        #     logger.info(
+        #         "Key:{} - IP:{} - Name:{}".format(
+        #             device["Key"],
+        #             device.get("IPAddress", ""),
+        #             device.get("Name", "unknown"),
+        #         )
+        #     )
+        # => je n'arrive pas à voir sur quoi tu voulais iterer
+
         logger.info(await api.system.async_get_guest())
-        info = await api.system.async_get_deviceinfo()
+        info = await api.deviceinfo.async_get_deviceinfo()
         logger.info(info["status"]["SerialNumber"])
-        await api.system.async_get_WANStatus()
+        await api.system.async_get_wanstatus()
         await api.connection.async_get_data_MIBS()
-        await api.connection.async_get_dsl0_MIBS()
+
+        # Error:
+        #   2024-01-08 16:39:16,558 - aiosysbus.auth - DEBUG - METHOD:post URL:http://192.168.8.254:80/ws
+        #   2024-01-08 16:39:16,558 - aiosysbus.auth - DEBUG - DATA:{'service': 'NeMo.Intf.dsl0', 'method': 'getMIBs', 'parameters': None}
+        #   2024-01-08 16:39:16,713 - root - ERROR - [{'error': 196618, 'description': 'Object or parameter not found', 'info': 'NeMo.Intf.dsl0'}]
+        # await api.connection.async_get_dsl0_MIBS()
+        # => cette méthode ne semble pas exister.
+
         await api.system.async_get_guest()
         await api.system.async_get_nmc()
         await api.wifi.async_get_wifi()
-        await api.call.async_get_voiqp()
+        await api.call.async_get_voip()
         await api.call.async_get_voiceapplication_listHandsets()
         await api.call.async_get_voiceapplication_listTrunks()
         calllist = await api.call.async_get_voiceapplication_calllist()
@@ -116,26 +137,54 @@ async def async_main() -> None:
         await api.system.async_get_pnp()
         await api.event.async_get_events()
         await api.phonebook.async_get_contacts()
-        await api.schedule.async_get_schedules()
-        await api.schedule.async_get_scheduletypes()
-        await api.schedule.async_get_schedule()
-        await api.system.async_get_usb_device()
-        await api.system.async_get_usb_devices()
+
+        # Error:
+        #   2024-01-08 16:42:11,404 - aiosysbus.auth - DEBUG - METHOD:post URL:http://192.168.8.254:80/ws
+        #   2024-01-08 16:42:11,404 - aiosysbus.auth - DEBUG - DATA:{'service': 'Scheduler', 'method': 'getSchedules', 'parameters': None}
+        #   2024-01-08 16:42:11,438 - root - ERROR - [{'error': 196640, 'description': 'Missing mandatory argument', 'info': 'type'}]
+        # await api.schedule.async_get_schedules()
+        # => il faut passer un type de schedule en paramètre à minima
+        scheduletypes = await api.schedule.async_get_scheduletypes()
+        print(scheduletypes)
+        await api.schedule.async_get_schedules(
+            {"type": scheduletypes["data"]["types"][0]}
+        )
+
+        # Error:
+        #   2024-01-08 16:59:13,058 - aiosysbus.auth - DEBUG - METHOD:post URL:http://192.168.8.254:80/ws
+        #   2024-01-08 16:59:13,059 - aiosysbus.auth - DEBUG - DATA:{'service': 'USBHosts', 'method': 'get', 'parameters': None}
+        #   2024-01-08 16:59:13,093 - root - ERROR - [{'error': 13, 'description': 'Permission denied', 'info': 'USBHosts'}]
+        # await api.usbhosts.async_get_usb_device()
+        # await api.usbhosts.async_get_usb_devices()
+
         # await api.system.async_enable_remoteaccess()
-        await api.system.async_get_devicemanager()
+
+        # Error:
+        # await api.system.async_get_devicemanager()
+        # => méthode inexistante et introuvable ailleurs
+
         # await api.system.async_set_devicemanager_notification()
         await api.wifi.async_get_wifi()
         await api.wifi.async_get_openmode_status()
         await api.wifi.async_get_securemode_status()
         await api.system.async_get_time_status()
-        await api.system.async_get_devices_config()
+
+        # Error:
+        #   2024-01-08 17:02:34,995 - aiosysbus.auth - DEBUG - METHOD:post URL:http://192.168.8.254:80/ws
+        #   2024-01-08 17:02:34,995 - aiosysbus.auth - DEBUG - DATA:{'service': 'Devices.Config', 'method': 'get', 'parameters': None}
+        #   2024-01-08 17:02:35,030 - root - ERROR - [{'error': 196640, 'description': 'Missing mandatory argument', 'info': 'module'}, {'error': 196640, 'description': 'Missing mandatory argument', 'info': 'option'}]
+        # => manque les params module et option, mais je sais pas quoi passer (j'ai tenter None, mais non)
+        # await api.devices.async_get_devices_config({"module": ?, "option": ?})
+
         # await api.system.async_get_device_topology({"key":"00:08:9B:CF:37:DE"})
-        await api.system.async_get_devices()
+
+        await api.devices.async_get_devices()
+
         # await api.system.async_get_device({"key": "10:61:FE:87:65:0F"})
         # await api.system.async_del_devices_device({"key": "10:61:FE:87:65:0F"})
         await api.dhcp.async_get_dhcp_staticleases()
         # await api.dhcp.async_set_dhcp_staticlease({"pool":"default", "MACAddress":"01:02:03:04:05:06","IPAddress":"192.168.1.55"})
-        await api.dhcp.async_get_dhcp_staticleases()
+
         # await api.dhcp.async_del_dhcp_staticlease({"pool":"default", "MACAddress":"01:02:03:04:05:06"})
         # await api.dhcp.async_get_dhcp_stats()
         # await api.system.async_set_topodiags_build()

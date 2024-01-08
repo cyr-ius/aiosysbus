@@ -70,7 +70,7 @@ class Lan:
         self, conf: dict[str, Any] | None = None
     ) -> dict[str, Any]:
         """Get Interfaces."""
-        return await self._auth.post("HomeLan", "getInterfacesName", conf)
+        return await self._auth.post("HomeLan", "getInterfacesNames", conf)
 
     async def async_get_lan_maxnumber(
         self, conf: dict[str, Any] | None = None
