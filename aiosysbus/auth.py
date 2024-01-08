@@ -24,6 +24,7 @@ CONTENT_TYPES = [
     "application/x-sah-ws-1-call+json",
     "application/x-sah-ws-1-call+json; charset=UTF-8",
     "application/json",
+    "application/json; charset=UTF-8",
 ]
 
 
