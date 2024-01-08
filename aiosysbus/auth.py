@@ -6,7 +6,7 @@ import logging
 import socket
 from typing import Any
 
-from aiohttp import ClientError, ClientSession
+from aiohttp import ClientError, ClientResponse, ClientSession
 from yarl import URL
 
 from .exceptions import (
@@ -25,6 +25,19 @@ CONTENT_TYPES = [
     "application/x-sah-ws-1-call+json; charset=UTF-8",
     "application/json",
 ]
+
+
+class IgnoreIllegalKeyFilter(logging.Filter):
+    def filter(self, record: logging.LogRecord) -> bool:
+        message = record.getMessage()
+        return not (
+            message.startswith("Can not load response cookies: Illegal key '")
+            and (message.endswith("/accept-language'") or message.endswith("/sessid'"))
+        )
+
+
+client_logger = logging.getLogger("aiohttp.client")
+client_logger.addFilter(IgnoreIllegalKeyFilter())
 
 
 class Auth:
@@ -49,6 +62,8 @@ class Auth:
         self.session_permissions: str | None = None
         self.retry = MAX_RETRY
 
+        self._cookies: dict[str, str] = {}
+
     async def async_request(
         self, method: str, json: dict[str, Any] | None = None
     ) -> dict[str, Any]:
@@ -60,6 +75,10 @@ class Auth:
             "X-Context": self.session_token,
             "Content-Type": "application/x-sah-ws-1-call+json; charset=UTF-8",
         }
+        if self._cookies:
+            headers["Cookie"] = ";".join(
+                f"{key}={value}" for key, value in self._cookies.items()
+            )
 
         try:
             _LOGGER.debug("METHOD:%s URL:%s", method, self.base_url)
@@ -77,6 +96,7 @@ class Auth:
                 "Error occurred while communicating with Livebox"
             ) from error
 
+        self._parse_cookies(response)
         content_type = response.headers.get("Content-Type", "")
         if (response.status // 100) in [4, 5]:
             if content_type in CONTENT_TYPES:
@@ -150,6 +170,10 @@ class Auth:
             "Content-Type": "application/x-sah-ws-1-call+json",
             "Authorization": "X-Sah-Login",
         }
+        if self._cookies:
+            headers["Cookie"] = ";".join(
+                f"{key}:{value}" for key, value in self._cookies.items()
+            )
 
         json = {
             "service": "sah.Device.Information",
@@ -175,6 +199,7 @@ class Auth:
                 "Error occurred while communicating with Livebox."
             ) from error
 
+        self._parse_cookies(response)
         content_type = response.headers.get("Content-Type", "")
         if content_type not in CONTENT_TYPES:
             raise UnexpectedResponse(
@@ -206,7 +231,7 @@ class Auth:
         """Return challenge from livebox API."""
         try:
             async with asyncio.timeout(self.timeout):
-                await self.session.request(method="get", url=base_url.parent)
+                response = await self.session.request(method="get", url=base_url.parent)
         except (
             asyncio.CancelledError,
             asyncio.TimeoutError,
@@ -214,3 +239,11 @@ class Auth:
             socket.gaierror,
         ) as error:
             raise NotOpenError("Open session failed") from error
+        self._parse_cookies(response)
+
+    def _parse_cookies(self, response: ClientResponse) -> None:
+        """Parse cookies manually due to invalid key."""
+        for hdr in response.headers.getall("Set-Cookie", ()):
+            kvp = hdr.split(";")[0].split("=")
+            if len(kvp) == 2:
+                self._cookies[kvp[0]] = kvp[1]
