@@ -36,6 +36,7 @@ class AIOSysbus:
         """Load parameters."""
         self._auth: Auth | None = None
         self._session = session or ClientSession()
+        self._cleanup_session = session is None
         self._username = username
         self._password = password
         self._timeout = timeout
@@ -93,7 +94,7 @@ class AIOSysbus:
 
     async def async_close(self) -> None:
         """Close session."""
-        if self._session:
+        if self._cleanup_session and self._session:
             await self._session.close()
 
     async def __aenter__(self) -> Self:
