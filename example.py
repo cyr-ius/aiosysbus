@@ -146,9 +146,11 @@ async def async_main() -> None:
         # => il faut passer un type de schedule en paramètre à minima
         scheduletypes = await api.schedule.async_get_scheduletypes()
         print(scheduletypes)
-        await api.schedule.async_get_schedules({"type": scheduletypes["data"]["types"][0]})
+        await api.schedule.async_get_schedules(
+            {"type": scheduletypes["data"]["types"][0]}
+        )
 
-	# Error:
+        # Error:
         #   2024-01-08 16:59:13,058 - aiosysbus.auth - DEBUG - METHOD:post URL:http://192.168.8.254:80/ws
         #   2024-01-08 16:59:13,059 - aiosysbus.auth - DEBUG - DATA:{'service': 'USBHosts', 'method': 'get', 'parameters': None}
         #   2024-01-08 16:59:13,093 - root - ERROR - [{'error': 13, 'description': 'Permission denied', 'info': 'USBHosts'}]
