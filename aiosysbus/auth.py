@@ -47,7 +47,7 @@ class Auth:
     def __init__(
         self,
         session: ClientSession,
-        base_url: str,
+        base_url: URL,
         username: str,
         password: str,
         timeout: int,
