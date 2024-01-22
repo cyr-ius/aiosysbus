@@ -239,9 +239,7 @@ class Auth:
             ClientError,
             socket.gaierror,
         ) as error:
-            raise AuthenticationFailed(
-                "Error occurred while authentication."
-            ) from error
+            raise AuthenticationFailed("Error occurred while authentication") from error
 
         self._parse_cookies(response)
 
