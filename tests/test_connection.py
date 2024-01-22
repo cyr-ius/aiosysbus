@@ -107,6 +107,27 @@ async def test_get_lan(mock_post) -> None:
 
 @pytest.mark.asyncio
 @patch("aiohttp.ClientSession.request", new_callable=create_resp)
+async def test_get_api_without_connect(mock_post) -> None:
+    gdr = {"NumberOfReadings": 1, "InterfaceName": ["eth0"]}
+
+    mock_post.return_value.json.return_value = {"result": {"lan": "1.2.3.4"}}
+
+    api = AIOSysbus("username", "password")
+    with patch(
+        "aiosysbus.auth.Auth._async_get_challenge", return_value=AsyncMock()
+    ), patch(
+        "aiosysbus.auth.Auth.async_get_session_token",
+        return_value=("123456789", "admin"),
+    ):
+        response = await api.lan.async_get_lan(gdr)
+
+    assert mock_post.return_value.json.return_value.get("result") == response
+    assert api._auth.session_token == "123456789"
+    assert api._auth.session_permissions == "admin"
+
+
+@pytest.mark.asyncio
+@patch("aiohttp.ClientSession.request", new_callable=create_resp)
 async def test_error_500(mock_post) -> None:
     """Test connect."""
     data = {"data": {"error": "Server unavailable"}}

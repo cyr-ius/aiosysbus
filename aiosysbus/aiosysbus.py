@@ -44,47 +44,48 @@ class AIOSysbus:
         use_tls: bool = False,
     ) -> None:
         """Load parameters."""
-        self._auth: Auth | None = None
         self._session = session or ClientSession()
-        self._cleanup_session = session is None
-        self._username = username
-        self._password = password
-        self._timeout = timeout
-        self._host = host
-        self._port = port
-        self._authorize = False
-        self._use_tls = use_tls
-
-    async def async_connect(self) -> None:
-        """Instantiate modules."""
-        scheme = "https" if self._use_tls else "http"
         base_url = yurl.build(
-            scheme=scheme, host=self._host, port=self._port, path="/ws"
+            scheme="https" if use_tls else "http", host=host, port=port, path="/ws"
         )
         self._auth = Auth(
             session=self._session,
             base_url=base_url,
-            username=self._username,
-            password=self._password,
-            timeout=self._timeout,
+            username=username,
+            password=password,
+            timeout=timeout,
         )
 
-        if self._auth:
-            try:
-                await self._auth.async_get_session_token()
-            except AuthenticationFailed as error:
-                raise AuthenticationFailed(error) from error
-            except AiosysbusException as error:
-                raise AiosysbusException(error) from error
+        self._cleanup_session = session is None
+        self._authorize = False
 
-            # Instantiate Livebox modules
-            self._load_modules()
+        # Instantiate Livebox modules
+        self._load_modules()
+
+    @property
+    def is_connected(self) -> bool:
+        """Check if connected."""
+        return self._session is not None and not self._session.closed
 
     def _load_modules(self) -> None:
         """Instantiate modules."""
         for name, obj in Api.__dict__.items():
             if inspect.isclass(obj):
                 setattr(self, name.lower(), obj(self._auth))
+
+    async def async_connect(self) -> None:
+        """Test authentication.
+
+        There is no need to use this method to call the APIs,
+        as they automatically obtain a session token.
+        This method simply allows you to check if the authentication works
+        """
+        try:
+            await self._auth.async_get_session_token()
+        except AuthenticationFailed as error:
+            raise AuthenticationFailed(error) from error
+        except AiosysbusException as error:
+            raise AiosysbusException(error) from error
 
     async def async_get_permissions(self) -> str | None:
         """Return the permissions for this app.
@@ -98,9 +99,7 @@ class AIOSysbus:
         until the session token is refreshed.
         If the session has not been opened yet, returns None.
         """
-        if self._auth:
-            return self._auth.session_permissions
-        return None
+        return self._auth.session_permissions
 
     async def async_close(self) -> None:
         """Close session."""
