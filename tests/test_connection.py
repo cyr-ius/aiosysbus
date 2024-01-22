@@ -6,6 +6,7 @@ import logging
 from unittest.mock import AsyncMock, patch
 
 import aiohttp
+from multidict import CIMultiDict
 import pytest
 
 from aiosysbus import (
@@ -22,7 +23,15 @@ _LOGGER = logging.getLogger(__name__)
 def create_resp(status_code=200, resp_data=None):
     """Mock aiohttp session request."""
     mock = AsyncMock()
-    mock.return_value.headers = {"Content-Type": "application/json"}
+    mock.return_value.headers = CIMultiDict(
+        {
+            ("Content-Type", "application/json"),
+            (
+                "Set-Cookie",
+                "e2c29097/sessid=; expires=Thu, 01-Jan-1970 00:00:01 GMT; path=/; SameSite=Strict",
+            ),
+        }
+    )
     mock.return_value.status = status_code
     mock.return_value.json = AsyncMock(return_value={"data": resp_data})
     mock.return_value.text = AsyncMock(return_value="It s no good")
@@ -34,9 +43,9 @@ def create_resp(status_code=200, resp_data=None):
 @pytest.mark.asyncio
 async def test_challenge_error() -> None:
     """Test connect."""
-    with pytest.raises(AiosysbusException, match="Open session failed"), patch(
-        "aiohttp.ClientSession.request", side_effect=aiohttp.ClientError
-    ):
+    with pytest.raises(
+        AiosysbusException, match="An error occurred while retrieving the challenge"
+    ), patch("aiohttp.ClientSession.request", side_effect=aiohttp.ClientError):
         api = AIOSysbus("username", "password")
         await api.async_connect()
 
@@ -122,7 +131,10 @@ async def test_error_500(mock_post) -> None:
 @patch("aiohttp.ClientSession.request", new_callable=create_resp)
 async def test_error_contenttype(mock_post) -> None:
     """Test connect."""
-    mock_post.return_value.headers = {"Content-Type": "plain/text"}
+    mock_post.return_value.headers = CIMultiDict(
+        {("Content-Type", "plain/text"), ("Set-Cookie", "e2c29097/sessid=;")}
+    )
+
     api = AIOSysbus("username", "password")
     with pytest.raises(UnexpectedResponse) as error, patch(
         "aiosysbus.auth.Auth._async_get_challenge", return_value=AsyncMock()
@@ -133,11 +145,10 @@ async def test_error_contenttype(mock_post) -> None:
         await api.async_connect()
         await api.lan.async_get_lan()
 
-    assert error.value.args[0] == "Unexpected response from the Livebox API"
-    assert error.value.args[1] == {
-        "Content-Type": "plain/text",
-        "response": "It s no good",
-    }
+    assert (
+        error.value.args[0]
+        == "Unexpected response, content-type incorrect (plain/text)"
+    )
 
 
 @pytest.mark.asyncio
@@ -147,7 +158,9 @@ async def test_error_text_500(mock_post) -> None:
     data = {"data": {"error": "Server unavailable"}}
 
     mock_post.return_value.status = 500
-    mock_post.return_value.headers = {"Content-Type": "plain/text"}
+    mock_post.return_value.headers = CIMultiDict(
+        {("Content-Type", "plain/text"), ("Set-Cookie", "e2c29097/sessid=;")}
+    )
     mock_post.return_value.json.return_value = data
     api = AIOSysbus("username", "password")
     with pytest.raises(HttpRequestFailed) as error, patch(
