@@ -12,7 +12,6 @@ from yarl import URL
 from .exceptions import (
     AuthenticationFailed,
     HttpRequestFailed,
-    NotOpenError,
     RetrieveFailed,
     TimeoutExceededError,
     UnexpectedResponse,
@@ -98,6 +97,7 @@ class Auth:
             ) from error
 
         self._parse_cookies(response)
+
         content_type = response.headers.get("Content-Type", "")
         if (response.status // 100) in [4, 5]:
             if content_type in CONTENT_TYPES:
@@ -239,7 +239,10 @@ class Auth:
             ClientError,
             socket.gaierror,
         ) as error:
-            raise NotOpenError("Open session failed") from error
+            raise AuthenticationFailed(
+                "Error occurred while authentication."
+            ) from error
+
         self._parse_cookies(response)
 
     def _parse_cookies(self, response: ClientResponse) -> None:

@@ -9,7 +9,6 @@ from aiosysbus.exceptions import (
     AiosysbusException,
     AuthenticationFailed,
     HttpRequestFailed,
-    NotOpenError,
     TimeoutExceededError,
 )
 
@@ -61,17 +60,17 @@ async def async_main() -> None:
         #     }
         # }
         # parameters = {"parameters": {"expression": ".Master==\"\""}}
-        # parameters = {"parameters": {"expression": {"eth":"eth"}}}
-        parameters = {"parameters": {"expression": {"wifi": "wifi"}}}
+        parameters = {"parameters": {"expression": {"eth": "eth"}}}
+        # parameters = {"parameters": {"expression": {"wifi": "wifi"}}}
         hosts = await api.devices.async_get_devices(parameters)
-        # for device in hosts["status"]["eth"]:
-        #     logger.info(
-        #         "Key:{} - IP:{} - Name:{}".format(
-        #             device["Key"],
-        #             device.get("IPAddress", ""),
-        #             device.get("Name", "unknown"),
-        #         )
-        #     )
+        for device in hosts["status"]["eth"]:
+            logger.info(
+                "Key:{} - IP:{} - Name:{}".format(
+                    device["Key"],
+                    device.get("IPAddress", ""),
+                    device.get("Name", "unknown"),
+                )
+            )
 
         # Exception:
         #   Traceback (most recent call last):
@@ -173,7 +172,6 @@ async def async_main() -> None:
         #   2024-01-08 17:02:34,995 - aiosysbus.auth - DEBUG - METHOD:post URL:http://192.168.8.254:80/ws
         #   2024-01-08 17:02:34,995 - aiosysbus.auth - DEBUG - DATA:{'service': 'Devices.Config', 'method': 'get', 'parameters': None}
         #   2024-01-08 17:02:35,030 - root - ERROR - [{'error': 196640, 'description': 'Missing mandatory argument', 'info': 'module'}, {'error': 196640, 'description': 'Missing mandatory argument', 'info': 'option'}]
-        # => manque les params module et option, mais je sais pas quoi passer (j'ai tenter None, mais non)
         # await api.devices.async_get_devices_config({"module": ?, "option": ?})
 
         # await api.system.async_get_device_topology({"key":"00:08:9B:CF:37:DE"})
@@ -200,8 +198,6 @@ async def async_main() -> None:
     except HttpRequestFailed as e:
         logger.error(e)
     except AuthenticationFailed as e:
-        logger.error(e)
-    except NotOpenError as e:
         logger.error(e)
     except TimeoutExceededError as e:
         logger.error(e)

@@ -5,10 +5,6 @@ class AiosysbusException(Exception):
     """General exception."""
 
 
-class NotOpenError(AiosysbusException):
-    """Not open url."""
-
-
 class AuthenticationFailed(AiosysbusException):
     """Authentication error."""
 
