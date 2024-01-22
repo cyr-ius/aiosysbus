@@ -101,7 +101,6 @@ async def test_get_lan(mock_post) -> None:
     ):
         await api.async_connect()
         response = await api.lan.async_get_lan(gdr)
-        print(response)
 
     assert mock_post.return_value.json.return_value.get("result") == response
 
