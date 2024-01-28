@@ -6,170 +6,151 @@ from typing import TYPE_CHECKING, Any
 if TYPE_CHECKING:
     from ..auth import Auth
 
+# mypy: disable-error-code="no-any-return"
 
-class Diagnostic:
-    """System class."""
+
+class AutoDiag:
+    """AutoDiag class."""
 
     def __init__(self, auth: Auth) -> None:
         """Init."""
         self._auth = auth
 
-    # ############ DATA STATS #############
+    async def async_run_diags(self, conf: dict[str, Any]) -> bool:
+        """Run diagnostic.
 
-    async def async_get_stats_account(
-        self, conf: dict[str, Any] | None = None
-    ) -> dict[str, Any]:
-        """Set  enable remote auth."""
-        return await self._auth.post("DataStatistics.account", "getStats", conf)
-
-    async def async_get_stats_media(
-        self, conf: dict[str, Any] | None = None
-    ) -> dict[str, Any]:
-        """Get time left for remote auth."""
-        return await self._auth.post("DataStatistics.mediahub", "getStats", conf)
-
-    async def async_get_stats_storage(
-        self, conf: dict[str, Any] | None = None
-    ) -> dict[str, Any]:
-        """Reset timer for remote auth."""
-        return await self._auth.post("DataStatistics.storage", "getStats", conf)
-
-    # ############ AUTO DIAG #############
-
-    async def async_run_diags(self, conf: dict[str, Any] | None) -> dict[str, Any]:
-        """Set  enable remote auth."""
+        Arguments:
+        - id (str)
+        - usr (bool) optional
+        """
         return await self._auth.post("AutoDiag", "executeDiagnostics", conf)
 
-    async def async_run_diags_trigger(
-        self, conf: dict[str, Any] | None
-    ) -> dict[str, Any]:
-        """Get time left for remote auth."""
+    async def async_run_diags_trigger(self, conf: dict[str, Any]) -> bool:
+        """Execute trigger diagnostic.
+
+        Arguments:
+        - event (str)
+        """
         return await self._auth.post("AutoDiag", "executeTrigger", conf)
 
-    async def async_remove_diags(self, conf: dict[str, Any] | None) -> dict[str, Any]:
-        """Reset timer for remote auth."""
+    async def async_remove_diags(self, conf: dict[str, Any]) -> bool:
+        """Cancel diagnostic.
+
+        Arguments:
+        - id (str)
+        """
         return await self._auth.post("AutoDiag", "cancelDiagnostics", conf)
 
-    async def async_get_diags_states(
-        self, conf: dict[str, Any] | None = None
-    ) -> dict[str, Any]:
-        """Set  enable remote auth."""
-        return await self._auth.post("AutoDiag", "getDiagnosticsState", conf)
+    async def async_get_diags_states(self) -> None:
+        """Get diagnostic states."""
+        return await self._auth.post("AutoDiag", "getDiagnosticsState")
 
-    async def async_get_diags_list(
-        self, conf: dict[str, Any] | None = None
-    ) -> dict[str, Any]:
-        """Get time left for remote auth."""
-        return await self._auth.post("AutoDiag", "getDiagnosticsList", conf)
+    async def async_get_diags_datamodel(self) -> None:
+        """Get datamodel white list."""
+        return await self._auth.post("AutoDiag", "getDatamodelWhiteList")
 
-    async def async_get_diags_listdiag(
-        self, conf: dict[str, Any] | None = None
-    ) -> dict[str, Any]:
-        """Reset timer for remote auth."""
-        return await self._auth.post("AutoDiag", "listDiagnostics", conf)
+    async def async_get_diags_functions(self) -> None:
+        """Get function white list."""
+        return await self._auth.post("AutoDiag", "getFunctionWhiteList")
 
-    async def async_set_diags(self, conf: dict[str, Any] | None) -> dict[str, Any]:
-        """Set  enable remote auth."""
+    async def async_get_diags_list(self) -> None:
+        """Get diagnostic list."""
+        return await self._auth.post("AutoDiag", "getDiagnosticsList")
+
+    async def async_get_diags_listdiag(self) -> list[dict[str, Any]]:
+        """List diagnostics."""
+        return await self._auth.post("AutoDiag", "listDiagnostics")
+
+    async def async_get_diags_context(self) -> list[dict[str, Any]]:
+        """Get context."""
+        return await self._auth.post("AutoDiag", "getContext")
+
+    async def async_clear_diags_context(self) -> bool:
+        """Get context."""
+        return await self._auth.post("AutoDiag", "clearContext")
+
+    async def async_set_diags_userinput(self, conf: dict[str, Any]) -> dict[str, Any]:
+        """Set  user input.
+
+        Argument:
+        - input (str)
+        """
         return await self._auth.post("AutoDiag", "setUserInput", conf)
 
-    # ############ TOPOLOGY DIAG #############
 
-    async def async_get_topodiags(
-        self, conf: dict[str, Any] | None = None
-    ) -> dict[str, Any]:
+class TopologyDiagnostics:
+    """Topology diagnostics class."""
+
+    def __init__(self, auth: Auth) -> None:
+        """Init."""
+        self._auth = auth
+
+    async def async_get_topodiags(self) -> dict[str, Any]:
         """Get topology diagnostics."""
-        return await self._auth.post("TopologyDiagnostics", "get", conf)
+        return await self._auth.post("TopologyDiagnostics", "get")
 
-    async def async_set_topodiags(self, conf: dict[str, Any] | None) -> dict[str, Any]:
-        """Set topology diagnostics."""
+    async def async_set_topodiags(self, conf: dict[str, Any]) -> bool:
+        """Set topology diagnostics.
+
+        Argument:
+        - data (dict)
+        """
         return await self._auth.post("TopologyDiagnostics", "set", conf)
 
     async def async_set_topodiags_build(
         self, conf: dict[str, Any] | None = None
     ) -> dict[str, Any]:
-        """Build topology diagnostics."""
+        """Build topology diagnostics.
+
+        Arguments:
+        - Timeout (int) optional
+        - LLTDIcon (bool) optional
+        - SendXmlFile (bool) optional
+        """
         return await self._auth.post("TopologyDiagnostics", "buildTopology", conf)
 
-    async def async_upload_topodiags(
-        self, conf: dict[str, Any] | None = None
-    ) -> dict[str, Any]:
+    async def async_upload_topodiags(self) -> bool:
         """Upload topology diagnostics."""
-        return await self._auth.post("TopologyDiagnostics", "uploadTopology", conf)
+        return await self._auth.post("TopologyDiagnostics", "uploadTopology")
 
-    async def async_enable_topodiags(
-        self, conf: dict[str, Any] | None = None
-    ) -> dict[str, Any]:
-        """Enable topology diagnostics."""
+    async def async_enable_topodiags(self, conf: dict[str, Any] | None = None) -> bool:
+        """Enable topology diagnostics.
+
+        Argument:
+        - enable (bool) optional
+        """
         return await self._auth.post(
             "TopologyDiagnostics", "enableAutomaticUpload", conf
         )
 
-    async def async_get_topodiags_isautoupload(
-        self, conf: dict[str, Any] | None = None
-    ) -> dict[str, Any]:
+    async def async_get_topodiags_isautoupload(self) -> bool:
         """Is Automatic Upload enabled of topology diagnostics."""
-        return await self._auth.post(
-            "TopologyDiagnostics", "isAutomaticUploadEnabled", conf
-        )
+        return await self._auth.post("TopologyDiagnostics", "isAutomaticUploadEnabled")
 
-    async def async_set_topodiags_customerauthor(
-        self, conf: dict[str, Any] | None
-    ) -> dict[str, Any]:
-        """Set customer authorization of topology diagnostics."""
+    async def async_set_topodiags_customerauthor(self, conf: dict[str, Any]) -> bool:
+        """Set customer authorization of topology diagnostics.
+
+        Argument:
+        - enable (bool)
+        """
         return await self._auth.post(
             "TopologyDiagnostics", "setCustomerAuthorization", conf
         )
 
-    async def async_export_topodiags(
-        self, conf: dict[str, Any] | None
-    ) -> dict[str, Any]:
+    async def async_export_topodiags(self) -> None:
         """Export topology diagnostics."""
-        return await self._auth.post("TopologyDiagnostics", "export", conf)
+        return await self._auth.post("TopologyDiagnostics", "export")
 
-    async def async_import_topodiags(
-        self, conf: dict[str, Any] | None
-    ) -> dict[str, Any]:
+    async def async_import_topodiags(self) -> None:
         """Import topology diagnostics."""
-        return await self._auth.post("TopologyDiagnostics", "import", conf)
+        return await self._auth.post("TopologyDiagnostics", "import")
 
-    async def async_get_topodiags_result(
-        self, conf: dict[str, Any] = {"result": None}
-    ) -> dict[str, Any]:
-        """Get result of topology diagnostics."""
-        result = conf.pop("result")
-        return await self._auth.post(
-            f"TopologyDiagnostics.Results.Result.{result}", "get", conf
-        )
+    # TopologyDiagnostics.Results
 
-    # ############ PROCESS MONITOR #############
+    async def async_get_topodiags_result(self, conf: dict[str, Any]) -> bool:
+        """Set result of topology diagnostics.
 
-    async def async_get_process(
-        self, conf: dict[str, Any] | None = None
-    ) -> dict[str, Any]:
-        """Get process monitor."""
-        return await self._auth.post("ProcessMonitor", "get", conf)
-
-    async def async_set_process(self, conf: dict[str, Any] | None) -> dict[str, Any]:
-        """Set process monitor."""
-        return await self._auth.post("ProcessMonitor", "set", conf)
-
-    async def async_get_process_component(
-        self, conf: dict[str, Any] = {"component": None}
-    ) -> dict[str, Any]:
-        """Get process monitor component."""
-        component = conf.pop("component")
-        return await self._auth.post(f"ProcessMonitor.Test.{component}", "get", conf)
-
-    async def async_set_process_component(
-        self, conf: dict[str, Any] = {"component": None}
-    ) -> dict[str, Any]:
-        """Set process monitor component."""
-        component = conf.pop("component")
-        return await self._auth.post(f"ProcessMonitor.Test.{component}", "set", conf)
-
-    async def async_reset_process_component(
-        self, conf: dict[str, Any] = {"component": None}
-    ) -> dict[str, Any]:
-        """Reset process monitor component."""
-        component = conf.pop("component")
-        return await self._auth.post(f"ProcessMonitor.Test.{component}", "reset", conf)
+        Argument:
+        - state (str)
+        """
+        return await self._auth.post("TopologyDiagnostics.Results", "setState", conf)

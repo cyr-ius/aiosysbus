@@ -6,257 +6,82 @@ from typing import TYPE_CHECKING, Any
 if TYPE_CHECKING:
     from ..auth import Auth
 
+# mypy: disable-error-code="no-any-return"
 
-class System:
+
+class PnP:
     """System class."""
 
     def __init__(self, auth: Auth) -> None:
         """Init."""
         self._auth = auth
 
-    async def async_get_led(self, conf: dict[str, Any] | None = None) -> dict[str, Any]:
-        """Get LED information."""
-        return await self._auth.post("LED", "get", conf)
-
-    # ############ PnP #############
-
-    async def async_get_pnp(self, conf: dict[str, Any] | None = None) -> dict[str, Any]:
+    async def async_get_pnp(self) -> list[Any]:
         """Get Plug&play."""
-        return await self._auth.post("PnP", "get", conf)
+        return await self._auth.post("PnP", "get")
 
-    # ############ REMOTE auth #############
 
-    async def async_get_remoteauth(
-        self, conf: dict[str, Any] | None = None
-    ) -> dict[str, Any]:
-        """Get Remote auth information."""
-        return await self._auth.post("Remoteauth", "get", conf)
+class Wol:
+    """WOL class."""
 
-    async def async_set_remoteauth(
-        self, conf: dict[str, Any] | None = None
-    ) -> dict[str, Any]:
-        """Set Remote auth information."""
-        return await self._auth.post("Remoteauth", "set", conf)
+    def __init__(self, auth: Auth) -> None:
+        """Init."""
+        self._auth = auth
 
-    async def async_get_remoteauth_timeleft(
-        self, conf: dict[str, Any] | None = None
-    ) -> dict[str, Any]:
-        """Get time left for remote auth."""
-        return await self._auth.post("Remoteauth", "getTimeLeft", conf)
+    async def async_send_wol(self, conf: dict[str, Any]) -> None:
+        """Send wake on lan.
 
-    async def async_set_remoteauth_restarttimer(
-        self, conf: dict[str, Any] | None = None
-    ) -> dict[str, Any]:
-        """Reset timer for remote auth."""
-        return await self._auth.post("Remoteauth", "restartTimer", conf)
+        Argument:
+        - hostID (str)
+        - intf (str) optional
+        - password (str) optional
+        - broadcast (str) optional
+        - retries (int) optional
+        - interval (int) optional
+        """
+        return await self._auth.post("WOL", "sendWakeOnLan", conf)
 
-    # ############ IOT #############
 
-    async def async_get_iot_service(
-        self, conf: dict[str, Any] | None = None
-    ) -> dict[str, Any]:
-        """Get IoT Status."""
-        return await self._auth.post("IoTService", "getStatus", conf)
+class Probe:
+    """Probe class."""
 
-    # ############ PROBE #############
+    def __init__(self, auth: Auth) -> None:
+        """Init."""
+        self._auth = auth
 
-    async def async_get_probe(
-        self, conf: dict[str, Any] | None = None
-    ) -> dict[str, Any]:
-        """Get Wifi secure mode status."""
-        return await self._auth.post("Probe", "getStatus", conf)
+    async def async_log_events(self, events: Any) -> None:
+        """Get log events.
 
-    # ############ TIME #############
+        Argument:
+        - events (plib_event_list_t)
+        """
+        return await self._auth.post("Probe", "logEvents", {"events": events})
 
-    async def async_get_time(
-        self, conf: dict[str, Any] | None = None
-    ) -> dict[str, Any]:
-        """Get time information."""
-        return await self._auth.post("Time", "getTime", conf)
+    async def async_add_probe_tag(self, conf: dict[str, Any]) -> bool:
+        """Add tag.
 
-    async def async_get_utctime(
-        self, conf: dict[str, Any] | None = None
-    ) -> dict[str, Any]:
-        """Get time information."""
-        return await self._auth.post("Time", "getUTCTime", conf)
+        Argument:
+        - tag (str)
+        """
+        return await self._auth.post("Probe", "addTag", conf)
 
-    async def async_get_time_status(
-        self, conf: dict[str, Any] | None = None
-    ) -> dict[str, Any]:
-        """Get time information."""
-        return await self._auth.post("Time", "getStatus", conf)
+    async def async_delete_probe_tag(self, conf: dict[str, Any]) -> bool:
+        """Remove tag.
 
-    async def async_get_time_ntp(
-        self, conf: dict[str, Any] | None = None
-    ) -> dict[str, Any]:
-        """Get time information."""
-        return await self._auth.post("Time", "getNTPServers", conf)
+        Argument:
+        - tag (str)
+        """
+        return await self._auth.post("Probe", "removeTag", conf)
 
-    async def async_get_time_localtime_zonename(
-        self, conf: dict[str, Any] | None = None
-    ) -> dict[str, Any]:
-        """Get local  zone information."""
-        return await self._auth.post("Time", "getLocalTimeZoneName", conf)
+    async def async_clear_probe_tags(self) -> bool:
+        """Clear all tags."""
+        return await self._auth.post("Probe", "clearTags")
 
-    async def async_set_time_localtime_zonename(
-        self, conf: dict[str, Any] | None
-    ) -> dict[str, Any]:
-        """Set local zone information."""
-        return await self._auth.post("Time", "setLocalTimeZoneName", conf)
-
-    # ############ NMC #############
-
-    async def async_get_nmc(self, conf: dict[str, Any] | None = None) -> dict[str, Any]:
-        """Get WAN information."""
-        return await self._auth.post("NMC", "get", conf)
-
-    async def async_set_nmc(self, conf: dict[str, Any] | None) -> dict[str, Any]:
-        """Set WAN information."""
-        return await self._auth.post("NMC", "set", conf)
-
-    async def async_get_wanmodelist(
-        self, conf: dict[str, Any] | None = None
-    ) -> dict[str, Any]:
-        """Get WAN status."""
-        return await self._auth.post("NMC", "getWanModeList", conf)
-
-    async def async_set_wanmode(self, conf: dict[str, Any] | None) -> dict[str, Any]:
-        """Get WAN status."""
-        return await self._auth.post("NMC", "setWanMode", conf)
-
-    async def async_get_wanstatus(
-        self, conf: dict[str, Any] | None = None
-    ) -> dict[str, Any]:
-        """Get WAN status."""
-        return await self._auth.post("NMC", "getWANStatus", conf)
-
-    async def async_reset(self) -> dict[str, Any]:
-        """Reset livebox."""
-        return await self._auth.post("NMC", "reset")
-
-    async def async_reboot(self) -> dict[str, Any]:
-        """Reboot livebox."""
-        return await self._auth.post("NMC", "reboot")
-
-    async def async_disable_remoteauth(self) -> dict[str, Any]:
-        """Set disable remote auth."""
-        return await self._auth.post("NMC", "disableRemoteauth")
-
-    async def async_enable_remoteauth(self) -> dict[str, Any]:
-        """Set  enable remote auth."""
-        return await self._auth.post("NMC", "enableRemoteauth")
-
-    async def async_get_versioninfo(self) -> dict[str, Any]:
-        """Get update version info."""
-        return await self._auth.post("NMC", "updateVersionInfo")
-
-    async def async_check_update(self) -> dict[str, Any]:
-        """Check upgrade version."""
-        return await self._auth.post("NMC", "checkForUpgrades")
-
-    async def async_get_datatracking(
-        self, conf: dict[str, Any] | None = None
-    ) -> dict[str, Any]:
-        """Get datatracking."""
-        return await self._auth.post("NMC.DataTracking", "get", conf)
-
-    async def async_get_guest(
-        self, conf: dict[str, Any] | None = None
-    ) -> dict[str, Any]:
-        """Get guest."""
-        return await self._auth.post("NMC.Guest", "get", conf)
-
-    async def async_set_guest(self, conf: dict[str, Any] | None) -> dict[str, Any]:
-        """Set guest."""
-        return await self._auth.post("NMC.Guest", "set", conf)
-
-    async def async_get_led_status(
-        self, conf: dict[str, Any] | None = None
-    ) -> dict[str, Any]:
-        """Get led status."""
-        return await self._auth.post("NMC.LED", "getLedStatus", conf)
-
-    async def async_enable_networkconfig_bridge(
-        self, conf: dict[str, Any] | None = None
-    ) -> dict[str, Any]:
-        """Enable bridge."""
-        return await self._auth.post("NMC.NetworkConfig", "enableNetworkBridge", conf)
-
-    async def async_export_networkconfig_(
-        self, conf: dict[str, Any] | None = None
-    ) -> dict[str, Any]:
-        """Backup network config."""
-        return await self._auth.post("NMC.NetworkConfig", "launchNetworkBackup", conf)
-
-    async def async_import_networkconfig_(
-        self, conf: dict[str, Any] | None
-    ) -> dict[str, Any]:
-        """Restore network config."""
-        return await self._auth.post("NMC.NetworkConfig", "launchNetworkRestore", conf)
-
-    async def async_get_networkconfig(
-        self, conf: dict[str, Any] | None = None
-    ) -> dict[str, Any]:
-        """Get saveset configuration."""
-        return await self._auth.post("NMC.NetworkConfig", "get", conf)
-
-    async def async_get_orangetv_IPTVStatus(
-        self, conf: dict[str, Any] | None = None
-    ) -> dict[str, Any]:
-        """Get iptv status."""
-        return await self._auth.post("NMC.OrangeTV", "getIPTVStatus", conf)
-
-    async def async_get_orangetv_IPTVConfig(
-        self, conf: dict[str, Any] | None = None
-    ) -> dict[str, Any]:
-        """Get iptv information."""
-        return await self._auth.post("NMC.OrangeTV", "getIPTVConfig", conf)
-
-    async def async_get_orangetv_IPTVMultiScreens(
-        self, conf: dict[str, Any] | None = None
-    ) -> dict[str, Any]:
-        """Get multiscreeens for iptv."""
-        return await self._auth.post("NMC.OrangeTV", "getIPTVMultiScreens", conf)
-
-    async def async_set_orangetv_IPTVMultiScreens(
-        self, conf: dict[str, Any] | None = None
-    ) -> dict[str, Any]:
-        """Get multiscreeens for iptv."""
-        return await self._auth.post("NMC.OrangeTV", "setIPTVMultiScreens", conf)
-
-    async def async_get_profiles(
-        self, conf: dict[str, Any] | None = None
-    ) -> dict[str, Any]:
-        """Get Profiles."""
-        return await self._auth.post("NMC.Profiles", "get", conf)
-
-    async def async_get_autodetect(
-        self, conf: dict[str, Any] | None = None
-    ) -> dict[str, Any]:
-        """Autodetect."""
-        return await self._auth.post("NMC.Autodetect", "get", conf)
-
-    async def async_set_tppp(self, conf: dict[str, Any] | None) -> dict[str, Any]:
-        """Get username."""
-        return await self._auth.post("NMC.TPPP", "force", conf)
-
-    async def async_get_acs(self, conf: dict[str, Any] | None = None) -> dict[str, Any]:
-        """Get ACS."""
-        return await self._auth.post("NMC.ACS", "get", conf)
-
-    async def async_get_wlantimer(
-        self, conf: dict[str, Any] | None = None
-    ) -> dict[str, Any]:
-        """Get WLAN timer."""
-        return await self._auth.post("NMC.WlanTimer", "getActivationTimer", conf)
-
-    async def async_set_wlantimer(self, conf: dict[str, Any] | None) -> dict[str, Any]:
-        """Det WLAN timer."""
-        return await self._auth.post("NMC.WlanTimer", "setActivationTimer", conf)
-
-    async def async_disable_wlantimer(self) -> dict[str, Any]:
-        """Disable WLAN timer."""
-        return await self._auth.post("NMC.WlanTimer", "disableActivationTimer")
+    # Probe.Configuration
+    # - void setConfiguration(string type, string name, uint32 id, uint32 interval)
+    # - list getConfiguration(string type)
+    # - list getConfigurations()
+    # - void removeConfiguration(string type)
 
     # ############ HOSTS #############
 
@@ -264,16 +89,322 @@ class System:
         """Get devices."""
         return await self._auth.post("Hosts", "getDevices")
 
-    async def async_set_hosts_name(self, conf: dict[str, Any] | None) -> dict[str, Any]:
+    async def async_set_hosts_name(self, conf: dict[str, Any]) -> dict[str, Any]:
         """Set host name."""
         return await self._auth.post("Hosts", "setName", conf)
 
-    async def async_del_hosts(self, conf: dict[str, Any] | None) -> dict[str, Any]:
+    async def async_del_hosts(self, conf: dict[str, Any]) -> dict[str, Any]:
         """Remove hosts."""
         return await self._auth.post("Hosts", "delHost", conf)
 
-    async def async_set_hosts_device(
-        self, conf: dict[str, Any] | None
-    ) -> dict[str, Any]:
+    async def async_set_hosts_device(self, conf: dict[str, Any]) -> dict[str, Any]:
         """Set host device."""
         return await self._auth.post("Hosts", "setDevice", conf)
+
+
+class Time:
+    """Time class."""
+
+    def __init__(self, auth: Auth) -> None:
+        """Init."""
+        self._auth = auth
+
+    async def async_get_time(self, conf: dict[str, Any] | None = None) -> bool:
+        """Get time.
+
+        Argument:
+        - time (str) optional
+        """
+        return await self._auth.post("Time", "getTime", conf)
+
+    async def async_get_utctime(self, conf: dict[str, Any] | None = None) -> None:
+        """Get UTC time.
+
+        Argument:
+        - time (str) optional
+        """
+        return await self._auth.post("Time", "getUTCTime", conf)
+
+    async def async_get_status(self, conf: dict[str, Any] | None = None) -> None:
+        """Get status.
+
+        Argument:
+        - status (str) optional
+        """
+        return await self._auth.post("Time", "getStatus", conf)
+
+    async def async_get_ntp(self, conf: dict[str, Any] | None = None) -> None:
+        """Get ntp servers.
+
+        Argument:
+        - servers (dict) optional
+        """
+        return await self._auth.post("Time", "getNTPServers", conf)
+
+    async def async_get_localtime_zonename(
+        self, conf: dict[str, Any] | None = None
+    ) -> bool:
+        """Get local zone.
+
+        Argument:
+        - timezone (dict) optional
+        """
+        return await self._auth.post("Time", "getLocalTimeZoneName", conf)
+
+    async def async_set_localtime_zonename(
+        self, conf: dict[str, Any] | None = None
+    ) -> bool:
+        """Set local zone.
+
+        Argument:
+        - timezone (dict) optional
+        """
+        return await self._auth.post("Time", "setLocalTimeZoneName", conf)
+
+    async def async_list_localtime_zonename(
+        self, conf: dict[str, Any] | None = None
+    ) -> bool:
+        """List local zone.
+
+        Argument:
+        - timezones (list) optional
+        """
+        return await self._auth.post("Time", "listLocalTimeZoneNames", conf)
+
+
+class PasswordRecovery:
+    """Password Recovery class."""
+
+    def __init__(self, auth: Auth) -> None:
+        """Init."""
+        self._auth = auth
+
+    async def async_start(self) -> None:
+        """Recovery password start."""
+        return await self._auth.post("OrangeServices", "start")
+
+    async def async_stop(self) -> None:
+        """Recovery password stop."""
+        return await self._auth.post("OrangeServices", "stop")
+
+    async def async_set_password(self, conf: dict[str, Any] | None = None) -> int:
+        """Set password.
+
+        Argument:
+        - password (str)
+        """
+        return await self._auth.post("OrangeServices", "setPassword", conf)
+
+
+class RemoteAccess:
+    """Remote access class."""
+
+    def __init__(self, auth: Auth) -> None:
+        """Init."""
+        self._auth = auth
+
+    async def async_get(self) -> dict[str, Any]:
+        """Get."""
+        return await self._auth.post("RemoteAccess", "get")
+
+    async def async_set(self, parameters: dict[str, Any] | None = None) -> bool:
+        """Set.
+
+        Argument:
+        - parameters (dict)
+        """
+        return await self._auth.post("RemoteAccess", "set", {"parameters": parameters})
+
+    async def async_enable(self, conf: dict[str, Any] | None = None) -> int:
+        """Enable.
+
+        Argument:
+        - port (int)
+        - secure (bool)
+        - timeout (int)
+        - sourcePrefix (str)
+        """
+        return await self._auth.post("RemoteAccess", "enable", conf)
+
+    async def async_disable(self) -> bool:
+        """Disable."""
+        return await self._auth.post("RemoteAccess", "disable")
+
+    async def async_get_time_left(self) -> int:
+        """Get time left."""
+        return await self._auth.post("RemoteAccess", "getTimeLeft")
+
+    async def async_restart_timer(self) -> bool:
+        """Restart timer."""
+        return await self._auth.post("RemoteAccess", "restartTimer")
+
+
+class OrangeRemoteAccess:
+    """Orange remote access class."""
+
+    def __init__(self, auth: Auth) -> None:
+        """Init."""
+        self._auth = auth
+
+    async def async_add_user(self, conf: dict[str, Any]) -> None:
+        """Get wan results.
+
+        Argument:
+        - username (str)
+        - cookie (str)
+        """
+        return await self._auth.post("OrangeRemoteAccess", "addUser", conf)
+
+    async def async_delete_user(self, conf: dict[str, Any]) -> None:
+        """Get wan results.
+
+        Argument:
+        - username (str)
+        """
+        return await self._auth.post("OrangeRemoteAccess", "removeUser", conf)
+
+    async def async_list_users(self, conf: dict[str, Any] | None = None) -> None:
+        """Get wan results.
+
+        Argument:
+        - listOfUsers (list) optional
+        """
+        return await self._auth.post("OrangeRemoteAccess", "listUsers", conf)
+
+    async def async_get(self) -> dict[str, Any]:
+        """Get Orange remote access."""
+        return await self._auth.post("OrangeRemoteAccess", "get")
+
+    async def async_set(self, conf: dict[str, Any] | None = None) -> bool:
+        """Set Orange remote access.
+
+        Argument:
+        - parameters (dict) optional
+        """
+        return await self._auth.post("OrangeRemoteAccess", "set", conf)
+
+    # OrangeRemoteAccess.OnDemand
+
+    async def async_get_ondemand(self) -> dict[str, Any]:
+        """Get Orange remote access on demand."""
+        return await self._auth.post("OrangeRemoteAccess.OnDemand", "get")
+
+    async def async_set_ondemand(self, conf: dict[str, Any] | None = None) -> bool:
+        """Set Orange remote access on demand.
+
+        Argument:
+        - parameters (dict) optional
+        """
+        return await self._auth.post("OrangeRemoteAccess.OnDemand", "set", conf)
+
+
+class Screen:
+    """Screen."""
+
+    def __init__(self, auth: Auth) -> None:
+        """Init."""
+        self._auth = auth
+
+    async def async_set_anonymous_display(self) -> None:
+        """Set Anonymous display."""
+        return await self._auth.post("Screen", "setAnonymousDisplay")
+
+    async def async_set_show_wifi_password(self, conf: dict[str, Any]) -> None:
+        """Set wifi password (display on box).
+
+        Argument:
+        - Enable (bool)
+        """
+        return await self._auth.post("Screen", "setShowWifiPassword", conf)
+
+    async def async_get_show_wifi_password(self) -> bool:
+        """Show status display wifi password (display on box)."""
+        return await self._auth.post("Screen", "getShowWifiPassword")
+
+
+class UserInterface:
+    """User interface."""
+
+    def __init__(self, auth: Auth) -> None:
+        """Init."""
+        self._auth = auth
+
+    async def async_getLanguage(self, conf: dict[str, Any] | None = None) -> str:
+        """return await language.
+
+        Arguments:
+        - availableLanguages (str) optional
+        """
+        return await self._auth.post("UserInterface", "getLanguage", conf)
+
+    async def async_setLanguage(self, conf: dict[str, Any]) -> bool:
+        """Set language.
+
+        Arguments:
+        - currentLanguage (str)
+        """
+        return await self._auth.post("UserInterface", "setLanguage", conf)
+
+    async def async_setState(self, conf: dict[str, Any]) -> str:
+        """Set state.
+
+        Arguments:
+        - currentState (str)
+        """
+        return await self._auth.post("UserInterface", "setState", conf)
+
+    async def async_getState(self) -> str:
+        """return await state."""
+        return await self._auth.post("UserInterface", "getState")
+
+    async def async_export(self, conf: dict[str, Any] | None = None) -> bool:
+        """Export.
+
+        Arguments:
+        - fileName (str) optional
+        """
+        return await self._auth.post("UserInterface", "export", conf)
+
+    async def async_import(self, conf: dict[str, Any] | None = None) -> bool:
+        """Import.
+
+        Arguments:
+        - fileName (str) optional
+        """
+        return await self._auth.post("UserInterface", "import", conf)
+
+    async def async_getDebugInformation(self) -> dict[str, Any]:
+        """return await Debug information."""
+        return await self._auth.post("UserInterface", "getDebugInformation")
+
+
+class Event:
+    """Event class."""
+
+    def __init__(self, auth: Auth) -> None:
+        """Init."""
+        self._auth = auth
+
+    async def async_get_events(
+        self, conf: dict[str, Any] | None = None
+    ) -> dict[str, Any]:
+        """Get all events."""
+        return await self._auth.post("eventmanager", "get_events", conf)
+
+    async def async_open_channel(
+        self, conf: dict[str, Any] | None = None
+    ) -> dict[str, Any]:
+        """Open channel."""
+        return await self._auth.post("eventmanager", "open_channel", conf)
+
+    async def async_subscribe(
+        self, conf: dict[str, Any] | None = None
+    ) -> dict[str, Any]:
+        """Subscribe Event."""
+        return await self._auth.post("eventmanager", "subscribe", conf)
+
+    async def async_unsubscribe(
+        self, conf: dict[str, Any] | None = None
+    ) -> dict[str, Any]:
+        """Unsubscribe Event."""
+        return await self._auth.post("eventmanager", "unsubscribe", conf)

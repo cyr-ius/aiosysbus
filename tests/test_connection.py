@@ -62,8 +62,8 @@ async def test_connect(mock_post) -> None:
         await api.async_connect()
 
     assert len(mock_post.mock_calls) == 2
-    assert api.call is not None
-    assert api.zwave is not None
+    assert api.voiceservice is not None
+    assert api.nmc is not None
 
 
 @pytest.mark.asyncio
@@ -100,7 +100,7 @@ async def test_get_lan(mock_post) -> None:
         return_value=("123456789", "admin"),
     ):
         await api.async_connect()
-        response = await api.lan.async_get_lan(gdr)
+        response = await api.homelan.async_get_lan(gdr)
 
     assert mock_post.return_value.json.return_value.get("result") == response
 
@@ -119,7 +119,7 @@ async def test_get_api_without_connect(mock_post) -> None:
         "aiosysbus.auth.Auth.async_get_session_token",
         return_value=("123456789", "admin"),
     ):
-        response = await api.lan.async_get_lan(gdr)
+        response = await api.homelan.async_get_lan(gdr)
 
     assert mock_post.return_value.json.return_value.get("result") == response
     assert api._auth.session_token == "123456789"
@@ -142,7 +142,7 @@ async def test_error_500(mock_post) -> None:
         return_value=("123456789", "admin"),
     ):
         await api.async_connect()
-        await api.lan.async_get_lan()
+        await api.homelan.async_get_lan()
 
     assert error.value.args[0] == data
 
@@ -163,7 +163,7 @@ async def test_error_contenttype(mock_post) -> None:
         return_value=("123456789", "admin"),
     ):
         await api.async_connect()
-        await api.lan.async_get_lan()
+        await api.storageservice.async_get_physical_mediums()
 
     assert (
         error.value.args[0]
@@ -190,7 +190,7 @@ async def test_error_text_500(mock_post) -> None:
         return_value=("123456789", "admin"),
     ):
         await api.async_connect()
-        await api.lan.async_get_lan()
+        await api.speedtest.async_get_wan_results()
 
     assert error.value.args[0] == "RAW Text"
 
@@ -209,6 +209,6 @@ async def test_retry_error(mock_post) -> None:
         return_value=("123456789", "admin"),
     ):
         await api.async_connect()
-        await api.lan.async_get_lan()
+        await api.topologydiagnostics.async_get_topodiags()
 
     assert error.value.args[0] == "Server unavailable"

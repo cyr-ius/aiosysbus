@@ -18,21 +18,6 @@ logger = logging.getLogger(__name__)
 class AIOSysbus:
     """Sysbus is API for livebox."""
 
-    call: Api.Call
-    connection: Api.Connection
-    deviceinfo: Api.DeviceInfo
-    devices: Api.Devices
-    dhcp: Api.Dhcp
-    event: Api.Event
-    lan: Api.Lan
-    nat: Api.Nat
-    phonebook: Api.Phonebook
-    schedule: Api.Schedule
-    system: Api.System
-    usbhosts: Api.USBHosts
-    userinterface: Api.UserInterface
-    wifi: Api.Wifi
-
     def __init__(
         self,
         username: str,

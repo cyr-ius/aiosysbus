@@ -6,6 +6,8 @@ from typing import TYPE_CHECKING, Any
 if TYPE_CHECKING:
     from ..auth import Auth
 
+# mypy: disable-error-code="no-any-return"
+
 
 class Connection:
     """Connection class."""
