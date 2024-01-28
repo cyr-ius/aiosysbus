@@ -85,7 +85,7 @@ class Dect:
         Argument:
         - reboot (bool) optional
         """
-        return await self._auth.post("DECT", "reset")
+        return await self._auth.post("DECT", "reset", conf)
 
     async def async_get_RFPI(self) -> str:
         """Get RFPI."""
@@ -127,7 +127,7 @@ class Dect:
         Argument:
         - state (bool) optional
         """
-        return await self._auth.post("DECT", "setRadioState")
+        return await self._auth.post("DECT", "setRadioState", conf)
 
     async def async_get_dect_RSSI(self, conf: dict[str, Any] | None = None) -> int:
         """Set Radio state name.
@@ -136,7 +136,7 @@ class Dect:
         - name (str) optional
         - synchronous (bool) optional
         """
-        return await self._auth.post("DECT", "getRSSI")
+        return await self._auth.post("DECT", "getRSSI", conf)
 
     async def async_set_handset_debug_mode(
         self, conf: dict[str, Any] | None = None
@@ -146,7 +146,7 @@ class Dect:
         Argument:
         - enable (bool) optional
         """
-        return await self._auth.post("DECT", "setHandsetDebugMode")
+        return await self._auth.post("DECT", "setHandsetDebugMode", conf)
 
     # DECT.Repeater
 
