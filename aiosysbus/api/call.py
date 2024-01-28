@@ -16,31 +16,31 @@ class VoiceService:
         """Init."""
         self._auth = auth
 
-    async def async_get_voiceapplication_listHandsets(
+    async def async_get_list_handsets(
         self, conf: dict[str, Any] | None = None
     ) -> dict[str, Any]:
-        """Get Handsets."""
+        """Get handsets list."""
         return await self._auth.post(
             "VoiceService.VoiceApplication", "listHandsets", conf
         )
 
-    async def async_get_voiceapplication_listTrunks(
+    async def async_get_list_trunks(
         self, conf: dict[str, Any] | None = None
     ) -> dict[str, Any]:
-        """Get Trunks."""
+        """Get trunks list."""
         return await self._auth.post(
             "VoiceService.VoiceApplication", "listTrunks", conf
         )
 
-    async def async_get_voiceapplication_calllist(
+    async def async_get_calllist(
         self, conf: dict[str, Any] | None = None
     ) -> dict[str, Any]:
-        """Get Calls."""
+        """Get calls.list."""
         return await self._auth.post(
             "VoiceService.VoiceApplication", "getCallList", conf
         )
 
-    async def async_get_voiceapplication_clearlist(
+    async def async_get_clearlist(
         self, conf: dict[str, Any] | None = None
     ) -> dict[str, Any]:
         """Clear Call list.
@@ -51,10 +51,10 @@ class VoiceService:
             "VoiceService.VoiceApplication", "clearCallList", conf
         )
 
-    async def async_set_voiceapplication_ring(
+    async def async_ring(
         self, conf: dict[str, Any] | None = None
     ) -> dict[str, Any]:
-        """Set Ring."""
+        """Ring."""
         return await self._auth.post("VoiceService.VoiceApplication", "ring", conf)
 
 
