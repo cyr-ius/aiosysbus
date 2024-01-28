@@ -5,10 +5,10 @@ GenLog, History, MSS, SFP, ServiceInvocation, URLMon, VoWifi
 """
 
 from .call import Dect, Phonebook, VoiceService
-from .connection import Connection
 from .device import DeviceInfo, DeviceManager, Devices
 from .diagnostic import AutoDiag, TopologyDiagnostics
 from .dnsdhcp import Dhcp, Dns, DynDNS
+from .nemo import NeMo
 from .network import Firewall, HomeLan, UPnPIGD
 from .nmc import Nmc
 from .powermgmt import PowerManagement
@@ -40,7 +40,6 @@ from .user import UserManagement
 
 __all__ = [
     "AutoDiag",
-    "Connection",
     "Dect",
     "DeviceInfo",
     "DeviceManager",
@@ -55,6 +54,7 @@ __all__ = [
     "IoTService",
     "Locations",
     "Manifests",
+    "NeMo",
     "Nmc",
     "OrangeRemoteAccess",
     "OrangeServices",
