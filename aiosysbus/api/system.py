@@ -16,7 +16,7 @@ class PnP:
         """Init."""
         self._auth = auth
 
-    async def async_get_pnp(self) -> list[Any]:
+    async def async_get(self) -> list[Any]:
         """Get Plug&play."""
         return await self._auth.post("PnP", "get")
 
@@ -329,15 +329,15 @@ class UserInterface:
         """Init."""
         self._auth = auth
 
-    async def async_getLanguage(self, conf: dict[str, Any] | None = None) -> str:
-        """return await language.
+    async def async_get_language(self, conf: dict[str, Any] | None = None) -> str:
+        """Get language.
 
         Arguments:
         - availableLanguages (str) optional
         """
         return await self._auth.post("UserInterface", "getLanguage", conf)
 
-    async def async_setLanguage(self, conf: dict[str, Any]) -> bool:
+    async def async_set_language(self, conf: dict[str, Any]) -> bool:
         """Set language.
 
         Arguments:
@@ -345,7 +345,7 @@ class UserInterface:
         """
         return await self._auth.post("UserInterface", "setLanguage", conf)
 
-    async def async_setState(self, conf: dict[str, Any]) -> str:
+    async def async_set_state(self, conf: dict[str, Any]) -> str:
         """Set state.
 
         Arguments:
@@ -353,8 +353,8 @@ class UserInterface:
         """
         return await self._auth.post("UserInterface", "setState", conf)
 
-    async def async_getState(self) -> str:
-        """return await state."""
+    async def async_get_state(self) -> str:
+        """Get state."""
         return await self._auth.post("UserInterface", "getState")
 
     async def async_export(self, conf: dict[str, Any] | None = None) -> bool:
@@ -373,8 +373,8 @@ class UserInterface:
         """
         return await self._auth.post("UserInterface", "import", conf)
 
-    async def async_getDebugInformation(self) -> dict[str, Any]:
-        """return await Debug information."""
+    async def async_get_debuginfo(self) -> dict[str, Any]:
+        """Get debug information."""
         return await self._auth.post("UserInterface", "getDebugInformation")
 
 

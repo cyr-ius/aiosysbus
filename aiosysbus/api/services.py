@@ -352,7 +352,7 @@ class IoTService:
         """Init."""
         self._auth = auth
 
-    async def async_get_iot_status(self, conf: dict[str, Any] | None = None) -> int:
+    async def async_get_status(self, conf: dict[str, Any] | None = None) -> int:
         """Get IoT Status.
 
         Argument:
@@ -360,7 +360,7 @@ class IoTService:
         """
         return await self._auth.post("IoTService", "getStatus", conf)
 
-    async def async_set_iot_status(self, conf: dict[str, Any]) -> int:
+    async def async_set_status(self, conf: dict[str, Any]) -> int:
         """Get IoT Status.
 
         Argument:
@@ -368,7 +368,7 @@ class IoTService:
         """
         return await self._auth.post("IoTService", "setStatus", conf)
 
-    async def async_get_iot_uuid(self, conf: dict[str, Any] | None = None) -> int:
+    async def async_get_uuid(self, conf: dict[str, Any] | None = None) -> int:
         """Get UUID.
 
         Argument:

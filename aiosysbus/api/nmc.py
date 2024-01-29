@@ -339,7 +339,7 @@ class Nmc:
         """Wifi select auto channel."""
         return await self._auth.post("NMC.Wifi", "startAutoChannelSelection")
 
-    async def async_get_wifi_Stats(self, conf: dict[str, Any] | None = None) -> None:
+    async def async_get_wifi_stats(self, conf: dict[str, Any] | None = None) -> None:
         """Wifi Statistics.
 
         Arguments:
