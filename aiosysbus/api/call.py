@@ -40,20 +40,19 @@ class VoiceService:
             "VoiceService.VoiceApplication", "getCallList", conf
         )
 
-    async def async_get_clearlist(
+    async def async_clear_calllist(
         self, conf: dict[str, Any] | None = None
     ) -> dict[str, Any]:
         """Clear Call list.
 
-        conf = {"callId":"xx"} or empty for all
+        Argument:
+        - callId (str) optional
         """
         return await self._auth.post(
             "VoiceService.VoiceApplication", "clearCallList", conf
         )
 
-    async def async_ring(
-        self, conf: dict[str, Any] | None = None
-    ) -> dict[str, Any]:
+    async def async_ring(self, conf: dict[str, Any] | None = None) -> dict[str, Any]:
         """Ring."""
         return await self._auth.post("VoiceService.VoiceApplication", "ring", conf)
 
