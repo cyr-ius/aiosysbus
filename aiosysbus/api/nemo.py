@@ -31,9 +31,7 @@ class NeMo:
         """Init."""
         self._auth = auth
 
-    async def async_is_up(
-        self, name: str, *, conf: dict[str, Any] | None = None
-    ) -> bool:
+    async def async_is_up(self, name: str, conf: dict[str, Any] | None = None) -> bool:
         """IsUp.
 
         Arguments:
@@ -43,7 +41,7 @@ class NeMo:
         return await self._auth.post(f"NeMo.Intf.{name}", "isUp", conf)
 
     async def async_has_flag(
-        self, name: str, *, conf: dict[str, Any] | None = None
+        self, name: str, conf: dict[str, Any] | None = None
     ) -> bool:
         """has Flag.
 
@@ -55,7 +53,7 @@ class NeMo:
         return await self._auth.post(f"NeMo.Intf.{name}", "hasFlag", conf)
 
     async def async_set_flag(
-        self, name: str, *, conf: dict[str, Any] | None = None
+        self, name: str, conf: dict[str, Any] | None = None
     ) -> None:
         """Set flag.
 
@@ -67,7 +65,7 @@ class NeMo:
         return await self._auth.post(f"NeMo.Intf.{name}", "setFlag", conf)
 
     async def async_clear_flag(
-        self, name: str, *, conf: dict[str, Any] | None = None
+        self, name: str, conf: dict[str, Any] | None = None
     ) -> None:
         """Clear flag.
 
@@ -79,7 +77,7 @@ class NeMo:
         return await self._auth.post(f"NeMo.Intf.{name}", "clearFlag", conf)
 
     async def async_is_linked(
-        self, name: str, *, conf: dict[str, Any] | None = None
+        self, name: str, conf: dict[str, Any] | None = None
     ) -> bool:
         """is Linked To.
 
@@ -90,7 +88,7 @@ class NeMo:
         return await self._auth.post(f"NeMo.Intf.{name}", "isLinkedTo", conf)
 
     async def async_get_intfs(
-        self, name: str, *, conf: dict[str, Any] | None = None
+        self, name: str, conf: dict[str, Any] | None = None
     ) -> list[Any]:
         """Get interfaces.
 
@@ -101,7 +99,7 @@ class NeMo:
         return await self._auth.post(f"NeMo.Intf.{name}", "getIntfs", conf)
 
     async def async_lucky_intf(
-        self, name: str, *, conf: dict[str, Any] | None = None
+        self, name: str, conf: dict[str, Any] | None = None
     ) -> str:
         """lucky interface.
 
@@ -112,7 +110,7 @@ class NeMo:
         return await self._auth.post(f"NeMo.Intf.{name}", "luckyIntf", conf)
 
     async def async_get_first_parameter(
-        self, name: str, *, conf: dict[str, Any] | None = None
+        self, name: str, conf: dict[str, Any] | None = None
     ) -> str:
         """Get first parameter.
 
@@ -124,7 +122,7 @@ class NeMo:
         return await self._auth.post(f"NeMo.Intf.{name}", "getFirstParameter", conf)
 
     async def async_set_first_parameter(
-        self, name: str, *, conf: dict[str, Any] | None = None
+        self, name: str, conf: dict[str, Any] | None = None
     ) -> None:
         """Set first parameter.
 
@@ -137,7 +135,7 @@ class NeMo:
         return await self._auth.post(f"NeMo.Intf.{name}", "setFirstParameter", conf)
 
     async def async_get_parameters(
-        self, name: str, *, conf: dict[str, Any] | None = None
+        self, name: str, conf: dict[str, Any] | None = None
     ) -> str:
         """Get parameters.
 
@@ -149,7 +147,7 @@ class NeMo:
         return await self._auth.post(f"NeMo.Intf.{name}", "getParameters", conf)
 
     async def async_set_parameters(
-        self, name: str, *, conf: dict[str, Any] | None = None
+        self, name: str, conf: dict[str, Any] | None = None
     ) -> None:
         """Set parameters.
 
@@ -162,7 +160,7 @@ class NeMo:
         return await self._auth.post(f"NeMo.Intf.{name}", "setParameters", conf)
 
     async def async_get_MIBs(
-        self, name: str, *, conf: dict[str, Any] | None = None
+        self, name: str, conf: dict[str, Any] | None = None
     ) -> None:
         """Get MIBs.
 
@@ -174,7 +172,7 @@ class NeMo:
         return await self._auth.post(f"NeMo.Intf.{name}", "getMIBs", conf)
 
     async def async_set_MIBs(
-        self, name: str, *, conf: dict[str, Any] | None = None
+        self, name: str, conf: dict[str, Any] | None = None
     ) -> None:
         """Set MIBs.
 
@@ -184,7 +182,7 @@ class NeMo:
         return await self._auth.post(f"NeMo.Intf.{name}", "setMIBs", conf)
 
     async def async_open_query(
-        self, name: str, *, conf: dict[str, Any] | None = None
+        self, name: str, conf: dict[str, Any] | None = None
     ) -> int:
         """Open query.
 
@@ -194,7 +192,7 @@ class NeMo:
         return await self._auth.post(f"NeMo.Intf.{name}", "openQuery", conf)
 
     async def async_close_query(
-        self, name: str, *, conf: dict[str, Any] | None = None
+        self, name: str, conf: dict[str, Any] | None = None
     ) -> None:
         """Close query.
 
@@ -204,7 +202,7 @@ class NeMo:
         return await self._auth.post(f"NeMo.Intf.{name}", "closeQuery", conf)
 
     async def async_csi_register(
-        self, name: str, *, conf: dict[str, Any] | None = None
+        self, name: str, conf: dict[str, Any] | None = None
     ) -> None:
         """csi register.
 
@@ -214,7 +212,7 @@ class NeMo:
         return await self._auth.post(f"NeMo.Intf.{name}", "csiRegister", conf)
 
     async def async_csi_unregister(
-        self, name: str, *, conf: dict[str, Any] | None = None
+        self, name: str, conf: dict[str, Any] | None = None
     ) -> None:
         """csi unregister.
 
@@ -224,7 +222,7 @@ class NeMo:
         return await self._auth.post(f"NeMo.Intf.{name}", "csiUnregister", conf)
 
     async def async_csi_finish(
-        self, name: str, *, conf: dict[str, Any] | None = None
+        self, name: str, conf: dict[str, Any] | None = None
     ) -> None:
         """csi finish.
 
@@ -233,9 +231,7 @@ class NeMo:
         """
         return await self._auth.post(f"NeMo.Intf.{name}", "csiFinish", conf)
 
-    async def async_copy(
-        self, name: str, *, conf: dict[str, Any] | None = None
-    ) -> None:
+    async def async_copy(self, name: str, conf: dict[str, Any] | None = None) -> None:
         """copy.
 
         Arguments:
@@ -244,7 +240,7 @@ class NeMo:
         return await self._auth.post(f"NeMo.Intf.{name}", "copy", conf)
 
     async def async_get_dhcp_option(
-        self, name: str, *, conf: dict[str, Any] | None = None
+        self, name: str, conf: dict[str, Any] | None = None
     ) -> dict[str, Any]:
         """Get DHCP Option.
 
@@ -256,7 +252,7 @@ class NeMo:
         return await self._auth.post(f"NeMo.Intf.{name}", "getDHCPOption", conf)
 
     async def async_get_addrs(
-        self, name: str, *, conf: dict[str, Any] | None = None
+        self, name: str, conf: dict[str, Any] | None = None
     ) -> list[Any]:
         """Get Addresses.
 
@@ -267,7 +263,7 @@ class NeMo:
         return await self._auth.post(f"NeMo.Intf.{name}", "getAddrs", conf)
 
     async def async_lucky_addr(
-        self, name: str, *, conf: dict[str, Any] | None = None
+        self, name: str, conf: dict[str, Any] | None = None
     ) -> None:
         """lucky address.
 
@@ -278,7 +274,7 @@ class NeMo:
         return await self._auth.post(f"NeMo.Intf.{name}", "luckyAddr", conf)
 
     async def async_lucky_addr_address(
-        self, name: str, *, conf: dict[str, Any] | None = None
+        self, name: str, conf: dict[str, Any] | None = None
     ) -> str:
         """lucky Addr Address.
 
@@ -289,7 +285,7 @@ class NeMo:
         return await self._auth.post(f"NeMo.Intf.{name}", "luckyAddrAddress", conf)
 
     async def async_get_ra_options(
-        self, name: str, *, conf: dict[str, Any] | None = None
+        self, name: str, conf: dict[str, Any] | None = None
     ) -> None:
         """Get RA options.
 
@@ -300,7 +296,7 @@ class NeMo:
         return await self._auth.post(f"NeMo.Intf.{name}", "getRAOptions", conf)
 
     async def async_get_ra_routers(
-        self, name: str, *, conf: dict[str, Any] | None = None
+        self, name: str, conf: dict[str, Any] | None = None
     ) -> None:
         """Get RA Routers.
 
@@ -317,7 +313,7 @@ class NeMo:
         """Get Net Dev Stats."""
         return await self._auth.post(f"NeMo.Intf.{name}", "getNetDevStats")
 
-    async def async_set_net_dev_flag(self, name: str, *, conf: dict[str, Any]) -> None:
+    async def async_set_net_dev_flag(self, name: str, conf: dict[str, Any]) -> None:
         """Set Net Dev Flag.
 
         Argument:
@@ -325,9 +321,7 @@ class NeMo:
         """
         return await self._auth.post(f"NeMo.Intf.{name}", "setNetDevFlag", conf)
 
-    async def async_clear_net_dev_flag(
-        self, name: str, *, conf: dict[str, Any]
-    ) -> None:
+    async def async_clear_net_dev_flag(self, name: str, conf: dict[str, Any]) -> None:
         """clear Net Dev Flag.
 
         Argument:
