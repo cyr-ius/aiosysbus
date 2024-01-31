@@ -19,25 +19,25 @@ class Schedule:
     async def async_add_schedule(self, conf: dict[str, Any]) -> bool:
         """Add schedule.
 
-        Argument:
+        Arguments:
         - type (str)
         - info (schedule_t)
 
         Enable MAC Address
-        conf = {"parameters":{"type":"ToD","info":{"ID":"01:02:03:04:05:06",
+        {"type":"ToD","info":{"ID":"01:02:03:04:05:06",
         "enable":true,"override":"","base":"Weekly","def":"Enable",
-        "schedule":[]}}}
+        "schedule":[]}}
 
         Disable MAC Address
-        conf = {"parameters":{"type":"ToD","info":{"ID":"01:02:03:04:05:06",
+        {"type":"ToD","info":{"ID":"01:02:03:04:05:06",
         "enable":true,"override":"Disable","base":"Weekly","def":"Enable",
-        "schedule":[]}}}
+        "schedule":[]}}
 
         Enable range week (seconds)
-        conf = {"parameters":{"type":"ToD","info":{"ID":"01:02:03:04:05:06",
+        {"type":"ToD","info":{"ID":"01:02:03:04:05:06",
         "enable":true,"base":"Weekly","def":"Enable","override":"","value":"Enable",
         "schedule":[{"begin":0,"end":3600,"state":"Disable"},
-        {"begin":601200,"end":604800,"state":"Disable"}]}}}
+        {"begin":601200,"end":604800,"state":"Disable"}]}}
         """
         return await self._auth.post("Scheduler", "addSchedule", conf)
 
