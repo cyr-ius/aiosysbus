@@ -236,7 +236,7 @@ class Nmc:
         - state (str)
         - color (str)
         """
-        return await self._auth.post("NMC.LED", "getLedStatus", conf)
+        return await self._auth.post("NMC.LED", "setLedStatus", conf)
 
     # NMC.NetworkConfig
 
