@@ -355,6 +355,123 @@ class NeMo:
         """Get result."""
         return await self._auth.post(f"NeMo.Intf.{name}.Query", "getResult")
 
+    # Specific vap* / wlguest
+    async def async_kick_station(
+        self, name: str, conf: dict[str, Any] | None = None
+    ) -> None:
+        """Kick Station.
+
+        Argument:
+        - macaddress (str) optional
+        """
+        return await self._auth.post(f"NeMo.Intf.{name}", "kickStation", conf)
+
+    async def async_kick_station_reason(
+        self, name: str, conf: dict[str, Any] | None = None
+    ) -> None:
+        """Kick Station Reason.
+
+        Argument:
+        - macaddress (str) optional
+        - reason (int) optional
+        """
+        return await self._auth.post(f"NeMo.Intf.{name}", "kickStationReason", conf)
+
+    async def async_clean_station(
+        self, name: str, conf: dict[str, Any] | None = None
+    ) -> None:
+        """Clean station.
+
+        Argument:
+        - macaddress (str) optional
+        """
+        return await self._auth.post(f"NeMo.Intf.{name}", "cleanStation", conf)
+
+    async def async_send_bss_transfer(
+        self, name: str, conf: dict[str, Any] | None = None
+    ) -> None:
+        """Clean station.
+
+        Argument:
+        - mac (str) optional
+        - target (str) optional
+        - class (int) optional
+        - channel (int) optional
+        - wait (int) optional
+        - retries (int) optional
+        - bssidInfo (int) optional
+        - transitionReason (int) optional
+        """
+        return await self._auth.post(
+            f"NeMo.Intf.{name}", "sendBssTransferRequest", conf
+        )
+
+    async def async_send_publication(
+        self, name: str, conf: dict[str, Any] | None = None
+    ) -> None:
+        """Clean station.
+
+        Argument:
+        - mac (str) optional
+        - oui (str) optional
+        - type (int) optional
+        - subtype (int) optional
+        - channel (int) optional
+        - data (str) optional
+        """
+        return await self._auth.post(f"NeMo.Intf.{name}", "sendPublicAction", conf)
+
+    async def async_send_remote_measument(
+        self, name: str, conf: dict[str, Any] | None = None
+    ) -> None:
+        """Clean station.
+
+        Argument:
+        - mac (str) optional
+        - bssid (str) optional
+        - class (int) optional
+        - channel (int) optional
+        - timeout (int) optional
+        - ssid (str) optional
+        """
+        return await self._auth.post(
+            f"NeMo.Intf.{name}", "sendRemoteMeasumentRequest", conf
+        )
+
+    async def async_get_ssid_stats(self, name: str) -> None:
+        """Get SSID stats."""
+        return await self._auth.post(f"NeMo.Intf.{name}", "getSSIDStats")
+
+    async def async_get_status_histogram(self, name: str) -> None:
+        """Get status histogram."""
+        return await self._auth.post(f"NeMo.Intf.{name}", "getStatusHistogram")
+
+    async def async_get_station_stats(self, name: str) -> None:
+        """Get station."""
+        return await self._auth.post(f"NeMo.Intf.{name}", "getStationStats")
+
+    async def async_get_far_associated_devices_count(
+        self, name: str, conf: dict[str, Any] | None = None
+    ) -> int:
+        """Get Far Associated Devices count.
+
+        Argument:
+        - threshold (int) optional
+        """
+        return await self._auth.post(
+            f"NeMo.Intf.{name}", "getFarAssociatedDevicesCount", conf
+        )
+
+    async def async_del_neighbour_AP(
+        self, name: str, conf: dict[str, Any] | None = None
+    ) -> int:
+        """Del neighbour AP.
+
+        Argument:
+        - BSSID (str) optional
+        """
+        return await self._auth.post(f"NeMo.Intf.{name}", "delNeighbourAP", conf)
+
 
 # WWAN
 #   - void setPin((string pin))
@@ -364,19 +481,6 @@ class NeMo:
 
 # lo
 #   - void setWLANConfig((string mibs))
-
-# vap / wlguest
-#   - void kickStation((string macaddress))
-#   - void kickStationReason((string macaddress), (int32 reason))
-#   - void cleanStation((string macaddress))
-#   - bool sendBssTransferRequest((string mac), (string target), (int class), (int channel), (int wait), (int retries), (uint32 bssidInfo), (int transitionReason))
-#   - bool sendPublicAction((string mac), (string oui), (uint8 type), (uint8 subtype), (uint8 channel), (string data))
-#   - bool sendRemoteMeasumentRequest((string mac), (string bssid), (uint32 class), (uint32 channel), (uint32 timeout), (string ssid))
-#   - void getSSIDStats()
-#   - variant getStatusHistogram()
-#   - void getStationStats()
-#   - uint32 getFarAssociatedDevicesCount((int32 threshold))
-#   - void delNeighbourAP((string BSSID))
 
 # rad /wifi0
 #   - void setChanspec((uint16 channel), (string bandwidth), (string frequency), (string reason), (bool direct), (string reasonDetails))
