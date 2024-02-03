@@ -16,7 +16,7 @@ class HomeLan:
         """Init."""
         self._auth = auth
 
-    async def async_get_lan(self, conf: dict[str, Any] | None = None) -> bool:
+    async def async_get_results(self, conf: dict[str, Any] | None = None) -> bool:
         """Results for Lan.
 
         Arguments:
@@ -135,6 +135,14 @@ class HomeLan:
     async def async_get_saturation_measures(self) -> bool:
         """Get saturation measures."""
         return await self._auth.post("HomeLan", "getSaturationMeasures")
+
+    async def async_get_interface(self) -> bool:
+        """Get saturation measures."""
+        return await self._auth.post("HomeLan.Interface", "get")
+
+    async def async_get_device(self) -> bool:
+        """Get saturation measures."""
+        return await self._auth.post("HomeLan.Device", "get")
 
 
 class Firewall:
@@ -504,13 +512,35 @@ class UPnPIGD:
         self._auth = auth
 
     async def async_get(self) -> dict[str, Any]:
-        """Get Upnp configuration"""
+        """Get Upnp configuration."""
         return await self._auth.post("UPnP-IGD", "get")
 
     async def async_put(self, conf: dict[str, Any] | None = None) -> bool:
-        """Set Upnp configuration
+        """Set Upnp configuration.
 
         Argument:
         -parameters (dict) optional
         """
         return await self._auth.post("UPnP-IGD", "put", conf)
+
+
+class SFP:
+    """SFP information."""
+
+    def __init__(self, auth: Auth) -> None:
+        """Init."""
+        self._auth = auth
+
+    async def async_get(self) -> dict[str, Any]:
+        """Get Upnp configuration"""
+        return await self._auth.post("SFP", "get")
+
+    async def async_set_registration_id(
+        self, conf: dict[str, Any] | None = None
+    ) -> bool:
+        """Set registration id.
+
+        Argument:
+        -RegistrationID (str) optional
+        """
+        return await self._auth.post("SFP", "setRegistrationID", conf)
