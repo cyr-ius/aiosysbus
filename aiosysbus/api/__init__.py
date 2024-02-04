@@ -1,7 +1,7 @@
 """
 Provides API access to Livebox.
 except NetMaster, SSW.Steering, SAHPairing, WebuiupgradeService, DNSSD,
-GenLog, History, MSS, SFP, ServiceInvocation, URLMon, VoWifi
+GenLog, History, MSS, ServiceInvocation, URLMon, VoWifi
 """
 
 from .call import Dect, Phonebook, VoiceService
@@ -9,7 +9,7 @@ from .device import DeviceInfo, DeviceManager, Devices
 from .diagnostic import AutoDiag, TopologyDiagnostics
 from .dnsdhcp import Dhcp, Dns, DynDNS
 from .nemo import NeMo
-from .network import Firewall, HomeLan, UPnPIGD
+from .network import SFP, Firewall, HomeLan, UPnPIGD
 from .nmc import Nmc
 from .powermgmt import PowerManagement
 from .schedule import Schedule
@@ -67,6 +67,7 @@ __all__ = [
     "RemoteAccess",
     "Schedule",
     "Screen",
+    "SFP",
     "SpeedTest",
     "Ssw",
     "StorageService",
