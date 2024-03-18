@@ -1,4 +1,5 @@
 """Tests connection."""
+
 from __future__ import annotations
 
 import asyncio
@@ -43,9 +44,12 @@ def create_resp(status_code=200, resp_data=None):
 @pytest.mark.asyncio
 async def test_challenge_error() -> None:
     """Test connect."""
-    with pytest.raises(
-        AiosysbusException, match="An error occurred while retrieving the challenge"
-    ), patch("aiohttp.ClientSession.request", side_effect=aiohttp.ClientError):
+    with (
+        pytest.raises(
+            AiosysbusException, match="An error occurred while retrieving the challenge"
+        ),
+        patch("aiohttp.ClientSession.request", side_effect=aiohttp.ClientError),
+    ):
         api = AIOSysbus("username", "password")
         await api.async_connect()
 
@@ -72,16 +76,22 @@ async def test_connect_error(mock_post) -> None:
     """Test connect."""
     mock_post.side_effect = aiohttp.ClientError
     api = AIOSysbus("username", "password")
-    with pytest.raises(
-        AiosysbusException, match="Error occurred while communicating with Livebox"
-    ), patch("aiosysbus.auth.Auth._async_get_challenge", return_value=AsyncMock()):
+    with (
+        pytest.raises(
+            AiosysbusException, match="Error occurred while communicating with Livebox"
+        ),
+        patch("aiosysbus.auth.Auth._async_get_challenge", return_value=AsyncMock()),
+    ):
         await api.async_connect()
 
     mock_post.side_effect = asyncio.TimeoutError
     api = AIOSysbus("username", "password")
-    with pytest.raises(
-        AiosysbusException, match="Timeout occurred while connecting to Livebox"
-    ), patch("aiosysbus.auth.Auth._async_get_challenge", return_value=AsyncMock()):
+    with (
+        pytest.raises(
+            AiosysbusException, match="Timeout occurred while connecting to Livebox"
+        ),
+        patch("aiosysbus.auth.Auth._async_get_challenge", return_value=AsyncMock()),
+    ):
         await api.async_connect()
 
 
@@ -93,11 +103,12 @@ async def test_get_lan(mock_post) -> None:
     mock_post.return_value.json.return_value = {"result": {"lan": "1.2.3.4"}}
 
     api = AIOSysbus("username", "password")
-    with patch(
-        "aiosysbus.auth.Auth._async_get_challenge", return_value=AsyncMock()
-    ), patch(
-        "aiosysbus.auth.Auth.async_get_session_token",
-        return_value=("123456789", "admin"),
+    with (
+        patch("aiosysbus.auth.Auth._async_get_challenge", return_value=AsyncMock()),
+        patch(
+            "aiosysbus.auth.Auth.async_get_session_token",
+            return_value=("123456789", "admin"),
+        ),
     ):
         await api.async_connect()
         response = await api.homelan.async_get_lan(gdr)
@@ -113,11 +124,12 @@ async def test_get_api_without_connect(mock_post) -> None:
     mock_post.return_value.json.return_value = {"result": {"lan": "1.2.3.4"}}
 
     api = AIOSysbus("username", "password")
-    with patch(
-        "aiosysbus.auth.Auth._async_get_challenge", return_value=AsyncMock()
-    ), patch(
-        "aiosysbus.auth.Auth.async_get_session_token",
-        return_value=("123456789", "admin"),
+    with (
+        patch("aiosysbus.auth.Auth._async_get_challenge", return_value=AsyncMock()),
+        patch(
+            "aiosysbus.auth.Auth.async_get_session_token",
+            return_value=("123456789", "admin"),
+        ),
     ):
         response = await api.homelan.async_get_lan(gdr)
 
@@ -135,11 +147,13 @@ async def test_error_500(mock_post) -> None:
     mock_post.return_value.status = 500
     mock_post.return_value.json.return_value = data
     api = AIOSysbus("username", "password")
-    with pytest.raises(HttpRequestFailed) as error, patch(
-        "aiosysbus.auth.Auth._async_get_challenge", return_value=AsyncMock()
-    ), patch(
-        "aiosysbus.auth.Auth.async_get_session_token",
-        return_value=("123456789", "admin"),
+    with (
+        pytest.raises(HttpRequestFailed) as error,
+        patch("aiosysbus.auth.Auth._async_get_challenge", return_value=AsyncMock()),
+        patch(
+            "aiosysbus.auth.Auth.async_get_session_token",
+            return_value=("123456789", "admin"),
+        ),
     ):
         await api.async_connect()
         await api.homelan.async_get_lan()
@@ -156,11 +170,13 @@ async def test_error_contenttype(mock_post) -> None:
     )
 
     api = AIOSysbus("username", "password")
-    with pytest.raises(UnexpectedResponse) as error, patch(
-        "aiosysbus.auth.Auth._async_get_challenge", return_value=AsyncMock()
-    ), patch(
-        "aiosysbus.auth.Auth.async_get_session_token",
-        return_value=("123456789", "admin"),
+    with (
+        pytest.raises(UnexpectedResponse) as error,
+        patch("aiosysbus.auth.Auth._async_get_challenge", return_value=AsyncMock()),
+        patch(
+            "aiosysbus.auth.Auth.async_get_session_token",
+            return_value=("123456789", "admin"),
+        ),
     ):
         await api.async_connect()
         await api.storageservice.async_get_physical_mediums()
@@ -183,11 +199,13 @@ async def test_error_text_500(mock_post) -> None:
     )
     mock_post.return_value.json.return_value = data
     api = AIOSysbus("username", "password")
-    with pytest.raises(HttpRequestFailed) as error, patch(
-        "aiosysbus.auth.Auth._async_get_challenge", return_value=AsyncMock()
-    ), patch(
-        "aiosysbus.auth.Auth.async_get_session_token",
-        return_value=("123456789", "admin"),
+    with (
+        pytest.raises(HttpRequestFailed) as error,
+        patch("aiosysbus.auth.Auth._async_get_challenge", return_value=AsyncMock()),
+        patch(
+            "aiosysbus.auth.Auth.async_get_session_token",
+            return_value=("123456789", "admin"),
+        ),
     ):
         await api.async_connect()
         await api.speedtest.async_get_wan_results()
@@ -202,11 +220,13 @@ async def test_retry_error(mock_post) -> None:
     data = {"result": {"errors": "Server unavailable"}}
     mock_post.return_value.json.return_value = data
     api = AIOSysbus("username", "password")
-    with pytest.raises(RetrieveFailed) as error, patch(
-        "aiosysbus.auth.Auth._async_get_challenge", return_value=AsyncMock()
-    ), patch(
-        "aiosysbus.auth.Auth.async_get_session_token",
-        return_value=("123456789", "admin"),
+    with (
+        pytest.raises(RetrieveFailed) as error,
+        patch("aiosysbus.auth.Auth._async_get_challenge", return_value=AsyncMock()),
+        patch(
+            "aiosysbus.auth.Auth.async_get_session_token",
+            return_value=("123456789", "admin"),
+        ),
     ):
         await api.async_connect()
         await api.topologydiagnostics.async_get_topodiags()

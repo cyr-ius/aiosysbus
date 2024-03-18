@@ -1,4 +1,5 @@
 """API Access for livebox."""
+
 from __future__ import annotations
 
 import asyncio

@@ -1,4 +1,5 @@
 """API for livebox routeur."""
+
 from __future__ import annotations
 
 import inspect

@@ -1,6 +1,7 @@
 """
 Provides authentication and raw access to Livebox.
 """
+
 from .aiosysbus import AIOSysbus
 from .exceptions import (
     AiosysbusException,
