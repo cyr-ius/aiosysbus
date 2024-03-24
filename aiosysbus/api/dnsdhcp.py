@@ -1,4 +1,5 @@
 """Livebox DHCP v4,v6 and Dynamic DNS update."""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any
