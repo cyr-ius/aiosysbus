@@ -339,7 +339,7 @@ class NeMo:
         """Get DSL Stats."""
         return await self._auth.post("NeMo.Intf.dsl0", "getDSLStats")
 
-    async def async_getxdsl0_noise_measure(self, conf: dict["str", Any]) -> None:
+    async def async_getxdsl0_noise_measure(self, conf: dict[str, Any]) -> None:
         """Get XDSL Noise Measure.
 
         Argument:
