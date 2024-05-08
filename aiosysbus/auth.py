@@ -51,6 +51,7 @@ class Auth:
         username: str,
         password: str,
         timeout: int,
+        verify_tls: bool,
     ) -> None:
         """Init class."""
         self.session = session
@@ -58,6 +59,7 @@ class Auth:
         self.username = username
         self.password = password
         self.timeout = timeout
+        self.verify_tls = verify_tls
 
         self.session_token: str | None = None
         self.session_permissions: str | None = None
@@ -86,7 +88,11 @@ class Auth:
             _LOGGER.debug("DATA:%s", json)
             async with asyncio.timeout(self.timeout):
                 response = await self.session.request(
-                    method, self.base_url, json=json, headers=headers
+                    method,
+                    self.base_url,
+                    json=json,
+                    headers=headers,
+                    verify_ssl=self.verify_tls,
                 )
         except (asyncio.CancelledError, asyncio.TimeoutError) as error:
             raise TimeoutExceededError(

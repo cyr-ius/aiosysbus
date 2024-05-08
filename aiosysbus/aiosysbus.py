@@ -28,6 +28,7 @@ class AIOSysbus:
         host: str = "192.168.1.1",
         port: int = 80,
         use_tls: bool = False,
+        verify_tls: bool = True,
     ) -> None:
         """Load parameters."""
         self._session = session or ClientSession()
@@ -40,6 +41,7 @@ class AIOSysbus:
             username=username,
             password=password,
             timeout=timeout,
+            verify_tls=verify_tls,
         )
 
         self._cleanup_session = session is None
