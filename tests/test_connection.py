@@ -111,7 +111,7 @@ async def test_get_lan(mock_post) -> None:
         ),
     ):
         await api.async_connect()
-        response = await api.homelan.async_get_lan(gdr)
+        response = await api.nmc.async_get_lan_ip(gdr)
 
     assert mock_post.return_value.json.return_value.get("result") == response
 
@@ -131,7 +131,7 @@ async def test_get_api_without_connect(mock_post) -> None:
             return_value=("123456789", "admin"),
         ),
     ):
-        response = await api.homelan.async_get_lan(gdr)
+        response = await api.nmc.async_get_lan_ip(gdr)
 
     assert mock_post.return_value.json.return_value.get("result") == response
     assert api._auth.session_token == "123456789"
@@ -156,7 +156,7 @@ async def test_error_500(mock_post) -> None:
         ),
     ):
         await api.async_connect()
-        await api.homelan.async_get_lan()
+        await api.nmc.async_get_lan_ip()
 
     assert error.value.args[0] == data
 
