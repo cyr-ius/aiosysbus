@@ -7,7 +7,6 @@ name        = "aiosysbus"
 dynamic     = ["version"]
 license     = {text = "GPL-3"}
 description = "Provides asynchronous authentication and access to Livebox"
-url         = "https://github.com/cyr-ius/aiosysbus"
 readme      = "README.md"
 authors     = [
     {name = "Cyr-ius", email = "cyr-ius@ipocus.net"}
@@ -29,6 +28,10 @@ dependencies    = [
     "aiohttp>=3.9.1",
     "yarl>=1.9.4",
 ]
+
+[project.urls]
+Homepage = "https://github.com/cyr-ius/aiosysbus"
+
 [tool.setuptools_scm]
 
 [tool.ruff.lint.flake8-pytest-style]
