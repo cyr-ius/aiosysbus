@@ -7,6 +7,7 @@ name        = "aiosysbus"
 dynamic     = ["version"]
 license     = {text = "GPL-3"}
 description = "Provides asynchronous authentication and access to Livebox"
+url         = "https://github.com/cyr-ius/aiosysbus"
 readme      = "README.md"
 authors     = [
     {name = "Cyr-ius", email = "cyr-ius@ipocus.net"}
