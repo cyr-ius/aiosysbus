@@ -3,6 +3,9 @@
 
 import asyncio
 import logging
+from typing import Any
+
+import yaml  # type: ignore
 
 from aiosysbus import AIOSysbus
 from aiosysbus.exceptions import (
@@ -14,15 +17,15 @@ from aiosysbus.exceptions import (
 
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
-# create console handler and set level to debug
 ch = logging.StreamHandler()
 formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 ch.setFormatter(formatter)
 logger.addHandler(ch)
 
-USERNAME = "admin"
-PASSWORD = "XXXXXXXXXX"
-HOST = "192.168.1.1"
+# Fill out the secrets in secrets.yaml, you can find an example
+# _secrets.yaml file, which has to be renamed after filling out the secrets.
+with open("./secrets.yaml", encoding="UTF-8") as file:
+    secrets: dict[str, Any] = yaml.safe_load(file)
 
 
 # mypy: disable-error-code="attr-defined"
@@ -30,7 +33,7 @@ async def async_main() -> None:
     """Main function."""
 
     try:
-        api = AIOSysbus(USERNAME, PASSWORD, host=HOST)
+        api = AIOSysbus(secrets["USERNAME"], secrets["PASSWORD"], host=secrets["HOST"])
         await api.async_connect()
         permissions = await api.async_get_permissions()
         logger.info(permissions)
@@ -208,5 +211,6 @@ async def async_main() -> None:
 
 
 if __name__ == "__main__":
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(async_main())
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    asyncio.run(async_main())
