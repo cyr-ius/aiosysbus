@@ -132,5 +132,5 @@ dmypy.json
 .vscode
 .vscode/
 
-# Perso
-example_home.py
+# Custom
+secrets.yaml
