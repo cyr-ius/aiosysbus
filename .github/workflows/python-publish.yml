@@ -33,4 +33,4 @@ jobs:
           python3 -m build
 
       - name: 🚀 Publish to PyPi
-        uses: pypa/gh-action-pypi-publish@release/v1
+        uses: pypa/gh-action-pypi-publish@latest
