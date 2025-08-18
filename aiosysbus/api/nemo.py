@@ -473,15 +473,35 @@ class NeMo:
         """
         return await self._auth.post(f"NeMo.Intf.{name}", "delNeighbourAP", conf)
 
+    async def async_set_wlan_config(
+        self, name: str, conf: dict[str, Any]
+    ) -> dict[str, Any]:
+        """Set WLAN configuration.
+
+        Arguments:
+        - Name (str): interface name (lan, wifi0_bcm, wifi0_quan, etc.)
+        - conf (dict): paremets (ex:
+
+            {"mibs":{
+                "penable":{
+                    "wl0":{"Enable":false,"PersistentEnable":false,"Status":false},
+                    "eth4":{"Enable":false,"PersistentEnable":false,"Status":false}
+                },
+                "wlanvap":{
+                    "wl0":{},
+                    "eth4":{}
+                }
+            }}
+        )
+        """
+        return await self._auth.post(f"NeMo.Intf.{name}", "setWLANConfig", conf)
+
 
 # WWAN
 #   - void setPin((string pin))
 #   - void resetPin((string puk), (string newpin))
 #   - void configureConnection((string apn), (string username), (string Password))
 #   - string getPinType()
-
-# lo
-#   - void setWLANConfig((string mibs))
 
 # rad /wifi0
 #   - void setChanspec((uint16 channel), (string bandwidth), (string frequency), (string reason), (bool direct), (string reasonDetails))
