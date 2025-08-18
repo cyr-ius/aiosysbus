@@ -2,11 +2,10 @@
 -r requirements.txt
 
 codespell
-mypy
-pre-commit
-python-typing-update
 ruff
 yamllint
+pre-commit
+python-typing-update
 types-requests
 pytest
 pytest-asyncio
