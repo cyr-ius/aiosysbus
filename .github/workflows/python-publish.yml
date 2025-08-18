@@ -8,6 +8,7 @@ on:
 
 jobs:
   deploy:
+    if: ${{ github.event.release.prerelease == false }}
     runs-on: ubuntu-latest
     name: Deploy to PyPi
     environment: release
@@ -15,7 +16,7 @@ jobs:
       id-token: write
     steps:
       - name: 📥 Checkout the repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -33,4 +34,4 @@ jobs:
           python3 -m build
 
       - name: 🚀 Publish to PyPi
-        uses: pypa/gh-action-pypi-publish@latest
+        uses: pypa/gh-action-pypi-publish@v1.12.4
