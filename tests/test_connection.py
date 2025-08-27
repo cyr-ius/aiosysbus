@@ -98,6 +98,7 @@ async def test_connect_error(mock_post) -> None:
 @pytest.mark.asyncio
 @patch("aiohttp.ClientSession.request", new_callable=create_resp)
 async def test_get_lan(mock_post) -> None:
+    """Test connect."""
     gdr = {"NumberOfReadings": 1, "InterfaceName": ["eth0"]}
 
     mock_post.return_value.json.return_value = {"result": {"lan": "1.2.3.4"}}
@@ -118,7 +119,26 @@ async def test_get_lan(mock_post) -> None:
 
 @pytest.mark.asyncio
 @patch("aiohttp.ClientSession.request", new_callable=create_resp)
+async def test_get_optical(mock_post) -> None:
+    """Test get optical information."""
+    api = AIOSysbus("username", "password")
+    with (
+        patch("aiosysbus.auth.Auth._async_get_challenge", return_value=AsyncMock()),
+        patch(
+            "aiosysbus.auth.Auth.async_get_session_token",
+            return_value=("123456789", "admin"),
+        ),
+    ):
+        await api.async_connect()
+        await api.sgcomci.async_get_optical()
+
+    assert mock_post.call_count == 1
+
+
+@pytest.mark.asyncio
+@patch("aiohttp.ClientSession.request", new_callable=create_resp)
 async def test_get_api_without_connect(mock_post) -> None:
+    """Test get lan ip without connect."""
     gdr = {"NumberOfReadings": 1, "InterfaceName": ["eth0"]}
 
     mock_post.return_value.json.return_value = {"result": {"lan": "1.2.3.4"}}
@@ -141,7 +161,7 @@ async def test_get_api_without_connect(mock_post) -> None:
 @pytest.mark.asyncio
 @patch("aiohttp.ClientSession.request", new_callable=create_resp)
 async def test_error_500(mock_post) -> None:
-    """Test connect."""
+    """Test error 500."""
     data = {"data": {"error": "Server unavailable"}}
 
     mock_post.return_value.status = 500
@@ -164,7 +184,7 @@ async def test_error_500(mock_post) -> None:
 @pytest.mark.asyncio
 @patch("aiohttp.ClientSession.request", new_callable=create_resp)
 async def test_error_contenttype(mock_post) -> None:
-    """Test connect."""
+    """Test error content type."""
     mock_post.return_value.headers = CIMultiDict(
         {("Content-Type", "plain/text"), ("Set-Cookie", "e2c29097/sessid=;")}
     )
@@ -216,7 +236,7 @@ async def test_error_text_500(mock_post) -> None:
 @pytest.mark.asyncio
 @patch("aiohttp.ClientSession.request", new_callable=create_resp)
 async def test_retry_error(mock_post) -> None:
-    """Test connect."""
+    """Test retry error."""
     data = {"result": {"errors": "Server unavailable"}}
     mock_post.return_value.json.return_value = data
     api = AIOSysbus("username", "password")
