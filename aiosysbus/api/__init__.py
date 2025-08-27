@@ -23,6 +23,7 @@ from .services import (
     SpeedTest,
     Ssw,
 )
+from .sgcomci import SgcOmci
 from .storage import StorageService, USBHosts
 from .system import (
     Event,
@@ -68,6 +69,7 @@ __all__ = [
     "Schedule",
     "Screen",
     "SFP",
+    "SgcOmci",
     "SpeedTest",
     "Ssw",
     "StorageService",
