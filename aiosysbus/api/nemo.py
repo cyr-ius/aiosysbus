@@ -474,27 +474,43 @@ class NeMo:
         return await self._auth.post(f"NeMo.Intf.{name}", "delNeighbourAP", conf)
 
     async def async_set_wlan_config(
-        self, name: str, conf: dict[str, Any]
+        self, interfacename: str, conf: dict[str, Any]
     ) -> dict[str, Any]:
         """Set WLAN configuration.
 
         Arguments:
-        - Name (str): interface name (lan, wifi0_bcm, wifi0_quan, etc.)
-        - conf (dict): paremets (ex:
-
-            {"mibs":{
-                "penable":{
-                    "wl0":{"Enable":false,"PersistentEnable":false,"Status":false},
-                    "eth4":{"Enable":false,"PersistentEnable":false,"Status":false}
-                },
-                "wlanvap":{
-                    "wl0":{},
-                    "eth4":{}
-                }
-            }}
-        )
+        - Interfacename (str): interface name (lan, wifi0_bcm, wifi0_quan, etc.)
+        - conf (dict)
         """
-        return await self._auth.post(f"NeMo.Intf.{name}", "setWLANConfig", conf)
+        return await self._auth.post(
+            f"NeMo.Intf.{interfacename}", "setWLANConfig", conf
+        )
+
+    # Custom methods
+    async def async_wifi(self, enable: bool) -> None:
+        """Set wifi.
+
+        Arguments:
+        - Enable (bool)
+        """
+        conf = {
+            "mibs": {
+                "penable": {
+                    "wl0": {
+                        "Enable": enable,
+                        "PersistentEnable": enable,
+                        "Status": enable,
+                    },
+                    "eth4": {
+                        "Enable": enable,
+                        "PersistentEnable": enable,
+                        "Status": enable,
+                    },
+                },
+                "wlanvap": {"wl0": {}, "eth4": {}},
+            }
+        }
+        await self.async_set_wlan_config(interfacename="lan", conf=conf)
 
 
 # WWAN
