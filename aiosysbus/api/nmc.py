@@ -465,3 +465,20 @@ class Nmc:
     async def async_get_guest_wifi(self) -> None:
         """Get wifi configuration."""
         return await self._auth.post("NMC.Guest", "get")
+
+    # Custom method.
+    async def async_guest_wifi(
+        self, enable: bool, *, timeout: int = 0, interface: str = "guest"
+    ) -> None:
+        """Set guest wifi and timer.
+
+        Arguments:
+        - Enable (bool)
+        - Timeout (int) seconds
+        - Interface (str) Interface name
+        """
+        if enable:
+            await self.async_set_guest_wifi(enable)
+            return await self.async_set_wlan_timer(timeout, interface)
+        await self.async_set_guest_wifi(enable)
+        return await self.async_disable_wlan_timer(timeout, interface)
