@@ -421,41 +421,45 @@ class Nmc:
 
     # NMC.WlanTimer
 
-    async def async_set_wlan_timer(self, conf: dict[str, Any] | None = None) -> None:
+    async def async_set_wlan_timer(
+        self, timeout: int = 0, interfacename: str = "guest"
+    ) -> None:
         """Set WLAN timer.
-
         Arguments:
-        - InterfaceName (str) optional
-        - Timeout (int) optional
+        - Timeout (int) 0 == infinite
+        - InterfaceName (str) Interface name
         """
+
+        conf = {"Timeout": timeout, "InterfaceName": interfacename}
         return await self._auth.post("NMC.WlanTimer", "setActivationTimer", conf)
 
-    async def async_get_wlan_timer(self, conf: dict[str, Any] | None = None) -> int:
+    async def async_get_wlan_timer(self, interfacename: str = "guest") -> int:
         """Get WLAN timer.
 
         Arguments:
-        - InterfaceName (str) optional
+        - InterfaceName (str) Interface name
         """
+        conf = {"InterfaceName": interfacename}
         return await self._auth.post("NMC.WlanTimer", "getActivationTimer", conf)
 
-    async def async_disable_wlan_timer(
-        self, conf: dict[str, Any] | None = None
-    ) -> bool:
+    async def async_disable_wlan_timer(self, interfacename: str = "guest") -> bool:
         """Disable WLAN timer.
 
         Arguments:
-        - InterfaceName (str) optional
+        - InterfaceName (str) Interface name
         """
+        conf = {"InterfaceName": interfacename}
         return await self._auth.post("NMC.WlanTimer", "disableActivationTimer", conf)
 
     # NMC.Guest
 
-    async def async_set_guest_wifi(self, conf: dict[str, Any] | None = None) -> None:
+    async def async_set_guest_wifi(self, enable: bool) -> None:
         """Set guest wifi.
 
         Arguments:
-        - InterfaceName (str) optional
+        - Enable (bool)
         """
+        conf = {"Enable": enable is True}
         return await self._auth.post("NMC.Guest", "set", conf)
 
     async def async_get_guest_wifi(self) -> None:
