@@ -1,7 +1,7 @@
 """
 Provides API access to Livebox.
 except NetMaster, SSW.Steering, SAHPairing, WebuiupgradeService, DNSSD,
-GenLog, History, MSS, ServiceInvocation, URLMon, VoWifi
+GenLog, MSS, ServiceInvocation, URLMon, VoWifi
 """
 
 from .call import Dect, Phonebook, VoiceService
@@ -27,6 +27,7 @@ from .sgcomci import SgcOmci
 from .storage import StorageService, USBHosts
 from .system import (
     Event,
+    History,
     OrangeRemoteAccess,
     PasswordRecovery,
     PnP,
@@ -50,6 +51,7 @@ __all__ = [
     "DynDNS",
     "Event",
     "Firewall",
+    "History",
     "HomeLan",
     "HTTPService",
     "IoTService",

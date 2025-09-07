@@ -182,11 +182,11 @@ class PasswordRecovery:
 
     async def async_start(self) -> None:
         """Recovery password start."""
-        return await self._auth.post("OrangeServices", "start")
+        return await self._auth.post("PasswordRecovery", "start")
 
     async def async_stop(self) -> None:
         """Recovery password stop."""
-        return await self._auth.post("OrangeServices", "stop")
+        return await self._auth.post("PasswordRecovery", "stop")
 
     async def async_set_password(self, conf: dict[str, Any] | None = None) -> int:
         """Set password.
@@ -194,7 +194,7 @@ class PasswordRecovery:
         Argument:
         - password (str)
         """
-        return await self._auth.post("OrangeServices", "setPassword", conf)
+        return await self._auth.post("PasswordRecovery", "setPassword", conf)
 
 
 class RemoteAccess:
@@ -409,3 +409,31 @@ class Event:
     ) -> dict[str, Any]:
         """Unsubscribe Event."""
         return await self._auth.post("eventmanager", "unsubscribe", conf)
+
+
+class History:
+    """History"""
+
+    def __init__(self, auth: Auth) -> None:
+        """Init."""
+        self._auth = auth
+
+    async def async_updateHistory(self) -> None:
+        """Update backup history."""
+        await self._auth.post("History.Backup", "updateHistory")
+
+    async def async_cleanHistory(self) -> None:
+        """Clean backup history."""
+        await self._auth.post("History.Backup", "cleanHistory")
+
+    async def async_getSimpleHistory(self) -> None:
+        """Get backup history."""
+        await self._auth.post("History.Backup", "getSimpleHistory")
+
+    async def async_rotate(self, conf: dict[str, Any] | None = None) -> None:
+        """Rotate backup history.
+
+        Arguments:
+        - source (str) optional
+        """
+        await self._auth.post("History.Backup", "rotate", conf)
