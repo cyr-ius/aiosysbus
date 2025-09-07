@@ -40,15 +40,21 @@ class Dhcp:
 
     # Server Pool
 
-    async def async_set_dhcp_lease_frompool(self, conf: dict[str, Any]) -> str:
+    async def async_set_dhcp_lease_frompool(
+        self, conf: dict[str, Any], *, domain: str = "default"
+    ) -> str:
         """Set static lease.
 
         Arguments:
          - MACAddress (str)
         """
-        return await self._auth.post("DHCPv4.Server.Pool", "addLeaseFromPool", conf)
+        return await self._auth.post(
+            f"DHCPv4.Server.Pool.{domain}", "addLeaseFromPool", conf
+        )
 
-    async def async_set_dhcp_staticlease(self, conf: dict[str, Any]) -> None:
+    async def async_set_dhcp_staticlease(
+        self, conf: dict[str, Any], *, domain: str = "default"
+    ) -> None:
         """Set static lease.
 
         Arguments:
@@ -56,37 +62,56 @@ class Dhcp:
          - IPAddress (str) optional
          - Enable (bool) optional
         """
-        return await self._auth.post("DHCPv4.Server.Pool", "setLeaseTime", conf)
+        return await self._auth.post(
+            f"DHCPv4.Server.Pool.{domain}", "setLeaseTime", conf
+        )
 
-    async def async_del_dhcp_staticlease(self, conf: dict[str, Any]) -> None:
+    async def async_del_dhcp_staticlease(
+        self, conf: dict[str, Any], *, domain: str = "default"
+    ) -> None:
         """Remove static lease.
 
         Arguments:
+        - domain (str) "default" or "guest"
          - MACAddress (str)
         """
-        return await self._auth.post("DHCPv4.Server.Pool", "deleteStaticLease", conf)
+        return await self._auth.post(
+            f"DHCPv4.Server.Pool.{domain}", "deleteStaticLease", conf
+        )
 
-    async def async_get_dhcp_staticleases(self) -> list[dict[str, Any]]:
-        """Get leases."""
-        return await self._auth.post("DHCPv4.Server.Pool", "getStaticLeases")
-
-    async def async_get_dhcp_leases(
-        self, conf: dict[str, Any] | None = None
+    async def async_get_dhcp_staticleases(
+        self, *, domain: str = "default"
     ) -> list[dict[str, Any]]:
         """Get leases.
 
         Arguments:
+        - domain (str) "default" or "guest"
+        """
+        return await self._auth.post("DHCPv4.Server.Pool.{domain}", "getStaticLeases")
+
+    async def async_get_dhcp_leases(
+        self, conf: dict[str, Any] | None = None, *, domain: str = "default"
+    ) -> list[dict[str, Any]]:
+        """Get leases.
+
+        Arguments:
+        - domain (str) "default" or "guest"
          - rule (str) optional
         """
-        return await self._auth.post("DHCPv4.Server.Pool", "getLeases", conf)
+        return await self._auth.post(f"DHCPv4.Server.Pool.{domain}", "getLeases", conf)
 
-    async def async_set_dhcp_leasetime(self, conf: dict[str, Any]) -> dict[str, Any]:
+    async def async_set_dhcp_leasetime(
+        self, conf: dict[str, Any], *, domain: str = "default"
+    ) -> dict[str, Any]:
         """Set lease time.
 
         Arguments:
+         - domain (str) "default" or "guest"
          - leasetime (int)
         """
-        return await self._auth.post("DHCPv4.Server.Pool", "setLeaseTime", conf)
+        return await self._auth.post(
+            f"DHCPv4.Server.Pool.{domain}", "setLeaseTime", conf
+        )
 
     # DHCPv4.Server.Pool.Rule.Lease
 
