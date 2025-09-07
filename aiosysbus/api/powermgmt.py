@@ -74,28 +74,24 @@ class PowerManagement:
         )
 
     async def async_get_profiles(
-        self, profiles: list[dict[str, Any]]
+        self, conf: list[dict[str, Any]] | None = None
     ) -> dict[str, Any]:
         """Get profiles.
 
         Argument:
         - profiles (list)
         """
-        return await self._auth.post(
-            "PowerManagement", "getProfiles", {"profiles": profiles}
-        )
+        return await self._auth.post("PowerManagement", "getProfiles", conf)
 
     async def async_delete_profiles(
-        self, profiles: list[dict[str, Any]]
-    ) -> dict[str, Any]:
+        self, conf: list[dict[str, Any]] | None = None
+    ) -> None:
         """Remove profiles.
 
         Argument:
         - profiles (list)
         """
-        return await self._auth.post(
-            "PowerManagement", "removeProfiles", {"profiles": profiles}
-        )
+        await self._auth.post("PowerManagement", "removeProfiles", conf)
 
     async def async_set_state(self, id: str, state: str) -> None:
         """Remove profiles.
@@ -104,9 +100,7 @@ class PowerManagement:
         - ID (str)
         - state (str)
         """
-        return await self._auth.post(
-            "PowerManagement", "setState", {"ID": id, "state": state}
-        )
+        await self._auth.post("PowerManagement", "setState", {"ID": id, "state": state})
 
     async def async_import(self) -> bool:
         """Import."""

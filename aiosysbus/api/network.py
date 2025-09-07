@@ -227,7 +227,7 @@ class Firewall:
         """
         return await self._auth.post("Firewall", "setProtocolForwarding", conf)
 
-    async def async_delete_protocol_forwarding(self, conf: dict[str, Any]) -> str:
+    async def async_delete_protocol_forwarding(self, conf: dict[str, Any]) -> bool:
         """Delete protocol forwarding.
 
         Arguments:
@@ -235,8 +235,10 @@ class Firewall:
         """
         return await self._auth.post("Firewall", "deleteProtocolForwarding", conf)
 
-    async def async_get_protocol_forwarding(self, conf: dict[str, Any]) -> str:
-        """Get protocol forwarding
+    async def async_get_protocol_forwarding(
+        self, conf: dict[str, Any] | None = None
+    ) -> dict[str, Any]:
+        """Get IPV4 protocol forwarding
 
         Arguments:
         - id (str)
@@ -282,7 +284,7 @@ class Firewall:
         """
         return await self._auth.post("Firewall", "refreshPortForwarding", conf)
 
-    async def async_delete_port_forwarding(self, conf: dict[str, Any]) -> str:
+    async def async_delete_port_forwarding(self, conf: dict[str, Any]) -> bool:
         """Refresh port forwarding.
 
         Arguments:
@@ -294,7 +296,7 @@ class Firewall:
 
     async def async_get_port_forwarding(
         self, conf: dict[str, Any] | None = None
-    ) -> list[Any]:
+    ) -> dict[str, Any]:
         """Get port forwarding configuration
 
         Arguments:
@@ -474,7 +476,7 @@ class Firewall:
         """
         return await self._auth.post("Firewall", "setFirewallIPv6Level", conf)
 
-    async def async_Get_firewall_IPv6Level(self, conf: dict[str, Any]) -> str:
+    async def async_get_firewall_IPv6Level(self, conf: dict[str, Any]) -> str:
         """Get level for IPv6 Firewall
 
         Arguments:
@@ -506,7 +508,7 @@ class Firewall:
 
 
 class UPnPIGD:
-    """UPnP-IGD settings."""
+    """UPnP-IGD class."""
 
     def __init__(self, auth: Auth) -> None:
         """Init."""
@@ -516,13 +518,13 @@ class UPnPIGD:
         """Get Upnp configuration."""
         return await self._auth.post("UPnP-IGD", "get")
 
-    async def async_put(self, conf: dict[str, Any] | None = None) -> bool:
+    async def async_set(self, conf: dict[str, Any] | None = None) -> bool:
         """Set Upnp configuration.
 
         Argument:
         -parameters (dict) optional
         """
-        return await self._auth.post("UPnP-IGD", "put", conf)
+        return await self._auth.post("UPnP-IGD", "set", conf)
 
 
 class SFP:
