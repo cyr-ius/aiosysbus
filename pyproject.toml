@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name        = "aiosysbus"
 dynamic     = ["version"]
-license     = {text = "GPL-3"}
+license     = "GPL-3.0-or-later"
 description = "Provides asynchronous authentication and access to Livebox"
 readme      = "README.md"
 authors     = [
@@ -15,7 +15,6 @@ keywords    = ["livebox", "async"]
 classifiers = [
     "Programming Language :: Python",
     "Development Status :: 5 - Production/Stable",
-    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
@@ -31,17 +30,29 @@ dependencies    = [
     "yarl>=1.9.4",
 ]
 
+[project.optional-dependencies]
+dev = [
+    "prek",
+    "ruff",
+    "pytest",
+    "pytest-asyncio",
+    "python-typing-update",
+    "yamllint",
+]
+
 [project.urls]
 Homepage = "https://github.com/cyr-ius/aiosysbus"
 
 [tool.setuptools_scm]
 
+[tool.setuptools]
+platforms = ["any"]
+
+[tool.setuptools.packages.find]
+exclude = ["node_modules*"]
+
 [tool.ruff.lint.flake8-pytest-style]
 fixture-parentheses = false
-
-[tool.ruff.lint.flake8-tidy-imports.banned-api]
-"async_timeout".msg = "use asyncio.timeout instead"
-"pytz".msg = "use zoneinfo instead"
 
 [tool.ruff.lint.isort]
 force-sort-within-sections = true
