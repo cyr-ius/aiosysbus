@@ -94,7 +94,7 @@ class Auth:
                     headers=headers,
                     verify_ssl=self.verify_tls,
                 )
-        except (asyncio.CancelledError, asyncio.TimeoutError) as error:
+        except (TimeoutError, asyncio.CancelledError) as error:
             raise TimeoutExceededError(
                 "Timeout occurred while connecting to Livebox"
             ) from error
@@ -180,7 +180,7 @@ class Auth:
                 response = await self.session.request(
                     method="post", url=self.base_url, json=json, headers=headers
                 )
-        except (asyncio.CancelledError, asyncio.TimeoutError) as error:
+        except (TimeoutError, asyncio.CancelledError) as error:
             raise TimeoutExceededError(
                 "Timeout occurred while connecting to Livebox."
             ) from error
@@ -223,8 +223,8 @@ class Auth:
             async with asyncio.timeout(self.timeout):
                 response = await self.session.request(method="get", url=base_url.parent)
         except (
+            TimeoutError,
             asyncio.CancelledError,
-            asyncio.TimeoutError,
             ClientError,
             socket.gaierror,
         ) as error:
