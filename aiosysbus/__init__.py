@@ -15,11 +15,11 @@ from .exceptions import (
 
 __all__ = [
     "AIOSysbus",
-    "AuthenticationFailed",
     "AiosysbusException",
+    "AuthenticationFailed",
     "HttpRequestFailed",
+    "InsufficientPermissionsError",
     "RetrieveFailed",
     "TimeoutExceededError",
-    "InsufficientPermissionsError",
     "UnexpectedResponse",
 ]

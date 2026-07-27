@@ -41,6 +41,7 @@ from .system import (
 from .user import UserManagement
 
 __all__ = [
+    "SFP",
     "AutoDiag",
     "Dect",
     "DeviceInfo",
@@ -51,9 +52,9 @@ __all__ = [
     "DynDNS",
     "Event",
     "Firewall",
+    "HTTPService",
     "History",
     "HomeLan",
-    "HTTPService",
     "IoTService",
     "Locations",
     "Manifests",
@@ -70,7 +71,6 @@ __all__ = [
     "RemoteAccess",
     "Schedule",
     "Screen",
-    "SFP",
     "SgcOmci",
     "SpeedTest",
     "Ssw",
