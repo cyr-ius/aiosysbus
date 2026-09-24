@@ -481,4 +481,4 @@ class Nmc:
             await self.async_set_guest_wifi(enable)
             return await self.async_set_wlan_timer(timeout, interface)
         await self.async_set_guest_wifi(enable)
-        return await self.async_disable_wlan_timer(timeout, interface)
+        return await self.async_disable_wlan_timer(interface)
