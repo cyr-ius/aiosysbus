@@ -142,6 +142,75 @@ class Auth:
         data = {"service": service, "method": method, "parameters": params}
         return await self.async_request(method="post", json=data)
 
+    async def async_logout(self) -> bool:
+        """Release the session context on the livebox.
+
+        Sends the same request as the web interface when logging out.
+        The livebox accepts a limited number of contexts, so a context that is
+        not released stays allocated until it expires.
+        Returns True when the livebox confirms the release, False otherwise.
+        The local session is cleared in any case.
+        """
+        if not self.session_token:
+            return False
+
+        headers = {
+            "Content-Type": "application/x-sah-ws-1-call+json",
+            "Authorization": f"X-Sah-Logout {self.session_token}",
+        }
+        if self._cookies:
+            headers["Cookie"] = ";".join(
+                f"{key}={value}" for key, value in self._cookies.items()
+            )
+
+        json = {
+            "service": "sah.Device.Information",
+            "method": "releaseContext",
+            "parameters": {"applicationName": "so_sdkut"},
+        }
+
+        try:
+            async with asyncio.timeout(self.timeout):
+                response = await self.session.request(
+                    method="post",
+                    url=self.base_url,
+                    json=json,
+                    headers=headers,
+                    verify_ssl=self.verify_tls,
+                )
+            if response.status != 200:
+                _LOGGER.debug("Logout failed (HTTP status %s)", response.status)
+                response.close()
+                return False
+
+            rjson = await response.json(content_type=None)
+        except (TimeoutError, asyncio.CancelledError) as error:
+            raise TimeoutExceededError(
+                "Timeout occurred while connecting to Livebox."
+            ) from error
+        except (ClientError, socket.gaierror) as error:
+            raise HttpRequestFailed(
+                "Error occurred while communicating with Livebox."
+            ) from error
+        except ValueError:
+            _LOGGER.debug("Logout failed (invalid response)")
+            return False
+        finally:
+            self._clear_session()
+
+        if isinstance(rjson, dict) and rjson.get("status") == 0:
+            _LOGGER.debug("Session context released")
+            return True
+
+        _LOGGER.debug("Logout failed (APIResponse: %s)", rjson)
+        return False
+
+    def _clear_session(self) -> None:
+        """Forget the current session."""
+        self.session_token = None
+        self.session_permissions = None
+        self._cookies = {}
+
     async def _async_refresh_session_token(self) -> None:
         """Refresh token."""
         session_token, session_permissions = await self.async_get_session_token()

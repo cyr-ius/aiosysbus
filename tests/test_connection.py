@@ -15,6 +15,7 @@ from aiosysbus import (
     AiosysbusException,
     HttpRequestFailed,
     RetrieveFailed,
+    TimeoutExceededError,
     UnexpectedResponse,
 )
 
@@ -252,3 +253,114 @@ async def test_retry_error(mock_post) -> None:
         await api.topologydiagnostics.async_get_topodiags()
 
     assert error.value.args[0] == "Server unavailable"
+
+
+@pytest.mark.asyncio
+@patch("aiohttp.ClientSession.request", new_callable=create_resp)
+async def test_connect_keeps_session(mock_post) -> None:
+    """Test connect keeps the session for the next calls."""
+    mock_post.return_value.json.return_value = {
+        "data": {"contextID": "123456789", "groups": "admin"}
+    }
+    api = AIOSysbus("username", "password")
+    with patch("aiosysbus.auth.Auth._async_get_challenge", return_value=AsyncMock()):
+        await api.async_connect()
+
+    assert api._auth.session_token == "123456789"
+    assert api._auth.session_permissions == "admin"
+
+
+@pytest.mark.asyncio
+@patch("aiohttp.ClientSession.request", new_callable=create_resp)
+async def test_logout(mock_post) -> None:
+    """Test logout releases the context with the web interface request."""
+    api = AIOSysbus("username", "password", verify_tls=False)
+    api._auth.session_token = "123456789"
+    api._auth.session_permissions = "admin"
+    api._auth._cookies = {"e2c29097/sessid": "abc", "sah/contextId": "def"}
+    mock_post.return_value.json.return_value = {"status": 0}
+
+    assert await api.async_logout() is True
+
+    mock_post.assert_called_once()
+    kwargs = mock_post.call_args.kwargs
+    assert kwargs["method"] == "post"
+    assert kwargs["url"] == api._auth.base_url
+    assert kwargs["headers"] == {
+        "Content-Type": "application/x-sah-ws-1-call+json",
+        "Authorization": "X-Sah-Logout 123456789",
+        "Cookie": "e2c29097/sessid=abc;sah/contextId=def",
+    }
+    assert kwargs["json"] == {
+        "service": "sah.Device.Information",
+        "method": "releaseContext",
+        "parameters": {"applicationName": "so_sdkut"},
+    }
+    assert kwargs["verify_ssl"] is False
+    assert api._auth.session_token is None
+    assert api._auth.session_permissions is None
+    assert api._auth._cookies == {}
+
+
+@pytest.mark.asyncio
+@patch("aiohttp.ClientSession.request", new_callable=create_resp)
+async def test_logout_without_session(mock_post) -> None:
+    """Test logout does nothing without a session."""
+    api = AIOSysbus("username", "password")
+
+    assert await api.async_logout() is False
+    mock_post.assert_not_called()
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    ("status", "resp_json"),
+    [
+        (200, {"result": {"errors": [{"error": 196618}]}}),
+        (200, None),
+        (401, {"status": 0}),
+    ],
+)
+@patch("aiohttp.ClientSession.request", new_callable=create_resp)
+async def test_logout_refused(mock_post, status, resp_json) -> None:
+    """Test logout not confirmed by the livebox."""
+    api = AIOSysbus("username", "password")
+    api._auth.session_token = "123456789"
+    mock_post.return_value.status = status
+    mock_post.return_value.json.return_value = resp_json
+
+    assert await api.async_logout() is False
+    assert api._auth.session_token is None
+
+
+@pytest.mark.asyncio
+@patch("aiohttp.ClientSession.request", new_callable=create_resp)
+async def test_logout_invalid_json(mock_post) -> None:
+    """Test logout with a response which is not json."""
+    api = AIOSysbus("username", "password")
+    api._auth.session_token = "123456789"
+    mock_post.return_value.json.side_effect = ValueError
+
+    assert await api.async_logout() is False
+    assert api._auth.session_token is None
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    ("side_effect", "exception"),
+    [
+        (aiohttp.ClientError, HttpRequestFailed),
+        (asyncio.TimeoutError, TimeoutExceededError),
+    ],
+)
+@patch("aiohttp.ClientSession.request", new_callable=create_resp)
+async def test_logout_error(mock_post, side_effect, exception) -> None:
+    """Test logout when the livebox is unreachable."""
+    api = AIOSysbus("username", "password")
+    api._auth.session_token = "123456789"
+    mock_post.side_effect = side_effect
+
+    with pytest.raises(exception):
+        await api.async_logout()
+
+    assert api._auth.session_token is None

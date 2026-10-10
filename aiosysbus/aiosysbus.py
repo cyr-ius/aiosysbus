@@ -66,10 +66,12 @@ class AIOSysbus:
 
         There is no need to use this method to call the APIs,
         as they automatically obtain a session token.
-        This method simply allows you to check if the authentication works
+        This method simply allows you to check if the authentication works.
+        The session is kept, so it is reused by the next calls and can be
+        released with async_logout.
         """
         try:
-            await self._auth.async_get_session_token()
+            await self._auth._async_refresh_session_token()
         except AuthenticationFailed as error:
             raise AuthenticationFailed(error) from error
         except AiosysbusException as error:
@@ -88,6 +90,16 @@ class AIOSysbus:
         If the session has not been opened yet, returns None.
         """
         return self._auth.session_permissions
+
+    async def async_logout(self) -> bool:
+        """Release the session on the livebox.
+
+        The livebox accepts a limited number of sessions, call this method
+        when the API is no longer used. A new session is opened automatically
+        by the next call.
+        Returns True when the livebox confirms the release.
+        """
+        return await self._auth.async_logout()
 
     async def async_close(self) -> None:
         """Close session."""
