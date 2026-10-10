@@ -66,6 +66,8 @@ async def async_main() -> None:
     parameters = {"parameters": {"expression": {"wifi": "wifi && .Active==False"}}}
     devices = await api.devices.async_get_devices(parameters)
 
+    # Release the session, the Livebox accepts a limited number of them.
+    await api.async_logout()
     await api.async_close()
 
 if __name__ == "__main__":
