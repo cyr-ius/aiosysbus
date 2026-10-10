@@ -57,6 +57,7 @@ aiosysbus >= 1.0.0
 import asyncio
 import logging
 
+
 async def async_main() -> None:
     # Instantiate the Sysbus class using default options.
     api = AIOSysbus(username=xxxx, password=xxxx, host=HOST)
@@ -69,6 +70,7 @@ async def async_main() -> None:
     # Release the session, the Livebox accepts a limited number of them.
     await api.async_logout()
     await api.async_close()
+
 
 if __name__ == "__main__":
     loop = asyncio.get_event_loop()

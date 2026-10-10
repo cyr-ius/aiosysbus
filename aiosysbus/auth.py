@@ -33,7 +33,7 @@ class IgnoreIllegalKeyFilter(logging.Filter):
         message = record.getMessage()
         return not (
             message.startswith("Can not load response cookies: Illegal key '")
-            and (message.endswith("/accept-language'") or message.endswith("/sessid'"))
+            and message.endswith(("/accept-language'", "/sessid'"))
         )
 
 
