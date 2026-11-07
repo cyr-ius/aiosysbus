@@ -1,0 +1,14 @@
+---
+name: Lint
+
+on:
+  push:
+    branches: ["master"]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    uses: cyr-ius/.github/.github/workflows/py-lint.yml@v1

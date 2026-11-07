@@ -1,0 +1,16 @@
+---
+name: Tests
+
+on:
+  push:
+    branches: ["master"]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    uses: cyr-ius/.github/.github/workflows/py-tests.yml@v1
+    with:
+      python-versions: '["3.11","3.14"]'
