@@ -154,13 +154,27 @@ class Auth:
         if not self.session_token:
             return False
 
+        try:
+            return await self.async_release_context(self.session_token, self._cookies)
+        finally:
+            self._clear_session()
+
+    async def async_release_context(
+        self, context_id: str, cookies: dict[str, str]
+    ) -> bool:
+        """Release a session context on the livebox.
+
+        The context may belong to another process, for instance a session
+        saved before a crash. The current session is not modified.
+        Returns True when the livebox confirms the release, False otherwise.
+        """
         headers = {
             "Content-Type": "application/x-sah-ws-1-call+json",
-            "Authorization": f"X-Sah-Logout {self.session_token}",
+            "Authorization": f"X-Sah-Logout {context_id}",
         }
-        if self._cookies:
+        if cookies:
             headers["Cookie"] = ";".join(
-                f"{key}={value}" for key, value in self._cookies.items()
+                f"{key}={value}" for key, value in cookies.items()
             )
 
         json = {
@@ -195,8 +209,6 @@ class Auth:
         except ValueError:
             _LOGGER.debug("Logout failed (invalid response)")
             return False
-        finally:
-            self._clear_session()
 
         if isinstance(rjson, dict) and rjson.get("status") == 0:
             _LOGGER.debug("Session context released")

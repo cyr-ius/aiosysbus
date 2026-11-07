@@ -77,6 +77,17 @@ if __name__ == "__main__":
     loop.run_until_complete(async_main())
 ```
 
+A session left open by a crash stays allocated on the Livebox until it
+expires. Save `api.session_state` (context ID and cookies, `None` when no
+session is open) and release it at the next start:
+
+```python
+saved = api.session_state  # store it, e.g. as JSON
+
+# Next run, before opening a new session:
+await api.async_release_session(saved)
+```
+
 Have a look at the [example.py](https://github.com/cyr-ius/aiosysbus/blob/master/example.py) for a more complete overview.
 
 ## Notes on HTTPS
