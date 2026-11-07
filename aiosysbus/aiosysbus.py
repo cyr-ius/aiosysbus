@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import inspect
 import logging
-from typing import Self
+from typing import Any, Self
 
 from aiohttp import ClientSession
 from yarl import URL as yurl
@@ -100,6 +100,34 @@ class AIOSysbus:
         Returns True when the livebox confirms the release.
         """
         return await self._auth.async_logout()
+
+    @property
+    def session_state(self) -> dict[str, Any] | None:
+        """Return the current session, or None when no session is open.
+
+        The returned dict ({"context_id": str, "cookies": dict}) can be saved
+        and given to async_release_session by a later process, so a session
+        left open by a crash can still be released.
+        """
+        if not self._auth.session_token:
+            return None
+        return {
+            "context_id": self._auth.session_token,
+            "cookies": dict(self._auth._cookies),
+        }
+
+    async def async_release_session(self, session_state: dict[str, Any]) -> bool:
+        """Release a session saved with session_state.
+
+        The current session of this client is not modified.
+        Returns True when the livebox confirms the release, False otherwise
+        (including when session_state holds no context).
+        """
+        context_id = session_state.get("context_id")
+        if not context_id or not isinstance(context_id, str):
+            return False
+        cookies = session_state.get("cookies") or {}
+        return await self._auth.async_release_context(context_id, dict(cookies))
 
     async def async_close(self) -> None:
         """Close session."""

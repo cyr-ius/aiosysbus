@@ -364,3 +364,69 @@ async def test_logout_error(mock_post, side_effect, exception) -> None:
         await api.async_logout()
 
     assert api._auth.session_token is None
+
+
+@pytest.mark.asyncio
+async def test_session_state() -> None:
+    """Test the session state can be saved."""
+    api = AIOSysbus("username", "password")
+    assert api.session_state is None
+
+    api._auth.session_token = "123456789"
+    api._auth._cookies = {"e2c29097/sessid": "abc"}
+    state = api.session_state
+    assert state == {"context_id": "123456789", "cookies": {"e2c29097/sessid": "abc"}}
+
+    # The saved state is a copy, later cookie changes do not alter it.
+    api._auth._cookies["other"] = "x"
+    assert state["cookies"] == {"e2c29097/sessid": "abc"}
+
+
+@pytest.mark.asyncio
+@patch("aiohttp.ClientSession.request", new_callable=create_resp)
+async def test_release_session(mock_post) -> None:
+    """Test a saved session is released without touching the current one."""
+    api = AIOSysbus("username", "password", verify_tls=False)
+    api._auth.session_token = "current"
+    api._auth._cookies = {"sessid": "current"}
+    mock_post.return_value.json.return_value = {"status": 0}
+
+    assert (
+        await api.async_release_session(
+            {"context_id": "orphan", "cookies": {"sessid": "old"}}
+        )
+        is True
+    )
+
+    kwargs = mock_post.call_args.kwargs
+    assert kwargs["url"] == api._auth.base_url
+    assert kwargs["headers"] == {
+        "Content-Type": "application/x-sah-ws-1-call+json",
+        "Authorization": "X-Sah-Logout orphan",
+        "Cookie": "sessid=old",
+    }
+    assert kwargs["json"]["method"] == "releaseContext"
+    assert kwargs["verify_ssl"] is False
+    assert api._auth.session_token == "current"
+    assert api._auth._cookies == {"sessid": "current"}
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("state", [{}, {"context_id": ""}, {"context_id": None}])
+@patch("aiohttp.ClientSession.request", new_callable=create_resp)
+async def test_release_session_without_context(mock_post, state) -> None:
+    """Test nothing is sent when the saved state holds no context."""
+    api = AIOSysbus("username", "password")
+
+    assert await api.async_release_session(state) is False
+    mock_post.assert_not_called()
+
+
+@pytest.mark.asyncio
+@patch("aiohttp.ClientSession.request", new_callable=create_resp)
+async def test_release_session_refused(mock_post) -> None:
+    """Test a release not confirmed by the livebox."""
+    api = AIOSysbus("username", "password")
+    mock_post.return_value.json.return_value = {"errors": [{"error": 13}]}
+
+    assert await api.async_release_session({"context_id": "orphan"}) is False
